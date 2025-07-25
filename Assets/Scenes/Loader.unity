@@ -423,6 +423,7 @@ MonoBehaviour:
     passAccuracyScore: 60
     passPronScore: 60
     lang: 0
+    gameSettingScore: -1
   apiManager:
     jwt: 
     appId: 
@@ -454,6 +455,7 @@ MonoBehaviour:
       retryTimes: 0
       pass_accuracy_score: 0
       pass_pron_score: 0
+      eachQAMarks: 0
     maxRetries: 10
     debugLayer: {fileID: 1630735626}
     loginErrorBox: {fileID: 645755778}
@@ -772,7 +774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1761761257498461912, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_Text
-      value: v1.10
+      value: v1.01
       objectReference: {fileID: 0}
     - target: {fileID: 1761761257498461912, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_FontData.m_Font

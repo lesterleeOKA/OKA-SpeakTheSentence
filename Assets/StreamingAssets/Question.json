@@ -1,0 +1,85 @@
+{
+  "questions": [
+    {
+      "qid": "p1u2-f1",
+      "questionType": "FillInBlank",
+      "question": "_____________ are you, Ella?",
+      "answers": null,
+      "correctAnswer": "How old",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f2",
+      "questionType": "FillInBlank",
+      "question": "I am seven _____________________.",
+      "answers": null,
+      "correctAnswer": "years old",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f3",
+      "questionType": "FillInBlank",
+      "question": "_____________ is your sister, Rose?",
+      "answers": null,
+      "correctAnswer": "How old",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f4",
+      "questionType": "FillInBlank",
+      "question": "She is ten _____________________.",
+      "answers": null,
+      "correctAnswer": "years old",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f5",
+      "questionType": "FillInBlank",
+      "question": "_____________ are you, Jack and Mark?",
+      "answers": null,
+      "correctAnswer": "How old",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f6",
+      "questionType": "FillInBlank",
+      "question": "We are five _____________________.",
+      "answers": null,
+      "correctAnswer": "years old",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f7",
+      "questionType": "FillInBlank",
+      "question": "_____________ is your cat?",
+      "answers": null,
+      "correctAnswer": "How old",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f8",
+      "questionType": "FillInBlank",
+      "question": "It is three _____________________.",
+      "answers": null,
+      "correctAnswer": "years old",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f9",
+      "questionType": "FillInBlank",
+      "question": "How old are you, Jay?",
+      "answers": null,
+      "correctAnswer": "How old",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f10",
+      "questionType": "FillInBlank",
+      "question": "I am six _____________________.",
+      "answers": null,
+      "correctAnswer": "years old",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    }
+  ]
+
+}

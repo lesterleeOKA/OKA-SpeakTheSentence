@@ -28,6 +28,8 @@ public class APIManager
     [SerializeField]
     private bool isLogined = false;
     [SerializeField]
+    private bool isRainbowAppLogined = false;
+    [SerializeField]
     private bool isShowLoginErrorBox = false;
     [SerializeField]
     private bool showingDebugBox = false;
@@ -68,6 +70,13 @@ public class APIManager
         set { this.isLogined = value; }
         get { return this.isLogined; }
     }
+
+    public bool IsLoginedRainbowOne
+    {
+        set { this.isRainbowAppLogined = value; }
+        get { return this.isRainbowAppLogined; }
+    }
+
     public bool IsShowLoginErrorBox
     {
         set { this.isShowLoginErrorBox = value; }
@@ -93,7 +102,10 @@ public class APIManager
         onCompleted?.Invoke();
     }
 
-    public void PostGameSetting(Action getParseURLParams = null, Action getDataFromAPI = null, Action onCompleted = null)
+    public void PostGameSetting(Action getParseURLParams = null,
+                               Action getDataFromRoWebAPI = null,
+                               Action getDataFromRoAppAPI = null,
+                               Action onCompleted = null)
     {
         ExternalCaller.UpdateLoadBarStatus("Loading Data");
         getParseURLParams?.Invoke();
@@ -101,12 +113,22 @@ public class APIManager
         if (!string.IsNullOrEmpty(this.appId) && !string.IsNullOrEmpty(this.jwt))
         {
             this.IsLogined = true;
-            getDataFromAPI?.Invoke();
+            getDataFromRoWebAPI?.Invoke();
         }
         else
         {
-            this.IsLogined = false;
-            this.HandleError("Missing JWT or App ID.", onCompleted);
+            if (!string.IsNullOrEmpty(this.jwt) && !string.IsNullOrEmpty(LoaderConfig.Instance.RoAppDataKey))
+            {
+                LogController.Instance.debug("Logined in RainbowOne App.");
+                this.IsLoginedRainbowOne = true;
+                getDataFromRoAppAPI?.Invoke();
+            }
+            else
+            {
+                this.IsLogined = false;
+                this.IsLoginedRainbowOne = false;
+                this.HandleError("Missing JWT and App ID.", onCompleted);
+            }
         }
     }
 
@@ -143,26 +165,26 @@ public class APIManager
                     requestSuccessful = true;
                     string responseText = www.downloadHandler.text;
                     int jsonStartIndex = responseText.IndexOf("{\"questions\":");
-                    LogController.Instance?.debug("www.downloadHandler.text: " + responseText);
+                    //LogController.Instance?.debug("www.downloadHandler.text: " + responseText);
 
                     if (jsonStartIndex != -1)
                     {
                         string jsonData = responseText.Substring(jsonStartIndex);
                         var jsonNode = JSONNode.Parse(jsonData);
-                        LogController.Instance?.debug("jsonNode: " + jsonNode.ToString());
+                        //LogController.Instance?.debug("jsonNode: " + jsonNode.ToString());
 
                         this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
                         this.accountJson = jsonNode["account"].ToString(); // Account json data;
-                        LogController.Instance?.debug("accountJson: " + this.accountJson);
+                        //LogController.Instance?.debug("accountJson: " + this.accountJson);
                         string accountUidString = jsonNode["account"]["uid"];
                         int accountUid = int.Parse(accountUidString);
                         this.accountUid = accountUid;
 
-                        this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
-                        this.gameSettingJson = jsonNode["setting"].ToString();
+                        if (jsonNode["photo"] != null) this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
+                        if (jsonNode["setting"] != null) this.gameSettingJson = jsonNode["setting"].ToString();
                         LogController.Instance?.debug("gameSettingJson: " + this.gameSettingJson);
-                        this.payloads = jsonNode["payloads"].ToString();
-                        LoaderConfig.Instance.gameSetup.gamePageName = jsonNode["title"].Value;
+                        if (jsonNode["payloads"] != null) this.payloads = jsonNode["payloads"].ToString();
+                        if (jsonNode["title"] != null) LoaderConfig.Instance.gameSetup.gamePageName = jsonNode["title"].Value;
                         LogController.Instance?.debug("payloads: " + this.payloads);
 
                         if (!string.IsNullOrEmpty(this.gameSettingJson) && this.gameSettingJson != "{}")
@@ -210,7 +232,7 @@ public class APIManager
                             {
                                 imageUrl = "https:" + modifiedPhotoDataUrl;
                             }
-                            LogController.Instance?.debug($"Downloading People Icon!!{imageUrl}");
+                            //LogController.Instance?.debug($"Downloading People Icon!!{imageUrl}");
                             yield return this.loadImage.Load("", imageUrl, _peopleIcon =>
                             {
                                 LogController.Instance?.debug($"Downloaded People Icon!!");
@@ -224,11 +246,11 @@ public class APIManager
                             if (!string.IsNullOrWhiteSpace(name) && name != "null" && name != null)
                             {
                                 this.loginName = name.Replace("\"", "");
-                                LogController.Instance?.debug("Display name: " + this.loginName);
+                                //LogController.Instance?.debug("Display name: " + this.loginName);
                             }
                             else
                             {
-                                LogController.Instance?.debug("Display name is empty. use first name and last name");
+                                //LogController.Instance?.debug("Display name is empty. use first name and last name");
                                 var first_name = jsonNode["account"]["first_name"].ToString().Replace("\"", "");
                                 var last_name = jsonNode["account"]["last_name"].ToString().Replace("\"", "");
                                 this.loginName = last_name + " " + first_name;
@@ -248,6 +270,153 @@ public class APIManager
             }
         }
 
+        if (!requestSuccessful)
+        {
+            this.errorMessage = "Failed to get a successful response after " + maxRetries + " attempts.";
+            LogController.Instance?.debug(this.errorMessage);
+            this.IsShowLoginErrorBox = true;
+            onCompleted?.Invoke();
+        }
+    }
+
+    public IEnumerator postGameAppSetting(Action onCompleted = null)
+    {
+        string api = APIConstant.GameAppQuestionDataAPI(LoaderConfig.Instance, LoaderConfig.Instance.RoAppDataKey, this.jwt);
+        LogController.Instance?.debug("called load question api from rainbowOne: " + api);
+        WWWForm form = new WWWForm();
+        int retryCount = 0;
+        bool requestSuccessful = false;
+
+        while (retryCount < this.maxRetries && !requestSuccessful)
+        {
+            using (UnityWebRequest www = UnityWebRequest.Post(api, form))
+            {
+                // Set headers
+                www.SetRequestHeader("Content-Type", "application/json");
+                www.SetRequestHeader("typ", "jwt");
+                www.SetRequestHeader("alg", "HS256");
+                www.certificateHandler = new WebRequestSkipCert();
+                // Send the request and wait for a response
+                yield return www.SendWebRequest();
+
+                // Check for errors
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    retryCount++;
+                    this.HandleError("Error: " + www.error + "Retrying..." + retryCount, null, true);
+                    yield return new WaitForSeconds(2);
+                }
+                else
+                {
+                    requestSuccessful = true;
+                    string responseText = www.downloadHandler.text;
+                    //LogController.Instance?.debug("www.downloadHandler.text: " + responseText);
+
+                    int jsonStartIndex = responseText.IndexOf("{\"questions\":");
+                    if (jsonStartIndex != -1)
+                    {
+                        string jsonData = responseText.Substring(jsonStartIndex);
+                        var jsonNode = JSONNode.Parse(jsonData);
+                        //LogController.Instance?.debug("jsonNode: " + jsonNode.ToString());
+
+                        this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
+                        //LogController.Instance?.debug("questionJson: " + this.questionJson);
+                        this.accountJson = jsonNode["account"].ToString(); // Account json data;
+                        //LogController.Instance?.debug("accountJson: " + this.accountJson);
+                        string accountUidString = jsonNode["account"]["uid"];
+                        int accountUid = int.Parse(accountUidString);
+                        this.accountUid = accountUid;
+
+                        if (jsonNode["photo"] != null) this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
+                        if (jsonNode["setting"] != null) this.gameSettingJson = jsonNode["setting"].ToString();
+                        LogController.Instance?.debug("gameSettingJson: " + this.gameSettingJson);
+                        if (jsonNode["payloads"] != null) this.payloads = jsonNode["payloads"].ToString();
+                        LogController.Instance?.debug("payloads: " + this.payloads);
+
+                        if (!string.IsNullOrEmpty(this.gameSettingJson) && this.gameSettingJson != "{}")
+                        {
+                            if (jsonNode["setting"]["lang"] != null) LoaderConfig.Instance.Lang = int.Parse(jsonNode["setting"]["lang"].Value);
+                            LoaderConfig.Instance.gameSetup.gamePageName = jsonNode["setting"]["title"].Value;
+                            this.settings.gameTime = jsonNode["setting"]["game_time"] != null ? jsonNode["setting"]["game_time"] : null;
+                            string bgImagUrl = jsonNode["setting"]["background_image_url"] != null ?
+                                jsonNode["setting"]["background_image_url"].ToString().Replace("\"", "") : null;
+                            string gamePreviewUrl = jsonNode["setting"]["game_preview_image"] != null ?
+                                jsonNode["setting"]["game_preview_image"].ToString().Replace("\"", "") : null;
+                            this.settings.instructionContent = jsonNode["setting"]["instruction"] != null ?
+                                jsonNode["setting"]["instruction"].ToString().Replace("\"", "") : null;
+
+                            LoaderConfig.Instance.gameSetup.gameTime = this.settings.gameTime;
+
+                            if (bgImagUrl != null)
+                            {
+                                if (!bgImagUrl.StartsWith("https://") || !bgImagUrl.StartsWith(APIConstant.blobServerRelativePath))
+                                    this.settings.backgroundImageUrl = APIConstant.blobServerRelativePath + bgImagUrl;
+                            }
+                            if (gamePreviewUrl != null)
+                            {
+                                if (!gamePreviewUrl.StartsWith("https://") || !gamePreviewUrl.StartsWith(APIConstant.blobServerRelativePath))
+                                    this.settings.previewGameImageUrl = APIConstant.blobServerRelativePath + gamePreviewUrl;
+                            }
+                            ////////Game Customization params/////////
+                            SetParams.setCustomParameters(this.settings, jsonNode);
+                        }
+
+                        if (this.debugText != null)
+                        {
+                            this.debugText.text += "Question Data: " + this.questionJson + "\n\n ";
+                            this.debugText.text += "Account: " + this.accountJson + "\n\n ";
+                            this.debugText.text += "Photo: " + this.photoDataUrl + "\n\n ";
+                            this.debugText.text += "Setting: " + this.gameSettingJson + "\n\n ";
+                            this.debugText.text += "PayLoad: " + this.payloads + "\n\n ";
+                            this.debugText.text += "Is Logined: " + this.IsLogined;
+                        }
+
+                        if (!string.IsNullOrEmpty(this.photoDataUrl) && this.photoDataUrl != "null")
+                        {
+                            string modifiedPhotoDataUrl = photoDataUrl.Replace("\"", "");
+
+                            string imageUrl = modifiedPhotoDataUrl;
+                            if (!modifiedPhotoDataUrl.StartsWith("https://"))
+                            {
+                                imageUrl = "https:" + modifiedPhotoDataUrl;
+                            }
+                            //LogController.Instance?.debug($"Downloading People Icon!!{imageUrl}");
+                            yield return this.loadImage.Load("", imageUrl, _peopleIcon =>
+                            {
+                                //LogController.Instance?.debug($"Downloaded People Icon!!");
+                                this.peopleIcon = _peopleIcon;
+                            });
+                        }
+
+                        if (jsonNode["account"] != null && !string.IsNullOrEmpty(this.accountJson))
+                        {
+                            var name = jsonNode["account"]["display_name"].ToString();
+                            if (!string.IsNullOrWhiteSpace(name) && name != "null" && name != null)
+                            {
+                                this.loginName = name.Replace("\"", "");
+                                //LogController.Instance?.debug("Display name: " + this.loginName);
+                            }
+                            else
+                            {
+                                //LogController.Instance?.debug("Display name is empty. use first name and last name");
+                                var first_name = jsonNode["account"]["first_name"].ToString().Replace("\"", "");
+                                var last_name = jsonNode["account"]["last_name"].ToString().Replace("\"", "");
+                                this.loginName = last_name + " " + first_name;
+                            }
+                        }
+
+                        //E.g
+                        //Debug.Log(jsonNode["account"]["display_name"].ToString());
+                        LogController.Instance?.debug(this.questionJson);
+                        onCompleted?.Invoke();
+                    }
+                    else
+                    {
+                        this.HandleError("wrong json start index.", onCompleted, true);
+                    }
+                }
+            }
+        }
         if (!requestSuccessful)
         {
             this.errorMessage = "Failed to get a successful response after " + maxRetries + " attempts.";
@@ -384,6 +553,11 @@ public static class APIConstant
     public static string GameDataAPI(LoaderConfig loader, string _bookId = "", string _jwt = "")
     {
         string jsonParameter = string.IsNullOrEmpty(_bookId) ? "[1]" : $"[\"{_bookId}\"]";
+        return $"{loader.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json={jsonParameter}&jwt=" + _jwt;
+    }
+    public static string GameAppQuestionDataAPI(LoaderConfig loader, string _dataKey = "", string _jwt = "")
+    {
+        string jsonParameter = string.IsNullOrEmpty(_dataKey) ? "[1]" : $"[\"comp-{_dataKey}\"]";
         return $"{loader.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json={jsonParameter}&jwt=" + _jwt;
     }
 

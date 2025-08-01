@@ -31,19 +31,19 @@ public static class ExternalCaller
 #if !UNITY_EDITOR
         if (isLogined)
         {
-            if (Application.platform == RuntimePlatform.WebGLPlayer)
+            if (LoaderConfig.Instance.apiManager.IsLogined)
             {
-                if(LoaderConfig.Instance.gameSetup.gameExitType == 1)
+                if (LoaderConfig.Instance.gameSetup.gameExitType == 1)
                 {
                     string javascript = $@"
-                        if (window.self !== window.top) {{
-                            console.log('This page is inside an iframe');
-                            window.parent.postMessage({{ action: 'exit' }}, '*');
-                        }}
-                        else {{
-                            history.back();
-                        }}
-                    ";
+                            if (window.self !== window.top) {{
+                                console.log('This page is inside an iframe');
+                                window.parent.postMessage({{ action: 'exit' }}, '*');
+                            }}
+                            else {{
+                                history.back();
+                            }}
+                        ";
                     Application.ExternalEval(javascript);
                 }
                 else if (LoaderConfig.Instance.gameSetup.gameExitType == 2)
@@ -52,10 +52,17 @@ public static class ExternalCaller
                     return;
                 }
             }
-            else
+            else if (LoaderConfig.Instance.apiManager.IsLoginedRainbowOne)
             {
-                // for rainbowone.app
-                Application.ExternalEval($"location.hash = 'exit'");
+                    LogController.Instance?.debug("LoaderConfig.Instance.gameSetup.gameExitType: " + LoaderConfig.Instance.gameSetup.gameExitType);
+                    if (LoaderConfig.Instance.gameSetup.gameExitType == 1) { 
+                        LogController.Instance?.debug("LoaderConfig.Instance.gameSetup.gameExitType: exit app");
+                        Application.ExternalEval($"location.hash = 'exit'");
+                    }
+                    else if (LoaderConfig.Instance.gameSetup.gameExitType == 2)
+                    {
+                        LoaderConfig.Instance?.changeScene(1);
+                    }
             }
         }
         else
@@ -121,6 +128,7 @@ public static class ExternalCaller
             }
         }   
 #else
+        if (AudioController.Instance != null) AudioController.Instance.changeBGMStatus(true);
         LoaderConfig.Instance?.changeScene(1);
 #endif
     }
@@ -173,6 +181,14 @@ public static class ExternalCaller
             window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
         })();
     ");
+#endif
+    }
+
+    public static void SubmitScoreToRainbowOneApp(string newHashUrl)
+    {
+        LogController.Instance?.debug("SubmitScoreToRainbowOneApp: " + newHashUrl);
+#if UNITY_WEBGL && !UNITY_EDITOR
+        Application.ExternalEval($"window.location.hash='{newHashUrl}';");
 #endif
     }
 }

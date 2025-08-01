@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -50,6 +49,7 @@ public class RecordAudio : MonoBehaviour
     [SerializeField] private Slider playbackSlider;
     [SerializeField] private CanvasGroup remindRecordTip;
     [SerializeField] private Button qa_audio_btn;
+    [SerializeField] public CanvasGroup hintBox, remindRecordBox;
 
     private bool isRecording = false;
     private bool isPlaying = false;
@@ -72,9 +72,13 @@ public class RecordAudio : MonoBehaviour
             this.playbackSlider.minValue = 0;
             this.playbackSlider.maxValue = 1;
         }
-        this.switchPage(Stage.Record);
         this.passAccuracyScore = LoaderConfig.Instance.gameSetup.passAccuracyScore;
         this.passPronScore = LoaderConfig.Instance.gameSetup.passPronScore;
+    }
+
+    public void Init()
+    {
+        this.switchPage(Stage.Record);
     }
 
     void Update()
@@ -174,6 +178,17 @@ public class RecordAudio : MonoBehaviour
         {
             case Stage.Record:
                 this.ResetRecorder();
+                this.hintBox.GetComponent<TextToSpeech>()?.PlayAudio(()=>
+                {
+                    SetUI.Set(this.hintBox, true);
+                    SetUI.Set(this.remindRecordBox, false);
+                },
+                ()=>
+                {
+                    SetUI.Set(this.hintBox, false);
+                    SetUI.Set(this.remindRecordBox, true);
+                }
+                );
                 break;
             case Stage.Recording:
                 this.StopPlayback();
@@ -216,6 +231,20 @@ public class RecordAudio : MonoBehaviour
 
     public void StartRecording()
     {
+        if (this.hintBox != null)
+        {
+            var ttS = this.hintBox.GetComponent<TextToSpeech>();
+            if (ttS != null)
+            {
+                ttS.StopAudio();
+            }
+            SetUI.Set(this.hintBox, false);
+        }
+        if (this.remindRecordBox != null)
+        {
+            SetUI.Set(this.remindRecordBox, true);
+        }
+
         if (isRecording || !this.grantedMicrophone) return;
         AudioController.Instance?.fadingBGM(false, 0f);
         LogController.Instance?.debug($"Recording started: {isRecording}");
@@ -439,7 +468,7 @@ public class RecordAudio : MonoBehaviour
         form.AddBinaryData("file", wavData, fileName, "audio/wav");
         form.AddField("json", "[\"en-GB\"]");
 
-        UnityWebRequest request = UnityWebRequest.Post(LoaderConfig.Instance.CurrentHostName + ApiUrl, form);
+        UnityWebRequest request = UnityWebRequest.Post(LoaderConfig.Instance.SpeechAPIHostName + ApiUrl, form);
         request.SetRequestHeader("Authorization", $"Bearer {JwtToken}");
 
         yield return request.SendWebRequest();
@@ -619,7 +648,7 @@ public class RecordAudio : MonoBehaviour
         form.AddField("api", "ROSpeechRecognition.recognize_tts");
         form.AddField("json", jsonPayload);
 
-        UnityWebRequest request = UnityWebRequest.Post(LoaderConfig.Instance.CurrentHostName + ApiUrl, form);
+        UnityWebRequest request = UnityWebRequest.Post(LoaderConfig.Instance.SpeechAPIHostName + ApiUrl, form);
         request.SetRequestHeader("Authorization", $"Bearer {JwtToken}");
 
         yield return request.SendWebRequest();
@@ -646,11 +675,7 @@ public class RecordAudio : MonoBehaviour
                     var correctAnswerWords = QuestionController.Instance.currentQuestion.correctAnswer
                     .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                    bool[] isWrong = new bool[correctAnswerWords.Length];
-                    for (int i = 0; i < isWrong.Length; i++)
-                    {
-                        isWrong[i] = false; // default to no error
-                    }
+                    WordDetail[] wordDetails = null;
                     // Log the NBest array
                     if (Best != null)
                     {
@@ -666,14 +691,7 @@ public class RecordAudio : MonoBehaviour
 
                             if(nBest.Words != null)
                             {
-                                for (int i = 0; i < correctAnswerWords.Length; i++)
-                                {
-                                    // Only mark as wrong if the API returned a word at this position and it has an error
-                                    if (i < nBest.Words.Length && nBest.Words[i].ErrorType != "None")
-                                    {
-                                        isWrong[i] = true;
-                                    }
-                                }
+                                wordDetails = nBest.Words;
                             }
                             else
                             {
@@ -687,7 +705,7 @@ public class RecordAudio : MonoBehaviour
                         }
 
 
-                        var displayText = Regex.Replace(transcript, @"[^\w\s]", "").ToLower();
+                        var displayText = Regex.Replace(transcript, @"[^\w\s]", "");
                         result.AppendLine($"DisplayText: {displayText}");
                         //transcript = Regex.Replace(recognitionResult.DisplayText, @"[^\w\s]", "").ToLower();
                         this.UpdateUI(result.ToString());
@@ -698,7 +716,7 @@ public class RecordAudio : MonoBehaviour
                         {
                             playerController.submitAnswer(displayText, ()=>
                             {
-                                this.showCorrectSentence(displayText, isWrong);
+                                this.showCorrectSentence(displayText, wordDetails);
                             });
                         }
                     }
@@ -721,10 +739,21 @@ public class RecordAudio : MonoBehaviour
         }
     }
 
-    public void showCorrectSentence(string displayText, bool[] wrongWordId = null)
+    public void showCorrectSentence(string displayText, WordDetail[] wordDetails = null)
     {
+
         int textCount = QuestionController.Instance.currentQuestion.QuestionTexts.Length;
         string originalQuestion = QuestionController.Instance.currentQuestion.qa.question;
+
+        bool startsWithUnderscore = originalQuestion.StartsWith("_");
+        if (!startsWithUnderscore)
+        {
+            // Capitalize the first non-empty word in displayText
+            string lowerWord = displayText.ToLower();
+            displayText = lowerWord;
+
+            //Debug.Log("FKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK" + displayText);
+        }
 
         // Split answer into words
         var answerWords = displayText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -736,112 +765,105 @@ public class RecordAudio : MonoBehaviour
             {
                 bool markerText = textpro.gameObject.name == "MarkerText";
 
-                if (markerText && wrongWordId != null)
+                // Find all underscore groups
+                var underscoreRegex = new Regex(@"(_+)");
+                var matches = underscoreRegex.Matches(originalQuestion);
+
+                var result = new StringBuilder();
+                int answerIndex = 0;
+                int lastIndex = 0;
+
+                foreach (Match match in matches)
                 {
-                    // Find all underscore groups
-                    var underscoreRegex = new Regex(@"(_+)");
-                    var matches = underscoreRegex.Matches(originalQuestion);
-
-                    // If only one blank but multiple answer words, group all answer words into one marker
-                    var result = new StringBuilder();
-                    int answerIndex = 0;
-                    int lastIndex = 0;
-
-                    foreach (Match match in matches)
+                    // Add text before underscores, make transparent for markerText, normal for non-markerText
+                    if (match.Index > lastIndex)
                     {
-                        // Add text before underscores, make transparent
-                        if (match.Index > lastIndex)
+                        string before = originalQuestion.Substring(lastIndex, match.Index - lastIndex);
+                        var words = before.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var w in words)
                         {
-                            string before = originalQuestion.Substring(lastIndex, match.Index - lastIndex);
-                            var words = before.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                            foreach (var w in words)
-                            {
+                            if (markerText)
                                 result.Append($"<color=#00000000>{w}</color> ");
-                            }
+                            else
+                                result.Append($"{w} ");
                         }
+                    }
 
-                        // For each blank, if there are answer words left, add one marker per word
-                        if (answerIndex < answerWords.Length)
+                    // For each blank, if there are answer words left, add one marker per word
+                    if (answerIndex < answerWords.Length)
+                    {
+                        int blanks = matches.Count;
+                        int remaining = answerWords.Length - answerIndex;
+                        int markersToAdd = blanks == 1 ? remaining : 1;
+                        WordDetail wordDetail = null;
+
+                        for (int m = 0; m < markersToAdd && answerIndex < answerWords.Length; m++)
                         {
-                            // If only one blank but multiple answer words, show all as separate markers
-                            int blanks = matches.Count;
-                            int remaining = answerWords.Length - answerIndex;
-                            int markersToAdd = blanks == 1 ? remaining : 1;
-
-                            for (int m = 0; m < markersToAdd && answerIndex < answerWords.Length; m++)
+                            bool isError = true;
+                            string errorType = null;
+                            if (wordDetails != null && answerIndex < wordDetails.Length)
                             {
-                                // Check if the current word already contains a <mark> tag
-                                if (wrongWordId[answerIndex])
+                                wordDetail = wordDetails[answerIndex];
+                                errorType = wordDetail.ErrorType;
+                                isError = !string.IsNullOrEmpty(errorType) && errorType != "None";
+                            }
+
+                            if (isError)
+                            {
+                                if(wordDetails != null)
                                 {
-                                    // Append the word with a marker and underline
-                                    result.Append($"<mark=#FFFF00 padding='0,12,5,10'><u>{answerWords[answerIndex]}</u></mark> ");
+                                    switch (wordDetail.ErrorType)
+                                    {
+                                        case "Mispronunciation":
+                                            if (markerText)
+                                                result.Append($"<mark=#FFFF00 padding='0,12,5,10'>{answerWords[answerIndex]}</mark> ");
+                                            else
+                                                result.Append($"{answerWords[answerIndex]} ");
+                                            break;
+                                        case "Omission":
+                                            if (markerText)
+                                                result.Append($"<mark=#2A1A17 padding='0,12,5,10'>{answerWords[answerIndex]}</mark> ");
+                                            else
+                                                result.Append($"<color=red>{answerWords[answerIndex]}</color> ");
+                                            break;
+                                        case "Insertion":
+                                        case "Substitution":
+                                            result.Append($"<u>{answerWords[answerIndex]}</u>");
+                                            break;
+                                    }                         
                                 }
                                 else
                                 {
-                                    // If the word already contains <mark>, append it as is
-                                    result.Append($"<color=#00000000>{answerWords[answerIndex]} </color> ");
+                                    if (markerText)
+                                        result.Append($"<mark=#2A1A17 padding='0,12,5,10'>{answerWords[answerIndex]}</mark> ");
+                                    else
+                                        result.Append($"<color=red>{answerWords[answerIndex]}</color> ");
                                 }
-
-                                answerIndex++;
-                            }
-                        }
-                        lastIndex = match.Index + match.Length;
-                    }
-
-                    // Add any remaining text after last underscore, make transparent
-                    if (lastIndex < originalQuestion.Length)
-                    {
-                        string after = originalQuestion.Substring(lastIndex);
-                        var words = after.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (var w in words)
-                        {
-                            result.Append($"<color=#00000000>{w}</color> ");
-                        }
-                    }
-
-                    string replacedQuestion = result.ToString().TrimEnd();
-
-                    // Capitalize first answer word if question starts with underscores
-                    if (Regex.IsMatch(originalQuestion, @"^_+"))
-                    {
-                        int firstMark = replacedQuestion.IndexOf("<mark");
-                        if (firstMark >= 0)
-                        {
-                            int start = replacedQuestion.IndexOf('>', firstMark) + 1;
-                            int end = replacedQuestion.IndexOf('<', start);
-                            if (start > 0 && end > start)
-                            {
-                                string firstWord = replacedQuestion.Substring(start, end - start);
-                                string capitalized = char.ToUpper(firstWord[0]) + firstWord.Substring(1);
-                                replacedQuestion = replacedQuestion.Substring(0, start) + capitalized + replacedQuestion.Substring(end);
-                            }
-                        }
-                    }
-                    textpro.text = replacedQuestion;
-                }
-                else
-                {
-                    var correctAnswer = QuestionController.Instance.currentQuestion.correctAnswer;
-                    string replacedQuestion = Regex.Replace(originalQuestion, "_+", correctAnswer);
-                    if (Regex.IsMatch(originalQuestion, @"^_+"))
-                    {
-                        if (!string.IsNullOrEmpty(replacedQuestion))
-                        {
-                            int firstSpace = replacedQuestion.IndexOf(' ');
-                            if (firstSpace > 0)
-                            {
-                                string firstWord = replacedQuestion.Substring(0, firstSpace);
-                                string capitalized = char.ToUpper(firstWord[0]) + firstWord.Substring(1);
-                                replacedQuestion = capitalized + replacedQuestion.Substring(firstSpace);
                             }
                             else
-                            {
-                                replacedQuestion = char.ToUpper(replacedQuestion[0]) + replacedQuestion.Substring(1);
-                            }
+                                result.Append($"{answerWords[answerIndex]} ");
+
+                            answerIndex++;
                         }
                     }
-                    textpro.text = replacedQuestion;
+                    lastIndex = match.Index + match.Length;
                 }
+
+                // Add any remaining text after last underscore
+                if (lastIndex < originalQuestion.Length)
+                {
+                    string after = originalQuestion.Substring(lastIndex);
+                    var words = after.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var w in words)
+                    {
+                        if (markerText)
+                            result.Append($"<color=#00000000>{w}</color> ");
+                        else
+                            result.Append($"{w} ");
+                    }
+                }
+
+                textpro.text = result.ToString().TrimEnd();
             }
         }
     }
@@ -936,12 +958,7 @@ public class RecordAudio : MonoBehaviour
 
         var correctAnswer = QuestionController.Instance.currentQuestion.correctAnswer;
         var answerWords = correctAnswer.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-        bool[] wrongWords = new bool[answerWords.Length];
-        for (int i = 0; i < wrongWords.Length; i++)
-        {
-            wrongWords[i] = true; // All words are correct
-        }
-        this.showCorrectSentence(correctAnswer, wrongWords);
+        this.showCorrectSentence(correctAnswer, null);
     }
 
     public void ResetRecorder()

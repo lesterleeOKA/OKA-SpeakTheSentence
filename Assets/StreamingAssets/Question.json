@@ -11,7 +11,7 @@
     {
       "qid": "p1u2-f2",
       "questionType": "FillInBlank",
-      "question": "I am seven _____________________.",
+      "question": "I am seven ______________.",
       "answers": null,
       "correctAnswer": "years old",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
@@ -27,7 +27,7 @@
     {
       "qid": "p1u2-f4",
       "questionType": "FillInBlank",
-      "question": "She is ten _____________________.",
+      "question": "She is ten ______________.",
       "answers": null,
       "correctAnswer": "years old",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
@@ -43,7 +43,7 @@
     {
       "qid": "p1u2-f6",
       "questionType": "FillInBlank",
-      "question": "We are five _____________________.",
+      "question": "We are five ______________.",
       "answers": null,
       "correctAnswer": "years old",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
@@ -59,7 +59,7 @@
     {
       "qid": "p1u2-f8",
       "questionType": "FillInBlank",
-      "question": "It is three _____________________.",
+      "question": "It is three ______________.",
       "answers": null,
       "correctAnswer": "years old",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
@@ -67,7 +67,7 @@
     {
       "qid": "p1u2-f9",
       "questionType": "FillInBlank",
-      "question": "How old are you, Jay?",
+      "question": "_____________ are you, Jay?",
       "answers": null,
       "correctAnswer": "How old",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."

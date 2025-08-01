@@ -13,7 +13,9 @@ public class QuestionDataWrapper
 
 [Serializable]
 public class QuestionData
-{ 
+{
+    public string gameTitle;
+    public string instruction;
     public List<QuestionList> questions;
 }
 [Serializable]

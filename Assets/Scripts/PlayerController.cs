@@ -45,6 +45,8 @@ public class PlayerController : UserData
         }
 
         this.scoring.init();
+        var recorder = this.GetComponent<RecordAudio>();
+        recorder.Init();
     }
 
     void updateRetryTimes(int status = -1)

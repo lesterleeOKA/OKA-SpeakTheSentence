@@ -365,7 +365,7 @@ PlayerSettings:
   openGLRequireES31AEP: 0
   openGLRequireES32: 0
   m_TemplateCustomTags:
-    PRODUCT_DESCRIPTION: g18-SpeakTheWords
+    PRODUCT_DESCRIPTION: g19-SpeakTheSentence
   mobileMTRendering:
     Android: 1
     iPhone: 1

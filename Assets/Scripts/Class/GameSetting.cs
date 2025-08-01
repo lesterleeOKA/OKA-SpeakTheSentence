@@ -10,6 +10,7 @@ using UnityEngine.Networking;
 public class GameSetting : MonoBehaviour
 {
     public HostName currentHostName = HostName.dev;
+    private string _currentHostName;
     public string currentURL;
     public GameSetup gameSetup;
     public APIManager apiManager;
@@ -89,16 +90,19 @@ public class GameSetting : MonoBehaviour
     protected virtual void GetParseURLParams()
     {
         this.CurrentURL = string.IsNullOrEmpty(Application.absoluteURL) ? this.testURL : Application.absoluteURL;
+        LogController.Instance?.debug("Current URL: " + this.CurrentURL);
         string hostName = this.GetCurrentDomainName(this.CurrentURL);
         LogController.Instance?.debug("Current hostName: " + hostName);
         switch (hostName)
         {
             case "dev.openknowledge.hk":
+            case "devapp.openknowledge.hk":
                 this.currentHostName = HostName.dev;
                 LogController.Instance?.UpdateVersion("dev");
                 break;
             case "www.rainbowone.app":
             case "rainbowone.app":
+            case "api.openknowledge.hk":
                 this.currentHostName = HostName.prod;
                 LogController.Instance?.UpdateVersion("prod");
                 break;
@@ -106,6 +110,7 @@ public class GameSetting : MonoBehaviour
                 LogController.Instance?.UpdateVersion("dev");
                 break;
         }
+        this.CurrentHostName = hostName;
 
         string[] urlParts = this.CurrentURL.Split('?');
         if (urlParts.Length > 1)
@@ -322,14 +327,33 @@ public class GameSetting : MonoBehaviour
     }
 
 
+    public string RoAppDataKey
+    {
+        get { return this.gameSetup.roAppDataKey; }
+        set { this.gameSetup.roAppDataKey = value; }
+    }
+
+
     public string CurrentHostName
+    {
+        set
+        {
+            this._currentHostName = value;
+        }
+        get
+        {
+            return this._currentHostName;
+        }
+    }
+
+    public string SpeechAPIHostName
     {
         get
         {
-            return currentHostName switch
+            return this.currentHostName switch
             {
                 HostName.dev => "https://dev.openknowledge.hk",
-                HostName.prod => "https://www.rainbowone.app/",
+                HostName.prod => "https://www.rainbowone.app",
                 _ => throw new NotImplementedException()
             };
         }
@@ -349,6 +373,8 @@ public class GameSetting : MonoBehaviour
 [Serializable]
 public class GameSetup : LoadImage
 {
+    [Tooltip("RainbowOne book question dataKey")]
+    public string roAppDataKey = string.Empty;
     [Tooltip("Game Page Name")]
     public string gamePageName = "";
     [Tooltip("Default Game Background Texture")]

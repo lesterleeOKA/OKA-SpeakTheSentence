@@ -34,8 +34,9 @@ public class LoaderConfig : GameSetting
     {
         this.apiManager.PostGameSetting(this.GetParseURLParams,
                                         () => StartCoroutine(this.apiManager.postGameSetting(this.LoadQuestions)),
+                                        () => StartCoroutine(this.apiManager.postGameAppSetting(this.LoadQuestions)),
                                         this.LoadQuestions
-                                        );
+                                       );
     }
 
     public void OnMicrophoneAccessGranted()
@@ -54,6 +55,17 @@ public class LoaderConfig : GameSetting
 
     void finishedLoadQuestion()
     {
+        var title = QuestionManager.Instance.questionData.gameTitle;
+        if (!string.IsNullOrEmpty(title))
+            this.gameSetup.gamePageName = title;
+
+        var pageName = this.gameSetup.gamePageName;
+        if (!string.IsNullOrEmpty(pageName))
+        {
+            ExternalCaller.SetWebPageTitle(pageName);
+            LogController.Instance?.debug($"Setup Current GameName: {pageName}");
+        }
+
         ExternalCaller.HiddenLoadingBar();
         this.changeScene(1);
     } 

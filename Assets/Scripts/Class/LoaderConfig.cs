@@ -53,6 +53,11 @@ public class LoaderConfig : GameSetting
         });
     }
 
+    public void getHashValue(string hashValue)
+    {
+        LogController.Instance.debug("Received hash value from JavaScript: " + hashValue);
+    }
+
     void finishedLoadQuestion()
     {
         var title = QuestionManager.Instance.questionData.gameTitle;

@@ -100,6 +100,10 @@ public class GameSetting : MonoBehaviour
                 this.currentHostName = HostName.dev;
                 LogController.Instance?.UpdateVersion("dev");
                 break;
+            case "uat.openknowledge.hk":
+                this.currentHostName = HostName.uat;
+                LogController.Instance?.UpdateVersion("uat");
+                break;
             case "www.rainbowone.app":
             case "rainbowone.app":
             case "api.openknowledge.hk":
@@ -447,5 +451,6 @@ public class GameSetup : LoadImage
 public enum HostName
 {
     dev,
+    uat,
     prod
 }

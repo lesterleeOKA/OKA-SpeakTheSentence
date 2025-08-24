@@ -178,7 +178,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: e97eae764e66eda408e10a25bf7361c7, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -407,6 +407,7 @@ MonoBehaviour:
     imageType: 2
     allTextures: []
     useGCCollect: 1
+    roAppDataKey: 
     gamePageName: 
     bgTexture: {fileID: 2800000, guid: 0bb68c800db3115449b311fc78cf127d, type: 3}
     previewTexture: {fileID: 2800000, guid: 2b8c625ffe633c242a40c6f4f83198d6, type: 3}
@@ -434,6 +435,7 @@ MonoBehaviour:
     photoDataUrl: 
     payloads: 
     isLogined: 0
+    isRainbowAppLogined: 0
     isShowLoginErrorBox: 0
     showingDebugBox: 0
     loadImage:
@@ -524,6 +526,8 @@ MonoBehaviour:
     loadAudioMethod: 1
     audioFormat: 1
   questionData:
+    gameTitle: 
+    instruction: 
     questions: []
   totalItems: 0
   loadedItems: 0
@@ -774,7 +778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1761761257498461912, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_Text
-      value: v1.01
+      value: v1.02
       objectReference: {fileID: 0}
     - target: {fileID: 1761761257498461912, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_FontData.m_Font

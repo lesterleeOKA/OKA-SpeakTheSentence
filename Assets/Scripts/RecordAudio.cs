@@ -10,11 +10,11 @@ using UnityEngine.UI;
 
 public class RecordAudio : MonoBehaviour
 {
-    public enum RecognitionAPI
+    /*public enum RecognitionAPI
     {
         roWeb_Azure=0, //roWeb speech to text api
         recognize_tts=1, //語音辨識api
-    }
+    }*/
 
     public enum Stage
     {
@@ -24,7 +24,7 @@ public class RecordAudio : MonoBehaviour
         PlaybackResult = 3,
     }
     public Stage stage = Stage.Record;
-    public RecognitionAPI recognitionAPI = RecognitionAPI.recognize_tts;
+    //public RecognitionAPI recognitionAPI = RecognitionAPI.recognize_tts;
     public TextMeshProUGUI debugText, answerText, submitAudioText;
     public Color32 answerTextOriginalColor;
     public RawImage answerBox;
@@ -59,9 +59,11 @@ public class RecordAudio : MonoBehaviour
     private bool grantedMicrophone = false;
     public int passAccuracyScore = 60;
     public int passPronScore = 60;
+    public bool ttsFailure = false;
+    public bool ttsDone = false;
 
-    private const string ApiUrl = "/RainbowOne/index.php/PHPGateway/proxy/2.8/";
-    private const string JwtToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dfZW5hYmxlZCI6IjEiLCJ0b2tlbiI6IjUyNzcwMS04MTcyNGIyYTIxODk4YTE2NTA0ZTZiMTg0ZWZlMWQ5Mjc2OGIyYWM1YmI2ZmExMDc4NDVlZjM1MDRjNTY3NDBlIiwiZXhwaXJlcyI6MTgwODUzNjQ5NSwicmVuZXdfZW5hYmxlZCI6MSwidGltZSI6IjIwMjUtMDQtMjQgMDM6MTQ6NTUgR01UIiwidWlkIjoiNTI3NzAxIiwidXNlcl9yb2xlIjoiMiIsInNjaG9vbF9pZCI6IjMxNiIsImlwIjoiOjoxIiwidmVyc2lvbiI6bnVsbCwiZGV2aWNlIjoidW5rbm93biJ9.SO79u9MBCflyYh_TcsIBG740pWXgKPZOAsGNZESkoqo";
+    private string ApiUrl = "";
+    private string JwtToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dfZW5hYmxlZCI6IjEiLCJ0b2tlbiI6IjUyNzcwMS04MTcyNGIyYTIxODk4YTE2NTA0ZTZiMTg0ZWZlMWQ5Mjc2OGIyYWM1YmI2ZmExMDc4NDVlZjM1MDRjNTY3NDBlIiwiZXhwaXJlcyI6MTgwODUzNjQ5NSwicmVuZXdfZW5hYmxlZCI6MSwidGltZSI6IjIwMjUtMDQtMjQgMDM6MTQ6NTUgR01UIiwidWlkIjoiNTI3NzAxIiwidXNlcl9yb2xlIjoiMiIsInNjaG9vbF9pZCI6IjMxNiIsImlwIjoiOjoxIiwidmVyc2lvbiI6bnVsbCwiZGV2aWNlIjoidW5rbm93biJ9.SO79u9MBCflyYh_TcsIBG740pWXgKPZOAsGNZESkoqo";
 
     void Start()
     {
@@ -330,30 +332,62 @@ public class RecordAudio : MonoBehaviour
         LogController.Instance?.debug("Gain scale: " + gain);
         this.ProcessAudioClip(this.clip, gain);
 
-        switch (this.recognitionAPI)
+        // Parallel API calls
+        bool azureDone = false;
+        this.ttsDone = false;
+        string azureTranscript = null;
+        string azureError = null, ttsError = null;
+        this.ttsFailure = false;
+
+        // Start Azure STT
+        StartCoroutine(SendAudioToAzureApi(this.clip,
+            (transcript) => {
+                azureTranscript = transcript;
+                azureDone = true;
+            },
+            (error) => {
+                azureError = error;
+                azureDone = true;
+            }
+        ));
+
+        // Start TTS recognition
+        StartCoroutine(UploadAudioFileServer(this.clip,
+            (response) => {
+                LogController.Instance.debug($"Start to pass to recognition request");
+            },
+            (error) => {
+                ttsError = error;
+                this.ttsDone = true;
+            }
+        ));
+
+        // Wait for both to finish
+        while (!azureDone || !this.ttsDone)
+            yield return null;
+
+        if (ttsError != null && azureError != null)
         {
-            case RecognitionAPI.roWeb_Azure:
-                yield return SendAudioToApi(this.clip);
+            this.UpdateUI($"Both recognitions failed.\nAzure error: {azureError}\nTTS error: {ttsError}");
+            this.switchPage(Stage.Record);
+        }
+        else
+        {
+            // Final UI/page update
+            if (!this.ttsFailure)
+            {
+                this.UpdateUI("TTS recognition passed.");
+            }
+            else
+            {
+                this.UpdateUI("TTS failed, fallback to Azure STT result.");
                 this.switchPage(Stage.PlaybackResult);
-                break;
-            case RecognitionAPI.recognize_tts:
-                bool uploadSuccess = false;
-                yield return UploadAudioFile(
-                    this.clip,
-                    (response) => {
-                        this.UpdateUI($"Audio uploaded successfully: {response}");
-                        uploadSuccess = true;
-                    },
-                    (error) => {
-                        this.UpdateUI($"Error uploading audio: {error}");
-                        this.switchPage(Stage.Record);
-                    }
-                );
-                if (uploadSuccess)
+                var playerController = this.GetComponent<PlayerController>();
+                if (playerController != null)
                 {
-                    this.switchPage(Stage.PlaybackResult);
+                    playerController.submitAnswer(this.answerText.text);
                 }
-                break;
+            }
         }
     }
 
@@ -451,8 +485,9 @@ public class RecordAudio : MonoBehaviour
         }
     }
 
-    private IEnumerator SendAudioToApi(AudioClip audioClip)
+    private IEnumerator SendAudioToAzureApi(AudioClip audioClip, Action<string> onSuccess, Action<string> onError)
     {
+        if (this.answerText != null) this.answerText.text = "";
         this.UpdateUI("Processing audio...");
         byte[] wavData = ConvertAudioClipToWav(audioClip);
 
@@ -468,7 +503,12 @@ public class RecordAudio : MonoBehaviour
         form.AddBinaryData("file", wavData, fileName, "audio/wav");
         form.AddField("json", "[\"en-GB\"]");
 
-        UnityWebRequest request = UnityWebRequest.Post(LoaderConfig.Instance.SpeechAPIHostName + ApiUrl, form);
+        string hostName = string.IsNullOrEmpty(LoaderConfig.Instance.CurrentHostName) ?
+                          "dev.openknowledge.hk" : LoaderConfig.Instance.CurrentHostName;
+
+        this.ApiUrl = $"https://{hostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/";
+        LogController.Instance.debug($"SendAudioToAzureApi: {this.ApiUrl}");
+        UnityWebRequest request = UnityWebRequest.Post(this.ApiUrl, form);
         request.SetRequestHeader("Authorization", $"Bearer {JwtToken}");
 
         yield return request.SendWebRequest();
@@ -480,66 +520,57 @@ public class RecordAudio : MonoBehaviour
             {
                 // Parse the JSON response
                 this.sttResponse = JsonUtility.FromJson<SttResponse>(responseText);
-
+                LogController.Instance.debug($"STT Response: {responseText}");
                 if (this.sttResponse.data != null && this.sttResponse.data.Length > 0)
                 {
-                    var firstResult = this.sttResponse.data[0];
-                    string transcript = firstResult.transcript;
-                    float confidence = firstResult.confidence;
 
-                    this.UpdateUI($"Transcription: {transcript}\nConfidence: {confidence:P2}");
-
-                    var playerController = this.GetComponent<PlayerController>();
-                    if (playerController != null)
+                    StringBuilder transcriptBuilder = new StringBuilder();
+                    foreach (var result in this.sttResponse.data)
                     {
-                        playerController.submitAnswer(transcript);
-                    }
-
-                    if (firstResult.words != null)
-                    {
-                        foreach (var word in firstResult.words)
+                        if (!string.IsNullOrWhiteSpace(result.transcript))
                         {
-                            LogController.Instance.debug($"Word: {word.word}, Start: {word.startTime}, End: {word.endTime}");
+                            transcriptBuilder.Append(result.transcript.Trim());
+                            transcriptBuilder.Append(" ");
                         }
                     }
+                    string combinedTranscript = transcriptBuilder.ToString().Trim();
+                    if (this.answerText != null && string.IsNullOrEmpty(this.answerText.text))
+                        this.answerText.text = combinedTranscript;
+
+                    onSuccess.Invoke(combinedTranscript);
                 }
                 else
                 {
                     this.UpdateUI("No transcription data available.");
+                    onError.Invoke("No transcription data response.");
                 }
             }
             catch (Exception ex)
             {
                 LogController.Instance.debugError($"Error parsing JSON: {ex.Message}");
                 this.UpdateUI("Error processing transcription response.");
+                onError.Invoke("Error processing transcription response.");
             }
         }
         else
         {
             this.UpdateUI($"Error: {request.error}");
+            onError.Invoke("Error processing response.");
         }
     }
 
-    public IEnumerator UploadAudioFile(AudioClip audioClip, 
+    public IEnumerator UploadAudioFileServer(AudioClip audioClip, 
                                        Action<string> onSuccess, 
                                        Action<string> onError, 
                                        int retryCount = 5, 
                                        float retryDelay = 2f)
     {
-        string uploadUrl = "https://dev.openknowledge.hk/RainbowOne/index.php/transport/Slave/upload/2";
-        string apiHostName = "https://dev.openknowledge.hk";
-#if UNITY_WEBGL && !UNITY_EDITOR
-        string hostname = ExternalCaller.GetCurrentDomainName;
-        if (hostname.Contains("dev.openknowledge.hk"))
-        {
-            uploadUrl = "https://dev.openknowledge.hk/RainbowOne/index.php/transport/Slave/upload/2";
-        }
-        else if (hostname.Contains("www.rainbowone.app"))
-        {
-            uploadUrl = "https://www.rainbowone.app/RainbowOne/index.php/transport/Slave/upload/2";
-            apiHostName = "https://www.rainbowone.app/";
-        }
-#endif
+        string hostName = string.IsNullOrEmpty(LoaderConfig.Instance.CurrentHostName) ?
+                    "dev.openknowledge.hk" : LoaderConfig.Instance.CurrentHostName;
+
+        string uploadUrl = $"https://{hostName}/RainbowOne/index.php/transport/Slave/upload/2";
+
+        LogController.Instance.debug($"Upload URL: {uploadUrl}");
         //roWeb upload structure:
         /*if (["pdf", "doc", "docx"].indexOf(extension) != -1)
         {
@@ -581,9 +612,9 @@ public class RecordAudio : MonoBehaviour
             form.AddBinaryData("Filedata", audioData, file, "audio/wav");
 
             UnityWebRequest request = UnityWebRequest.Post(uploadUrl, form);
-            if (!string.IsNullOrEmpty(JwtToken))
+            if (!string.IsNullOrEmpty(this.JwtToken))
             {
-                request.SetRequestHeader("Authorization", $"Bearer {JwtToken}");
+                request.SetRequestHeader("Authorization", $"Bearer {this.JwtToken}");
             }
             yield return request.SendWebRequest();
 
@@ -594,18 +625,22 @@ public class RecordAudio : MonoBehaviour
                 if (!string.IsNullOrEmpty(uploadResponse.url))
                 {
                     LogController.Instance.debug("uploadResponse url : " + uploadResponse.url);
-                    string audioUrl = apiHostName + uploadResponse.url.Replace("\\", "");
-#if UNITY_WEBGL && !UNITY_EDITOR
-                if (hostname.Contains("www.rainbowone.app"))
-                {
-                    audioUrl = uploadResponse.url;
-                }
-#endif
-                    yield return StartCoroutine(SendAudioRecognitionRequest(
+                    string audioUrl = "//" + hostName + uploadResponse.url.Replace("\\", "");
+
+                    if (!string.IsNullOrEmpty(LoaderConfig.Instance.CurrentHostName))
+                    {
+                        if (LoaderConfig.Instance.CurrentHostName.Contains("www.rainbowone.app") ||
+                            LoaderConfig.Instance.CurrentHostName.Contains("www.starwishparty.com"))
+                        {
+                            audioUrl = uploadResponse.url;
+                        }
+                    }
+                    onSuccess?.Invoke("Success to pass to recognition request.");
+                    yield return StartCoroutine(this.SendAudioRecognitionRequest(
                         audioUrl,
-                        this.useTextToRecognize ? QuestionController.Instance.currentQuestion.correctAnswer.ToLower() : ""
+                        this.useTextToRecognize ? 
+                        QuestionController.Instance.currentQuestion.fullSentence : ""
                     ));
-                    onSuccess?.Invoke("Upload and recognition success.");
                     yield break;
                 }
                 else
@@ -638,18 +673,24 @@ public class RecordAudio : MonoBehaviour
             this.UpdateUI("audioUrl is null. Cannot process.");
             yield break;
         }
-
+        yield return new WaitForSeconds(1f);
         this.UpdateUI("Converting AudioClip to binary data...");
 
         this.UpdateUI("Sending audio recognition request...");
         string jsonPayload = $"[\"{audioUrl}\",\"{textToRecognize}\",\"{language}\",\"{purpose}\"]";
 
+        LogController.Instance.debug("jsonPayload: " + jsonPayload);
+
         WWWForm form = new WWWForm();
         form.AddField("api", "ROSpeechRecognition.recognize_tts");
         form.AddField("json", jsonPayload);
 
-        UnityWebRequest request = UnityWebRequest.Post(LoaderConfig.Instance.SpeechAPIHostName + ApiUrl, form);
-        request.SetRequestHeader("Authorization", $"Bearer {JwtToken}");
+        string hostName = string.IsNullOrEmpty(LoaderConfig.Instance.CurrentHostName) ?
+                  "dev.openknowledge.hk" : LoaderConfig.Instance.CurrentHostName;
+        this.ApiUrl = $"https://{hostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/";
+
+        UnityWebRequest request = UnityWebRequest.Post(this.ApiUrl, form);
+        request.SetRequestHeader("Authorization", $"Bearer {this.JwtToken}");
 
         yield return request.SendWebRequest();
 
@@ -667,9 +708,9 @@ public class RecordAudio : MonoBehaviour
                 {
                     this.recognitionResult = recognitionResponse.result;
                     NBest[] Best = recognitionResult.NBest;
-                    bool failure = false;
                     StringBuilder result = new StringBuilder();
                     string transcript = "";
+                    string displayText = "";
                     string correctAnswer = recognitionResponse.result.DisplayText;
 
                     var correctAnswerWords = QuestionController.Instance.currentQuestion.correctAnswer
@@ -686,7 +727,7 @@ public class RecordAudio : MonoBehaviour
                             if (nBest.AccuracyScore <= this.passAccuracyScore && 
                                 nBest.PronScore <= this.passPronScore)
                             {
-                                failure = true;
+                                this.ttsFailure = true;
                             }
 
                             if(nBest.Words != null)
@@ -698,26 +739,30 @@ public class RecordAudio : MonoBehaviour
                                 result.AppendLine("No words found in NBest.");
                             }
                         }
+                        this.ttsDone = true;
 
-                        if(!failure)
+                        if (!this.ttsFailure)
                         {
                             transcript = correctAnswer;
-                        }
+                            displayText = Regex.Replace(transcript, @"[^\w\s]", "").ToLower();
+                            result.AppendLine($"DisplayText: {displayText}");
+                            //transcript = Regex.Replace(recognitionResult.DisplayText, @"[^\w\s]", "").ToLower();
+                            this.UpdateUI(result.ToString());
+                            if (this.answerText != null) this.answerText.text = displayText;
+                            this.switchPage(Stage.PlaybackResult);
 
-
-                        var displayText = Regex.Replace(transcript, @"[^\w\s]", "");
-                        result.AppendLine($"DisplayText: {displayText}");
-                        //transcript = Regex.Replace(recognitionResult.DisplayText, @"[^\w\s]", "").ToLower();
-                        this.UpdateUI(result.ToString());
-                        //if(this.answerText != null) this.answerText.text = displayText;
-                        
-                        var playerController = this.GetComponent<PlayerController>();
-                        if (playerController != null)
-                        {
-                            playerController.submitAnswer(displayText, ()=>
+                            var playerController = this.GetComponent<PlayerController>();
+                            if (playerController != null)
                             {
-                                this.showCorrectSentence(displayText, wordDetails);
-                            });
+                                string correctAns = QuestionController.Instance.currentQuestion.correctAnswer;
+                                playerController.submitAnswer(
+                                    correctAns, 
+                                    () =>
+                                    {
+                                        this.showCorrectSentence(correctAns, wordDetails);
+                                    }
+                                 );
+                            }
                         }
                     }
                 }
@@ -731,6 +776,13 @@ public class RecordAudio : MonoBehaviour
             {
                 LogController.Instance.debugError($"Error parsing API response: {ex.Message}");
                 this.UpdateUI("Error processing audio recognition response.");
+                if (this.accurancyText != null) this.accurancyText.text = $"Rating: {0}%";
+                if (this.answerText != null) this.answerText.text = "";
+                var playerController = this.GetComponent<PlayerController>();
+                if (playerController != null)
+                {
+                    playerController.submitAnswer("");
+                }
             }
         }
         else
@@ -741,19 +793,32 @@ public class RecordAudio : MonoBehaviour
 
     public void showCorrectSentence(string displayText, WordDetail[] wordDetails = null)
     {
+        TextMeshProUGUI questionTextpro = QuestionController.Instance.currentQuestion.QuestionTexts[0];
 
         int textCount = QuestionController.Instance.currentQuestion.QuestionTexts.Length;
         string originalQuestion = QuestionController.Instance.currentQuestion.qa.question;
 
-        bool startsWithUnderscore = originalQuestion.StartsWith("_");
-        if (!startsWithUnderscore)
-        {
-            // Capitalize the first non-empty word in displayText
-            string lowerWord = displayText.ToLower();
-            displayText = lowerWord;
+        displayText = displayText.TrimStart();
 
-            //Debug.Log("FKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK" + displayText);
+        string[] fillWords = displayText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        if (fillWords.Length > 0)
+        {
+            if (questionTextpro.text.StartsWith("<u>"))
+            {
+                // First word capitalized, rest lowercased
+                fillWords[0] = char.ToUpper(fillWords[0][0]) + fillWords[0].Substring(1).ToLower();
+            }
+            else
+            {
+                // First word lowercased, rest lowercased
+                fillWords[0] = char.ToLower(fillWords[0][0]) + fillWords[0].Substring(1).ToLower();
+            }
+            for (int i = 1; i < fillWords.Length; i++)
+                fillWords[i] = fillWords[i].ToLower();
+            displayText = string.Join(" ", fillWords);
         }
+
+        Debug.Log($"Final displayText: {displayText}");
 
         // Split answer into words
         var answerWords = displayText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);

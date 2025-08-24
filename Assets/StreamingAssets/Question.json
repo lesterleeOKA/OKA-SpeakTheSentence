@@ -6,6 +6,7 @@
       "question": "_____________ are you, Ella?",
       "answers": null,
       "correctAnswer": "How old",
+      "fullSentence": "How old are you, Ella?",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
     },
     {
@@ -14,6 +15,7 @@
       "question": "I am seven ______________.",
       "answers": null,
       "correctAnswer": "years old",
+      "fullSentence": "I am seven years old.",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
     },
     {
@@ -22,6 +24,7 @@
       "question": "_____________ is your sister, Rose?",
       "answers": null,
       "correctAnswer": "How old",
+      "fullSentence": "How old is your sister, Rose?",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
     },
     {
@@ -30,6 +33,7 @@
       "question": "She is ten ______________.",
       "answers": null,
       "correctAnswer": "years old",
+      "fullSentence": "She is ten years old.",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
     },
     {
@@ -38,6 +42,7 @@
       "question": "_____________ are you, Jack and Mark?",
       "answers": null,
       "correctAnswer": "How old",
+      "fullSentence": "How old are you, Jack and Mark?",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
     },
     {
@@ -46,6 +51,7 @@
       "question": "We are five ______________.",
       "answers": null,
       "correctAnswer": "years old",
+      "fullSentence": "We are five years old.",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
     },
     {
@@ -54,6 +60,7 @@
       "question": "_____________ is your cat?",
       "answers": null,
       "correctAnswer": "How old",
+      "fullSentence": "How old is your cat?",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
     },
     {
@@ -62,6 +69,7 @@
       "question": "It is three ______________.",
       "answers": null,
       "correctAnswer": "years old",
+      "fullSentence": "It is three years old.",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
     },
     {
@@ -70,6 +78,7 @@
       "question": "_____________ are you, Jay?",
       "answers": null,
       "correctAnswer": "How old",
+      "fullSentence": "How old are you, Jay?",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
     },
     {
@@ -78,6 +87,7 @@
       "question": "I am six _____________________.",
       "answers": null,
       "correctAnswer": "years old",
+      "fullSentence": "I am six years old.",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
     }
   ]

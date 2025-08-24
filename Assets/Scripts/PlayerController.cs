@@ -261,8 +261,9 @@ public class PlayerController : UserData
             yield return new WaitForSeconds(delay);
             GameController.Instance?.setWrongPopup(false);
             recorder.controlResultPage(this.Retry <= 0 ? 2 : 1);
-            if(this.Retry > 0) 
-                QuestionController.Instance.currentQuestion.QuestionText.text = QuestionController.Instance.currentQuestion.qa.question;
+            if(this.Retry > 0) { 
+                QuestionController.Instance.currentQuestion.QuestionText.text = QuestionController.Instance.currentQuestion.diplayQuestion;
+            }
             onFailureCompleted?.Invoke();
         }
         this.scoring.correct = false;

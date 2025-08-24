@@ -27,6 +27,7 @@ public class QuestionList
     public string question;
     public string[] answers;
     public string correctAnswer;
+    public string fullSentence;
     public int star;
     public score score;
     public int correctAnswerIndex;
@@ -76,6 +77,8 @@ public class CurrentQuestion
     public int answeredQuestion = 0;
     public QuestionType questiontype = QuestionType.None;
     public QuestionList qa = null;
+    public string fullSentence = "";
+    public string diplayQuestion = "";
     public int correctAnswerId;
     public string correctAnswer;
     public string[] answersChoics;
@@ -115,10 +118,21 @@ public class CurrentQuestion
         progress = Mathf.Clamp(progress, 0f, 1f);
         if (this.progressFillImage != null && this.progressiveBar != null)
         {
-            this.progressFillImage.DOFillAmount(progress, 0.5f).OnComplete(() =>
+
+            if (this.progressiveBar.GetComponent<ProgressBar>() != null)
             {
-                if (progress >= 1f) onQuestionCompleted?.Invoke();
-            });
+                this.progressiveBar.GetComponent<ProgressBar>().SetProgress(progress, () =>
+                {
+                    if (progress >= 1f) onQuestionCompleted?.Invoke();
+                });
+            }
+            else
+            {
+                this.progressFillImage.DOFillAmount(progress, 0.5f).OnComplete(() =>
+                {
+                    if (progress >= 1f) onQuestionCompleted?.Invoke();
+                });
+            }
 
             //int percentage = (int)(progress * 100);
             //this.progressiveBar.GetComponentInChildren<NumberCounter>().Value = percentage;
@@ -147,6 +161,7 @@ public class CurrentQuestion
         this.questionTexts = null;
         switch (qa.questionType)
         {
+            case "Picture":
             case "picture":
                 SetUI.SetGroup(this.questionBgs, 0, 0f);
                 this.questionImage = this.questionBgs[0].GetComponentInChildren<RawImage>();
@@ -173,6 +188,7 @@ public class CurrentQuestion
                     this.aspecRatioFitter.aspectRatio = (float)qaImage.width / (float)qaImage.height;
                 }
                 break;
+            case "Audio":
             case "audio":
                 SetUI.SetGroup(this.questionBgs, 1, 0f);
                 this.questionText = this.questionBgs[1].GetComponentInChildren<TextMeshProUGUI>();
@@ -191,6 +207,7 @@ public class CurrentQuestion
                 this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;
                 this.playAudio();
                 break;
+            case "Text":
             case "text":
                 SetUI.SetGroup(this.questionBgs, 2, 0f);
                 this.questiontype = QuestionType.Text;
@@ -206,16 +223,36 @@ public class CurrentQuestion
             case "FillInBlank":
             case "fillInBlank":
                 SetUI.SetGroup(this.questionBgs, 3, 0f);
-
                 this.questionTexts = this.questionBgs[3].GetComponentsInChildren<TextMeshProUGUI>();
-                for(int i = 0; i < this.questionTexts.Length; i++)
+                this.fullSentence = qa.fullSentence;
+                for (int i = 0; i < this.questionTexts.Length; i++)
                 {
                     if (this.questionTexts[i].gameObject.name == "MarkerText")
                     {
                         this.questionText = questionTexts[i];
                     }
-                    this.questionTexts[i].text = qa.question;
+
+                    // Get the full sentence
+                    string fullSentence = qa.fullSentence; // Assuming qa.fullSentence contains "I am six years old."
+                    // Get the correct answer
+                    string correctAnswer = qa.correctAnswer; // Assuming qa.correctAnswer contains "years old."
+                    // Split the correct answer into individual parts
+                    string[] correctAnswerParts = correctAnswer.Split(' ');
+                    // Create a formatted version of the full sentence
+                    foreach (var part in correctAnswerParts)
+                    {
+                        // Check if the part is present in the full sentence
+                        if (fullSentence.Contains(part))
+                        {
+                            // Replace the part with an underlined and hidden version
+                            fullSentence = fullSentence.Replace(part, $"<u><color=#00000000>{part}</color></u>");
+                        }
+                    }
+                    // Set the text with the formatted string
+                    this.questionTexts[i].text = fullSentence;
+                    this.diplayQuestion = fullSentence;
                 }
+
                 this.audioPlayBtn = this.questionBgs[3].GetComponentInChildren<CanvasGroup>();
                 if(this.audioPlayBtn != null)
                 {

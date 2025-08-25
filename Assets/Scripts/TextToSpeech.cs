@@ -6,6 +6,8 @@ using UnityEngine.Networking;
 
 public class TextToSpeech : MonoBehaviour
 {
+    public static TextToSpeech Instance = null;
+
     public enum Language
     {
         Eng,
@@ -19,6 +21,11 @@ public class TextToSpeech : MonoBehaviour
     public float speed = 0.9f;
     [Range(0.1f, 2f)]
     public float pitch = 1f;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -31,15 +38,19 @@ public class TextToSpeech : MonoBehaviour
         {
             this.contentText = this.GetComponent<TextMeshProUGUI>();
         }
+    }
 
-        if(this.contentText == null || string.IsNullOrEmpty(this.contentText.text))
+    public void UpdateTextToAudioFromAPI(string hint="")
+    {
+        if (this.contentText == null || string.IsNullOrEmpty(this.contentText.text))
         {
             LogController.Instance?.debugError("Content text is not set or empty.");
             return;
         }
         else
         {
-            this.StartCoroutine(LoadTextToAudioFromAPI(this.contentText.text));
+            this.contentText.text = hint;
+            this.StartCoroutine(LoadTextToAudioFromAPI(hint));
         }
     }
 

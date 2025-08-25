@@ -82,7 +82,8 @@ public class CurrentQuestion
     public QuestionType questiontype = QuestionType.None;
     public QuestionList qa = null;
     public string fullSentence = "";
-    public string diplayQuestion = "";
+    public string displayQuestion = "";
+    public string displayHint = "";
     public int correctAnswerId;
     public string correctAnswer;
     public string[] answersChoics;
@@ -188,13 +189,8 @@ public class CurrentQuestion
 
         if (foundUnderline)
         {
-            // 計算 underline 的中心點
             Vector3 underlineCenter = (underlineStart + underlineEnd) / 2;
-
-            // 往上偏移一點，讓 icon 在 underline 上方
-            Vector3 offset = new Vector3(0, 60f, 0); // 可根據需求調整
-
-            // 轉換為 localPosition
+            Vector3 offset = new Vector3(0, 60f, 0);
             Vector3 worldPos = targetText.transform.TransformPoint(underlineCenter + offset);
             Vector3 localPos = underlineWordRecordIcon.transform.parent.InverseTransformPoint(worldPos);
 
@@ -314,18 +310,30 @@ public class CurrentQuestion
                     }
                     else
                     {
-                        // Remove spaces from correctAnswer to create a combined version
+                        int wordCount = correctAnswer.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
                         string combinedAnswer = string.Concat(correctAnswer.Split(' '));
+                        string extendedUnderline = combinedAnswer;
+                        if (wordCount == 1)
+                        {
+                            int extraChars = 2;
+                            string pad = new string('_', extraChars);
+                            extendedUnderline += $"<color=#00000000>{pad}</color>";
+                        }
+
                         if (fullSentence.Contains(correctAnswer))
                         {
-                            fullSentence = fullSentence.Replace(correctAnswer, $"<u><color=#00000000>{combinedAnswer}</color></u>");
+                            fullSentence = fullSentence.Replace(
+                                correctAnswer,
+                                $"<u><color=#00000000>{extendedUnderline}</color></u>"
+                            );
                         }
 
                         this.CreateUnderlineIcon(this.questionText);
                     }
                     // Set the text with the formatted string
                     this.questionText.text = fullSentence;
-                    this.diplayQuestion = fullSentence;
+                    this.displayQuestion = fullSentence;
+                    this.displayHint = qa.questionHint;
                 }
 
                 this.audioPlayBtn = this.questionBgs[3].GetComponentInChildren<CanvasGroup>();

@@ -172,6 +172,21 @@ public class RecordAudio : MonoBehaviour
         }
     }
 
+    public void PlayAgainHint()
+    {
+        this.hintBox.GetComponent<TextToSpeech>()?.PlayAudio(() =>
+        {
+            SetUI.Set(this.hintBox, true);
+            SetUI.Set(this.remindRecordBox, false);
+        },
+        () =>
+        {
+            SetUI.Set(this.hintBox, false);
+            SetUI.Set(this.remindRecordBox, true);
+        }
+        );
+    }
+
     void switchPage(Stage _stage)
     {
         this.stage = _stage;
@@ -180,17 +195,7 @@ public class RecordAudio : MonoBehaviour
         {
             case Stage.Record:
                 this.ResetRecorder();
-                this.hintBox.GetComponent<TextToSpeech>()?.PlayAudio(()=>
-                {
-                    SetUI.Set(this.hintBox, true);
-                    SetUI.Set(this.remindRecordBox, false);
-                },
-                ()=>
-                {
-                    SetUI.Set(this.hintBox, false);
-                    SetUI.Set(this.remindRecordBox, true);
-                }
-                );
+                this.PlayAgainHint();
                 break;
             case Stage.Recording:
                 this.StopPlayback();

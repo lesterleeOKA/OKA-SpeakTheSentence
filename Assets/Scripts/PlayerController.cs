@@ -262,7 +262,7 @@ public class PlayerController : UserData
             GameController.Instance?.setWrongPopup(false);
             recorder.controlResultPage(this.Retry <= 0 ? 2 : 1);
             if(this.Retry > 0) { 
-                QuestionController.Instance.currentQuestion.QuestionText.text = QuestionController.Instance.currentQuestion.diplayQuestion;
+                QuestionController.Instance.currentQuestion.QuestionText.text = QuestionController.Instance.currentQuestion.displayQuestion;
             }
             onFailureCompleted?.Invoke();
         }

@@ -17,6 +17,9 @@ public class GameController : GameBaseController
     protected override void Start()
     {
         base.Start();
+
+        //Add real time download question hint from API;
+        TextToSpeech.Instance?.UpdateTextToAudioFromAPI(QuestionManager.Instance.questionData.questions[0].questionHint);
     }
 
     private IEnumerator InitialQuestion()

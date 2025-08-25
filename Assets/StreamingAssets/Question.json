@@ -89,6 +89,96 @@
       "correctAnswer": "years old",
       "fullSentence": "I am six years old.",
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1Bu2-g1",
+      "questionType": "FillInBlank",
+      "question": "I _____ many toys.",
+      "answers": null,
+      "correctAnswer": "have",
+      "fullSentence": "I have many toys.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g2",
+      "questionType": "FillInBlank",
+      "question": "She ____ a new doll.",
+      "answers": null,
+      "correctAnswer": "has",
+      "fullSentence": "She has a new doll.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g3",
+      "questionType": "FillInBlank",
+      "question": "It _____ three balls.",
+      "answers": null,
+      "correctAnswer": "has",
+      "fullSentence": "It has three balls.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g4",
+      "questionType": "FillInBlank",
+      "question": "Mike and Sam ____ ten robots.",
+      "answers": null,
+      "correctAnswer": "have",
+      "fullSentence": "Mike and Sam have ten robots.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g5",
+      "questionType": "FillInBlank",
+      "question": "He _____ a balloon.",
+      "answers": null,
+      "correctAnswer": "has",
+      "fullSentence": "He has a balloon.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g6",
+      "questionType": "FillInBlank",
+      "question": "We _____ no puzzles.",
+      "answers": null,
+      "correctAnswer": "have",
+      "fullSentence": "We have no puzzles.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g7",
+      "questionType": "FillInBlank",
+      "question": "Lily _____ two teddy bears.",
+      "answers": null,
+      "correctAnswer": "has",
+      "fullSentence": "Lily has two teddy bears.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g8",
+      "questionType": "FillInBlank",
+      "question": "You _____ some toy planes.",
+      "answers": null,
+      "correctAnswer": "have",
+      "fullSentence": "You have some toy planes.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g9",
+      "questionType": "FillInBlank",
+      "question": "They _____ blue, red and yellow toy trucks.",
+      "answers": null,
+      "correctAnswer": "have",
+      "fullSentence": "They have blue, red and yellow toy trucks.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g10",
+      "questionType": "FillInBlank",
+      "question": "Ken _____ twenty toy cars.",
+      "answers": null,
+      "correctAnswer": "has",
+      "fullSentence": "Ken has twenty toy cars.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
     }
   ]
 

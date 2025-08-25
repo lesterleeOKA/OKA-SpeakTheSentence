@@ -793,10 +793,12 @@ public class RecordAudio : MonoBehaviour
 
     public void showCorrectSentence(string displayText, WordDetail[] wordDetails = null)
     {
-        TextMeshProUGUI questionTextpro = QuestionController.Instance.currentQuestion.QuestionTexts[0];
+        var currentQuestion = QuestionController.Instance.currentQuestion;
+        currentQuestion.underlineWordRecordIcon?.SetActive(false);
+        TextMeshProUGUI questionTextpro = currentQuestion.QuestionTexts[0];
 
-        int textCount = QuestionController.Instance.currentQuestion.QuestionTexts.Length;
-        string originalQuestion = QuestionController.Instance.currentQuestion.qa.question;
+        int textCount = currentQuestion.QuestionTexts.Length;
+        string originalQuestion = currentQuestion.qa.question;
 
         displayText = displayText.TrimStart();
 
@@ -818,14 +820,14 @@ public class RecordAudio : MonoBehaviour
             displayText = string.Join(" ", fillWords);
         }
 
-        Debug.Log($"Final displayText: {displayText}");
+        LogController.Instance.debug($"Final displayText: {displayText}");
 
         // Split answer into words
         var answerWords = displayText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
         for (int i = 0; i < textCount; i++)
         {
-            TextMeshProUGUI textpro = QuestionController.Instance.currentQuestion.QuestionTexts[i];
+            TextMeshProUGUI textpro = currentQuestion.QuestionTexts[i];
             if (textpro != null)
             {
                 bool markerText = textpro.gameObject.name == "MarkerText";

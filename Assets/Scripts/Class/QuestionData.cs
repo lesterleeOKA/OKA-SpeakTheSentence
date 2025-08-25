@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 [Serializable]
 public class QuestionDataWrapper
@@ -73,6 +74,9 @@ public enum QuestionType
 [Serializable]
 public class CurrentQuestion
 {
+    public Sprite underlineWordRecordIconSprite;
+    public GameObject underlineWordRecordIcon;
+    public bool useSeparatedWordsWithUnderline = false;
     public int numberQuestion = 0;
     public int answeredQuestion = 0;
     public QuestionType questiontype = QuestionType.None;
@@ -141,6 +145,64 @@ public class CurrentQuestion
         }
         return updating;
     }
+
+    private void CreateUnderlineIcon(TextMeshProUGUI targetText)
+    {
+        if (this.underlineWordRecordIcon == null)
+        {
+            this.underlineWordRecordIcon = new GameObject("UnderlineIcon", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            this.underlineWordRecordIcon.transform.SetParent(targetText.transform, false);
+
+            var image = this.underlineWordRecordIcon.GetComponent<Image>();
+            image.sprite = this.underlineWordRecordIconSprite;
+            image.SetNativeSize();
+            image.transform.localScale = Vector3.one;
+        }
+        this.underlineWordRecordIcon?.SetActive(true);
+        this.UpdateUnderlineIconPosition(targetText);
+    }
+
+    private void UpdateUnderlineIconPosition(TextMeshProUGUI targetText)
+    {
+        targetText.ForceMeshUpdate();
+        TMP_TextInfo textInfo = targetText.textInfo;
+
+        Vector3 underlineStart = Vector3.zero;
+        Vector3 underlineEnd = Vector3.zero;
+        bool foundUnderline = false;
+
+        for (int i = 0; i < textInfo.characterCount; i++)
+        {
+            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
+
+            if (charInfo.isVisible && charInfo.style == FontStyles.Underline)
+            {
+                if (!foundUnderline)
+                {
+                    underlineStart = charInfo.bottomLeft;
+                    foundUnderline = true;
+                }
+                underlineEnd = charInfo.bottomRight;
+            }
+        }
+
+        if (foundUnderline)
+        {
+            // 計算 underline 的中心點
+            Vector3 underlineCenter = (underlineStart + underlineEnd) / 2;
+
+            // 往上偏移一點，讓 icon 在 underline 上方
+            Vector3 offset = new Vector3(0, 60f, 0); // 可根據需求調整
+
+            // 轉換為 localPosition
+            Vector3 worldPos = targetText.transform.TransformPoint(underlineCenter + offset);
+            Vector3 localPos = underlineWordRecordIcon.transform.parent.InverseTransformPoint(worldPos);
+
+            underlineWordRecordIcon.transform.localPosition = localPos;
+        }
+
+    }
+
 
     public void setNewQuestion(QuestionList qa = null, int totalQuestion = 0, bool isLogined = false, Action onQuestionCompleted = null)
     {
@@ -227,6 +289,7 @@ public class CurrentQuestion
                 this.fullSentence = qa.fullSentence;
                 for (int i = 0; i < this.questionTexts.Length; i++)
                 {
+                    this.questionTexts[i].text = "";
                     if (this.questionTexts[i].gameObject.name == "MarkerText")
                     {
                         this.questionText = questionTexts[i];
@@ -236,20 +299,32 @@ public class CurrentQuestion
                     string fullSentence = qa.fullSentence; // Assuming qa.fullSentence contains "I am six years old."
                     // Get the correct answer
                     string correctAnswer = qa.correctAnswer; // Assuming qa.correctAnswer contains "years old."
-                    // Split the correct answer into individual parts
-                    string[] correctAnswerParts = correctAnswer.Split(' ');
-                    // Create a formatted version of the full sentence
-                    foreach (var part in correctAnswerParts)
+
+                    if (this.useSeparatedWordsWithUnderline)
                     {
-                        // Check if the part is present in the full sentence
-                        if (fullSentence.Contains(part))
+                        // Split the correct answer into individual parts
+                         string[] correctAnswerParts = correctAnswer.Split(' ');
+                         foreach (var part in correctAnswerParts)
+                         {
+                             if (fullSentence.Contains(part))
+                             {
+                                 fullSentence = fullSentence.Replace(part, $"<u><color=#00000000>{part}</color></u>");
+                             }
+                         }
+                    }
+                    else
+                    {
+                        // Remove spaces from correctAnswer to create a combined version
+                        string combinedAnswer = string.Concat(correctAnswer.Split(' '));
+                        if (fullSentence.Contains(correctAnswer))
                         {
-                            // Replace the part with an underlined and hidden version
-                            fullSentence = fullSentence.Replace(part, $"<u><color=#00000000>{part}</color></u>");
+                            fullSentence = fullSentence.Replace(correctAnswer, $"<u><color=#00000000>{combinedAnswer}</color></u>");
                         }
+
+                        this.CreateUnderlineIcon(this.questionText);
                     }
                     // Set the text with the formatted string
-                    this.questionTexts[i].text = fullSentence;
+                    this.questionText.text = fullSentence;
                     this.diplayQuestion = fullSentence;
                 }
 

@@ -421,8 +421,8 @@ MonoBehaviour:
     returnUrl: 
     showFPS: 0
     playerNumber: 1
-    passAccuracyScore: 60
-    passPronScore: 60
+    passAccuracyScore: 50
+    passPronScore: 50
     lang: 0
     gameSettingScore: -1
   apiManager:
@@ -778,7 +778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1761761257498461912, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_Text
-      value: v1.02
+      value: v1.03
       objectReference: {fileID: 0}
     - target: {fileID: 1761761257498461912, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_FontData.m_Font

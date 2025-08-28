@@ -190,11 +190,12 @@ public class CurrentQuestion
         if (foundUnderline)
         {
             Vector3 underlineCenter = (underlineStart + underlineEnd) / 2;
-            Vector3 offset = new Vector3(0, 50f, 0);
+            Vector3 offset = new Vector3(0, 40f, 0);
             Vector3 worldPos = targetText.transform.TransformPoint(underlineCenter + offset);
             Vector3 localPos = underlineWordRecordIcon.transform.parent.InverseTransformPoint(worldPos);
 
             underlineWordRecordIcon.transform.localPosition = localPos;
+            underlineWordRecordIcon.transform.localScale = Vector3.one * 0.85f;
         }
 
     }
@@ -331,8 +332,23 @@ public class CurrentQuestion
                         this.CreateUnderlineIcon(this.questionText);
                     }
                     // Set the text with the formatted string
-                    this.questionText.text = fullSentence;
-                    this.displayQuestion = fullSentence;
+                    //this.questionText.text = fullSentence;
+
+                    string underline = $"<u><color=#00000000>{correctAnswer}</color></u>";
+                    this.displayQuestion = Regex.Replace(
+                        qa.question,
+                        @"(?<=[\?\!\.])\s*_+",
+                        match => "\n" + underline
+                    );
+
+                    // Fallback: replace any remaining underscores normally
+                    this.displayQuestion = Regex.Replace(
+                        this.displayQuestion,
+                        @"_+",
+                        underline
+                    );
+                    this.questionText.text = this.displayQuestion;
+                    //this.displayQuestion = fullSentence;
                     this.displayHint = qa.questionHint;
                 }
 

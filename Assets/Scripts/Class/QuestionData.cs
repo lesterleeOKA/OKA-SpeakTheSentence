@@ -190,7 +190,7 @@ public class CurrentQuestion
         if (foundUnderline)
         {
             Vector3 underlineCenter = (underlineStart + underlineEnd) / 2;
-            Vector3 offset = new Vector3(0, 60f, 0);
+            Vector3 offset = new Vector3(0, 50f, 0);
             Vector3 worldPos = targetText.transform.TransformPoint(underlineCenter + offset);
             Vector3 localPos = underlineWordRecordIcon.transform.parent.InverseTransformPoint(worldPos);
 

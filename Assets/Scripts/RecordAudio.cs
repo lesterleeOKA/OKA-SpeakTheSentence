@@ -717,7 +717,7 @@ public class RecordAudio : MonoBehaviour
                     string transcript = "";
                     string displayText = "";
                     string correctAnswer = recognitionResponse.result.DisplayText;
-
+                    bool hasErrorWord = false;
                     var correctAnswerWords = QuestionController.Instance.currentQuestion.correctAnswer
                     .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -728,20 +728,32 @@ public class RecordAudio : MonoBehaviour
                         foreach (var nBest in Best)
                         {
                             result.AppendLine($"Score: {nBest.PronScore}");
-                            if(this.accurancyText != null) this.accurancyText.text = $"Rating: {nBest.PronScore}%";
-                            if (nBest.AccuracyScore <= this.passAccuracyScore && 
-                                nBest.PronScore <= this.passPronScore)
-                            {
-                                this.ttsFailure = true;
-                            }
-
                             if(nBest.Words != null)
                             {
                                 wordDetails = nBest.Words;
+                                foreach(var word in nBest.Words)
+                                {
+                                    if(word.ErrorType == "Omission")
+                                    {
+                                        this.ttsFailure = true;
+                                        if (this.accurancyText != null)
+                                            this.accurancyText.text = $"Word missing, please retry";
+                                        hasErrorWord = true;
+                                    }
+                                }
                             }
                             else
                             {
                                 result.AppendLine("No words found in NBest.");
+                            }
+
+                            if (this.accurancyText != null && !hasErrorWord) 
+                                this.accurancyText.text = $"Rating: {nBest.PronScore}%";
+
+                            if (nBest.AccuracyScore <= this.passAccuracyScore &&
+                                nBest.PronScore <= this.passPronScore)
+                            {
+                                this.ttsFailure = true;
                             }
                         }
                         this.ttsDone = true;
@@ -749,22 +761,24 @@ public class RecordAudio : MonoBehaviour
                         if (!this.ttsFailure)
                         {
                             transcript = correctAnswer;
+                            string correctAns = QuestionController.Instance.currentQuestion.fullSentence;
                             displayText = Regex.Replace(transcript, @"[^\w\s]", "").ToLower();
                             result.AppendLine($"DisplayText: {displayText}");
                             //transcript = Regex.Replace(recognitionResult.DisplayText, @"[^\w\s]", "").ToLower();
                             this.UpdateUI(result.ToString());
-                            if (this.answerText != null) this.answerText.text = displayText;
+                            if (this.answerText != null) this.answerText.text = correctAns;
                             this.switchPage(Stage.PlaybackResult);
 
                             var playerController = this.GetComponent<PlayerController>();
                             if (playerController != null)
                             {
-                                string correctAns = QuestionController.Instance.currentQuestion.correctAnswer;
                                 playerController.submitAnswer(
                                     correctAns, 
                                     () =>
                                     {
-                                        this.showCorrectSentence(correctAns, wordDetails);
+                                        this.showCorrectSentence(
+                                            QuestionController.Instance.currentQuestion.fullSentence, 
+                                            wordDetails);
                                     }
                                  );
                             }
@@ -807,28 +821,8 @@ public class RecordAudio : MonoBehaviour
 
         displayText = displayText.TrimStart();
 
-        string[] fillWords = displayText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-        if (fillWords.Length > 0)
-        {
-            if (questionTextpro.text.StartsWith("<u>"))
-            {
-                // First word capitalized, rest lowercased
-                fillWords[0] = char.ToUpper(fillWords[0][0]) + fillWords[0].Substring(1).ToLower();
-            }
-            else
-            {
-                // First word lowercased, rest lowercased
-                fillWords[0] = char.ToLower(fillWords[0][0]) + fillWords[0].Substring(1).ToLower();
-            }
-            for (int i = 1; i < fillWords.Length; i++)
-                fillWords[i] = fillWords[i].ToLower();
-            displayText = string.Join(" ", fillWords);
-        }
-
-        LogController.Instance.debug($"Final displayText: {displayText}");
-
-        // Split answer into words
-        var answerWords = displayText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        // Split the sentence into words (preserve punctuation if needed)
+        string[] sentenceWords = displayText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
         for (int i = 0; i < textCount; i++)
         {
@@ -836,102 +830,55 @@ public class RecordAudio : MonoBehaviour
             if (textpro != null)
             {
                 bool markerText = textpro.gameObject.name == "MarkerText";
-
-                // Find all underscore groups
-                var underscoreRegex = new Regex(@"(_+)");
-                var matches = underscoreRegex.Matches(originalQuestion);
-
                 var result = new StringBuilder();
-                int answerIndex = 0;
-                int lastIndex = 0;
 
-                foreach (Match match in matches)
+                foreach (string word in sentenceWords)
                 {
-                    // Add text before underscores, make transparent for markerText, normal for non-markerText
-                    if (match.Index > lastIndex)
+                    WordDetail wordDetail = null;
+                    string errorType = null;
+                    bool isError = false;
+
+                    if (wordDetails != null)
                     {
-                        string before = originalQuestion.Substring(lastIndex, match.Index - lastIndex);
-                        var words = before.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (var w in words)
+                        // Find the WordDetail for this word (case-insensitive, ignore punctuation)
+                        string cleanWord = Regex.Replace(word, @"[^\w]", "");
+                        wordDetail = Array.Find(wordDetails, wd =>
+                            string.Equals(wd.Word, cleanWord, StringComparison.OrdinalIgnoreCase));
+                        if (wordDetail != null)
                         {
-                            if (markerText)
-                                result.Append($"<color=#00000000>{w}</color> ");
-                            else
-                                result.Append($"{w} ");
+                            errorType = wordDetail.ErrorType;
+                            isError = !string.IsNullOrEmpty(errorType) && errorType != "None";
                         }
                     }
 
-                    // For each blank, if there are answer words left, add one marker per word
-                    if (answerIndex < answerWords.Length)
+                    if (isError)
                     {
-                        int blanks = matches.Count;
-                        int remaining = answerWords.Length - answerIndex;
-                        int markersToAdd = blanks == 1 ? remaining : 1;
-                        WordDetail wordDetail = null;
-
-                        for (int m = 0; m < markersToAdd && answerIndex < answerWords.Length; m++)
+                        switch (errorType)
                         {
-                            bool isError = true;
-                            string errorType = null;
-                            if (wordDetails != null && answerIndex < wordDetails.Length)
-                            {
-                                wordDetail = wordDetails[answerIndex];
-                                errorType = wordDetail.ErrorType;
-                                isError = !string.IsNullOrEmpty(errorType) && errorType != "None";
-                            }
-
-                            if (isError)
-                            {
-                                if(wordDetails != null)
-                                {
-                                    switch (wordDetail.ErrorType)
-                                    {
-                                        case "Mispronunciation":
-                                            if (markerText)
-                                                result.Append($"<mark=#FFFF00 padding='0,12,5,10'>{answerWords[answerIndex]}</mark> ");
-                                            else
-                                                result.Append($"{answerWords[answerIndex]} ");
-                                            break;
-                                        case "Omission":
-                                            if (markerText)
-                                                result.Append($"<mark=#2A1A17 padding='0,12,5,10'>{answerWords[answerIndex]}</mark> ");
-                                            else
-                                                result.Append($"<color=red>{answerWords[answerIndex]}</color> ");
-                                            break;
-                                        case "Insertion":
-                                        case "Substitution":
-                                            result.Append($"<u>{answerWords[answerIndex]}</u>");
-                                            break;
-                                    }                         
-                                }
+                            case "Mispronunciation":
+                                if (markerText)
+                                    result.Append($"<mark=#FFFF00 padding='0,12,5,10'>{word}</mark> ");
                                 else
-                                {
-                                    if (markerText)
-                                        result.Append($"<mark=#2A1A17 padding='0,12,5,10'>{answerWords[answerIndex]}</mark> ");
-                                    else
-                                        result.Append($"<color=red>{answerWords[answerIndex]}</color> ");
-                                }
-                            }
-                            else
-                                result.Append($"{answerWords[answerIndex]} ");
-
-                            answerIndex++;
+                                    result.Append($"{word} ");
+                                break;
+                            case "Omission":
+                                if (markerText)
+                                    result.Append($"<mark=#2A1A17 padding='0,12,5,10'>{word}</mark> ");
+                                else
+                                    result.Append($"<color=red>{word}</color> ");
+                                break;
+                            case "Insertion":
+                            case "Substitution":
+                                result.Append($"<u>{word}</u> ");
+                                break;
+                            default:
+                                result.Append($"{word} ");
+                                break;
                         }
                     }
-                    lastIndex = match.Index + match.Length;
-                }
-
-                // Add any remaining text after last underscore
-                if (lastIndex < originalQuestion.Length)
-                {
-                    string after = originalQuestion.Substring(lastIndex);
-                    var words = after.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var w in words)
+                    else
                     {
-                        if (markerText)
-                            result.Append($"<color=#00000000>{w}</color> ");
-                        else
-                            result.Append($"{w} ");
+                        result.Append($"{word} ");
                     }
                 }
 

@@ -120,8 +120,9 @@ public class PlayerController : UserData
     public void checkAnswer(string answer, int currentTime, Action onCompleted = null)
     {
         var currentQuestion = QuestionController.Instance?.currentQuestion;
-        this.answer = answer.ToLower();
-        var lowerQIDAns = currentQuestion.correctAnswer.ToLower();
+        this.answer = answer;
+        var lowerQIDAns = currentQuestion.fullSentence;
+        //var lowerQIDAns = currentQuestion.correctAnswer.ToLower();
 
         if (!this.IsCheckedAnswer)
         {

@@ -179,6 +179,166 @@
       "correctAnswer": "has",
       "fullSentence": "Ken has twenty toy cars.",
       "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p3Bu4-a1",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "blow soap bubbles",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a2",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "chase butterflies",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a3",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "eat marshmallows",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a4",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "fly a kite",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a5",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "light a fire",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a6",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "play hide-and-seek",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a7",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "ride a bicycle",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a8",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "go hiking",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a9",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "have barbecues",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a10",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "climb a tree",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a11",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "see a rainbow",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a12",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "ride a horse",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a13",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "tell a ghost story",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a14",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "play a card game",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a15",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "go fishing",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a16",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "set up a tent",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a17",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "sail on a yacht",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a18",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "try outdoor cooking",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a19",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "sunbathe",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a20",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "row a boat",
+      "questionHint": "Listen and speak the phrases."
     }
   ]
 

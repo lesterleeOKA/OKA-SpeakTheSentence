@@ -4,30 +4,39 @@
     <meta charset="utf-8">
 	<meta name="google" content="notranslate">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, max-age=0, must-revalidate">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
     <title>{{{ PRODUCT_NAME }}}</title>
     <!--<link rel="shortcut icon" href="TemplateData/favicon.ico">-->
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="manifest" href="manifest.webmanifest">
   </head>
   <body>
-    <div id="unity-container">
-      <canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}} tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-		<div class="container">
-			 <p class="text" id="loadingText">Now Loading</p>
-			 <div id="loading" class="loading-animation"></div>
-		</div>     
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
-		  <div id="unity-progress-bar-border"></div>
-        </div>
+      <div id="unity-container">
+          <canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}} tabindex="-1"></canvas>
+          <div id="unity-loading-bar">
+              <div id="unity-logo"></div>
+              <div class="container">
+                  <p class="text" id="loadingText">Now Loading</p>
+                  <div id="loading" class="loading-animation"></div>
+              </div>
+              <div id="unity-progress-bar-empty">
+                  <div id="unity-progress-bar-full"></div>
+                  <div id="unity-progress-bar-border"></div>
+              </div>
+          </div>
+          <div id="unity-warning"> </div>
+          <!--<audio src="/silence.mp3" autoplay muted controls>-->
       </div>
-      <div id="unity-warning"> </div>
-	  <!--<audio src="/silence.mp3" autoplay muted controls>-->
-    </div>
-    <script>
-		async function accessAudio(unityInstance) {
+
+      <div id="orientation-lock">
+          <div class="orientation-message">
+              Please rotate your device to landscape.
+          </div>
+      </div>
+      <script>
+		/*async function accessAudio() {
 			try {
 				const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 				console.log('Microphone access granted and audio playback started.');
@@ -36,22 +45,32 @@
 				stream.getTracks().forEach(function (track) {
 					track.stop();
 				});
-				
-				if (unityInstance !== 'undefined') {
-					unityInstance.SendMessage('Loader', 'OnMicrophoneAccessGranted');
-				}
 			} catch (error) {
 				console.error('Error accessing microphone:', error);
 				alert('Could not access the microphone. Please check your permissions.');
 			}
-		}
+		}*/
 
-      window.addEventListener("load", function () {
-        if ("serviceWorker" in navigator) {
-          navigator.serviceWorker.register("ServiceWorker.js");
+        function checkOrientation() {
+            const lock = document.getElementById('orientation-lock');
+            if (window.matchMedia("(orientation: landscape)").matches) {
+                lock.style.display = 'none';
+            } else {
+                lock.style.display = 'block';
+            }
         }
-      });
-	  
+        // Listen for orientation changes
+        window.addEventListener('orientationchange', checkOrientation);
+        window.addEventListener('resize', checkOrientation);
+
+        window.addEventListener("load", function () {
+              //accessAudio();
+            checkOrientation();
+            if ("serviceWorker" in navigator) {
+              navigator.serviceWorker.register("ServiceWorker.js");
+            }
+        });
+
 	  	let unityInstance;
 
 		window.onbeforeunload = function(e) {
@@ -67,7 +86,7 @@
       var loadingBar = document.querySelector("#unity-loading-bar");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
       var warningBanner = document.querySelector("#unity-warning");
-		
+
       // Shows a temporary message banner/ribbon for a few seconds, or
       // a permanent error message on top of the canvas if type=='error'.
       // If type=='warning', a yellow highlight color is used.
@@ -132,7 +151,7 @@
       }
 
       loadingBar.style.display = "block";
-	  
+
 
       var script = document.createElement("script");
       script.src = loaderUrl;
@@ -142,14 +161,13 @@
         }).then((instance) => {
           //loadingBar.style.display = "none";
 		  unityInstance = instance;
-		  accessAudio(unityInstance);
 		  unityInstance.SendMessage('Loader', 'LoadGameData');
         }).catch((message) => {
           alert(message);
         });
       };
       document.body.appendChild(script);
-	  
+
 	  function hiddenLoadingBar() {
 		loadingBar.style.display = "none";
 		console.log("Questions loaded, loading bar hidden.");
@@ -157,14 +175,20 @@
 	  function updateLoadingText(newText) {
 		const loadingTextElement = document.getElementById("loadingText");
 		loadingTextElement.textContent = newText;
-	  }
-	  function replaceUrlPart() {
-        var currentUrl = window.location.href;
-        var hostname = window.location.origin;
-        var pathAndQuery = currentUrl.slice(hostname.length);
-        var newUrl = hostname + "/" + config.productName;
-        window.history.pushState({ path: newUrl }, '', newUrl);
-	  }
-    </script>
+      }
+      function replaceUrlPart() {
+            var currentUrl = window.location.href;
+            var hostname = window.location.origin;
+            var pathAndQuery = currentUrl.slice(hostname.length);
+            var newUrl = hostname + "/" + config.productName;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+       }
+	  function GetHashValue() {
+            var hashValue = window.location.hash; // Get the current hash value
+            if (unityInstance && unityInstance.SendMessage) {
+                unityInstance.SendMessage("Loader", "getHashValue", hashValue);
+            }
+        }
+      </script>
   </body>
 </html>

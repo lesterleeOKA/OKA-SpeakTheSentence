@@ -155,7 +155,7 @@ public class PlayerController : UserData
                         correctId = 2;
                         score = eachQAScore; // load from question settings score of each question
 
-                        LogController.Instance?.debug("Each QA Score!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + eachQAScore + "______answer" + this.answer);
+                        //LogController.Instance?.debug("Each QA Score!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + eachQAScore + "______answer" + this.answer);
                         currentQAPercent = 100f;
                     }
                     else

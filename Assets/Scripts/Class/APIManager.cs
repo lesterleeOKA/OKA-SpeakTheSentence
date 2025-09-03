@@ -463,7 +463,7 @@ public class APIManager
                 {
                     requestSuccessful = true;
                     string responseText = www.downloadHandler.text;
-
+                    LogController.Instance?.debug("Success to submit responseText: " + responseText);
                     // Format the JSON response for better readability
                     try
                     {
@@ -561,7 +561,19 @@ public static class APIConstant
         return $"{loader.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json={jsonParameter}&jwt=" + _jwt;
     }
 
-    public static string blobServerRelativePath = "https://oka.blob.core.windows.net/media/";
+    public static string blobServerRelativePath
+    {
+        get
+        {
+            return LoaderConfig.Instance.currentHostName switch
+            {
+                HostName.dev => "https://okadev.blob.core.windows.net/media/",
+                HostName.uat => "https://okauat.blob.core.windows.net/media/",
+                HostName.prod => "https://oka.blob.core.windows.net/media/",
+                _ => throw new NotImplementedException()
+            };
+        }
+    }
 
     public static string SubmitAnswerAPI(LoaderConfig loader, string playloads, int uid, string _jwt)
     {

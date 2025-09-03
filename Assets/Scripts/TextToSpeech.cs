@@ -106,23 +106,24 @@ public class TextToSpeech : MonoBehaviour
         }
     }
 
-    public void PlayAudio(Action beforePlay = null, Action afterPlay = null)
+    public void PlayAudio(Action beforePlay = null, Action afterPlay = null, float delay = 1f)
     {
-        StartCoroutine(this.playAudio(beforePlay, afterPlay));
+        StartCoroutine(this.playAudio(beforePlay, afterPlay, delay));
     }
 
-    private IEnumerator playAudio(Action beforePlay = null, Action afterPlay = null)
+    private IEnumerator playAudio(Action beforePlay = null, Action afterPlay = null, float delay = 1f)
     {
         beforePlay?.Invoke();
         if (this.audioSource != null && this.audioSource.clip != null)
         {
             this.audioSource.Play();
             yield return new WaitWhile(() => this.audioSource.isPlaying);
+            yield return new WaitForSeconds(delay);
         }
         else
         {
             // If no audio, wait a short time for UX consistency
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(delay);
         }
 
         afterPlay?.Invoke();

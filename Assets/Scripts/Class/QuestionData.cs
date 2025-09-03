@@ -76,6 +76,8 @@ public class CurrentQuestion
 {
     public Sprite underlineWordRecordIconSprite;
     public GameObject underlineWordRecordIcon;
+    [Range(0f, 1f)]
+    public float underlineIconScale = 0.85f;
     public bool useSeparatedWordsWithUnderline = false;
     public int numberQuestion = 0;
     public int answeredQuestion = 0;
@@ -94,7 +96,7 @@ public class CurrentQuestion
     public CanvasGroup progressiveBar;
     public Image progressFillImage;
     private TextMeshProUGUI questionText = null;
-    private TextMeshProUGUI[] questionTexts = null;
+    public TextMeshProUGUI[] questionTexts = null;
     public void setProgressiveBar(bool status, int totalQuestion)
     {
         if (this.progressiveBar != null)
@@ -195,7 +197,7 @@ public class CurrentQuestion
             Vector3 localPos = underlineWordRecordIcon.transform.parent.InverseTransformPoint(worldPos);
 
             underlineWordRecordIcon.transform.localPosition = localPos;
-            underlineWordRecordIcon.transform.localScale = Vector3.one * 0.85f;
+            underlineWordRecordIcon.transform.localScale = Vector3.one * this.underlineIconScale;
         }
 
     }
@@ -250,10 +252,17 @@ public class CurrentQuestion
             case "Audio":
             case "audio":
                 SetUI.SetGroup(this.questionBgs, 1, 0f);
-                this.questionText = this.questionBgs[1].GetComponentInChildren<TextMeshProUGUI>();
-                if (this.questionText != null)
+                this.questionTexts = this.questionBgs[1].GetComponentsInChildren<TextMeshProUGUI>();
+                this.fullSentence = qa.correctAnswer;
+
+                for (int i = 0; i < this.questionTexts.Length; i++)
                 {
-                    this.questionText.text = qa.correctAnswer;
+                    this.questionTexts[i].text = "";
+                    if (this.questionTexts[i].gameObject.name == "MarkerText")
+                    {
+                        this.questionText = questionTexts[i];
+                        this.questionText.text = !string.IsNullOrEmpty(qa.question) ? qa.question : "?";
+                    }
                 }
                 this.audioPlayBtn = this.questionBgs[1].GetComponentInChildren<CanvasGroup>();
                 if (this.audioPlayBtn != null)
@@ -296,6 +305,7 @@ public class CurrentQuestion
                     string fullSentence = qa.fullSentence; // Assuming qa.fullSentence contains "I am six years old."
                     // Get the correct answer
                     string correctAnswer = qa.correctAnswer; // Assuming qa.correctAnswer contains "years old."
+                    string extendedUnderline = "";
 
                     if (this.useSeparatedWordsWithUnderline)
                     {
@@ -313,7 +323,7 @@ public class CurrentQuestion
                     {
                         int wordCount = correctAnswer.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
                         string combinedAnswer = string.Concat(correctAnswer.Split(' '));
-                        string extendedUnderline = combinedAnswer;
+                        extendedUnderline = combinedAnswer;
                         if (wordCount == 1)
                         {
                             int extraChars = 2;
@@ -334,7 +344,7 @@ public class CurrentQuestion
                     // Set the text with the formatted string
                     //this.questionText.text = fullSentence;
 
-                    string underline = $"<u><color=#00000000>{correctAnswer}</color></u>";
+                    string underline = $"<u><color=#00000000>{extendedUnderline}</color></u>";
                     this.displayQuestion = Regex.Replace(
                         qa.question,
                         @"(?<=[\?\!\.])\s*_+",

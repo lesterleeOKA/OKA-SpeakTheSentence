@@ -22,15 +22,6 @@ public class GameController : GameBaseController
         TextToSpeech.Instance?.UpdateTextToAudioFromAPI(QuestionManager.Instance.questionData.questions[0].questionHint);
     }
 
-    private IEnumerator InitialQuestion()
-    {
-        this.createPlayer();
-
-        var questionController = QuestionController.Instance;
-        if(questionController == null) yield break;
-        questionController.nextQuestion();
-    }
-
     void createPlayer()
     {
         this.playerController.gameObject.name = "Player_" + 0;
@@ -58,7 +49,7 @@ public class GameController : GameBaseController
     public override void enterGame()
     {
         base.enterGame();
-        StartCoroutine(this.InitialQuestion());
+        this.createPlayer();
     }
 
     public override void endGame()

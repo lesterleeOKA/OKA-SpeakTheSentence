@@ -61,6 +61,7 @@ public class RecordAudio : MonoBehaviour
     public int passPronScore = 60;
     public bool ttsFailure = false;
     public bool ttsDone = false;
+    public bool isInitialized = false;
 
     private string ApiUrl = "";
     private string JwtToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dfZW5hYmxlZCI6IjEiLCJ0b2tlbiI6IjUyNzcwMS04MTcyNGIyYTIxODk4YTE2NTA0ZTZiMTg0ZWZlMWQ5Mjc2OGIyYWM1YmI2ZmExMDc4NDVlZjM1MDRjNTY3NDBlIiwiZXhwaXJlcyI6MTgwODUzNjQ5NSwicmVuZXdfZW5hYmxlZCI6MSwidGltZSI6IjIwMjUtMDQtMjQgMDM6MTQ6NTUgR01UIiwidWlkIjoiNTI3NzAxIiwidXNlcl9yb2xlIjoiMiIsInNjaG9vbF9pZCI6IjMxNiIsImlwIjoiOjoxIiwidmVyc2lvbiI6bnVsbCwiZGV2aWNlIjoidW5rbm93biJ9.SO79u9MBCflyYh_TcsIBG740pWXgKPZOAsGNZESkoqo";
@@ -174,6 +175,7 @@ public class RecordAudio : MonoBehaviour
 
     public void PlayAgainHint()
     {
+        float defaultDelay = !this.isInitialized ? 1f : 0f;
         this.hintBox.GetComponent<TextToSpeech>()?.PlayAudio(() =>
         {
             SetUI.Set(this.hintBox, true);
@@ -183,7 +185,13 @@ public class RecordAudio : MonoBehaviour
         {
             SetUI.Set(this.hintBox, false);
             SetUI.Set(this.remindRecordBox, true);
-        }
+            if (!this.isInitialized)
+            {
+                GameController.Instance?.UpdateNextQuestion();
+                this.isInitialized = true;
+            }
+        },
+        defaultDelay
         );
     }
 
@@ -195,7 +203,7 @@ public class RecordAudio : MonoBehaviour
         {
             case Stage.Record:
                 this.ResetRecorder();
-                this.PlayAgainHint();
+                if (!this.isInitialized) this.PlayAgainHint();
                 break;
             case Stage.Recording:
                 this.StopPlayback();
@@ -813,7 +821,7 @@ public class RecordAudio : MonoBehaviour
     public void showCorrectSentence(string displayText, WordDetail[] wordDetails = null)
     {
         var currentQuestion = QuestionController.Instance.currentQuestion;
-        currentQuestion.underlineWordRecordIcon?.SetActive(false);
+        if (currentQuestion.underlineWordRecordIcon != null) currentQuestion.underlineWordRecordIcon.SetActive(false);
         TextMeshProUGUI questionTextpro = currentQuestion.QuestionTexts[0];
 
         int textCount = currentQuestion.QuestionTexts.Length;
@@ -882,6 +890,7 @@ public class RecordAudio : MonoBehaviour
                     }
                 }
 
+                Debug.Log("result: " + result.ToString().TrimEnd());
                 textpro.text = result.ToString().TrimEnd();
             }
         }

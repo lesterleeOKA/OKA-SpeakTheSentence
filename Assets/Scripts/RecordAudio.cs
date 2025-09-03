@@ -228,6 +228,10 @@ public class RecordAudio : MonoBehaviour
         Microphone.End(null);
         LogController.Instance?.debug("Microphone access granted.");
         this.grantedMicrophone = true;
+        if(this.isInitialized)
+        {
+            SetUI.Set(this.recordButton, true, 0f, 0.5f);
+        }
     }
 
     public void StartRecording()
@@ -246,9 +250,16 @@ public class RecordAudio : MonoBehaviour
             SetUI.Set(this.remindRecordBox, true);
         }
 
-        if (isRecording || !this.grantedMicrophone) return;
+        if (this.isRecording) return;
+        if (!this.grantedMicrophone)
+        {
+            LogController.Instance.debug("Microphone permission not granted. Please allow access and try again.");
+            // Optionally, re-trigger permission request
+            StartCoroutine(this.initMicrophonePermission(1f));
+            return;
+        }
         AudioController.Instance?.fadingBGM(false, 0f);
-        LogController.Instance?.debug($"Recording started: {isRecording}");
+        LogController.Instance?.debug($"Recording started: {this.isRecording}");
         var microphoneDevices = LoaderConfig.Instance.microphoneDevice;
         if (!microphoneDevices.HasMicrophoneDevices)
         {
@@ -263,7 +274,7 @@ public class RecordAudio : MonoBehaviour
         if (this.clip)
         {
             this.waveformVisualizer?.ClearTexture();
-            isRecording = true;
+            this.isRecording = true;
             recordingTime = 0f;
             this.switchPage(Stage.Recording);
         }
@@ -279,7 +290,7 @@ public class RecordAudio : MonoBehaviour
         // Use default gain for the editor
         return 5.0f;
 #elif UNITY_WEBGL
-    return 5.0f;
+    return 1f;
 #elif UNITY_IOS
     // iPad browsers may already apply AGC, so use lower gain
     return 1.0f;
@@ -297,11 +308,16 @@ public class RecordAudio : MonoBehaviour
         float[] samples = new float[audioClip.samples * audioClip.channels];
         audioClip.GetData(samples, 0);
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // For WebGL, skip normalization/amplification to avoid distortion
+        audioClip.SetData(samples, 0);
+        return;
+#endif
         // Apply high-pass filter if enabled
         if (this.useHighPassFilter)
         {
             // Assuming the audio has multiple channels, process each separately
-            this.ApplyHighPassFilter(samples, audioClip.channels, cutoffFrequency: 100f, sampleRate: audioClip.frequency);
+            this.ApplyHighPassFilter(samples, audioClip.channels, cutoffFrequency: 50f, sampleRate: audioClip.frequency);
         }
 
         // Normalize samples
@@ -314,11 +330,9 @@ public class RecordAudio : MonoBehaviour
         // Avoid division by zero
         if (maxAmplitude > 0f)
         {
+            float scale = gain / maxAmplitude;
             for (int i = 0; i < samples.Length; i++)
-            {
-                // Normalize and amplify
-                samples[i] = (samples[i] / maxAmplitude) * gain;
-            }
+                samples[i] = Mathf.Clamp(samples[i] * scale, -1f, 1f);
         }
 
         // Write the processed samples back to the audio clip

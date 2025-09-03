@@ -36,7 +36,7 @@
           </div>
       </div>
       <script>
-		/*async function accessAudio() {
+		async function accessAudio(unityInstance) {
 			try {
 				const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 				console.log('Microphone access granted and audio playback started.');
@@ -45,11 +45,15 @@
 				stream.getTracks().forEach(function (track) {
 					track.stop();
 				});
+				
+				if (unityInstance !== 'undefined') {
+					unityInstance.SendMessage('Loader', 'OnMicrophoneAccessGranted');
+				}
 			} catch (error) {
 				console.error('Error accessing microphone:', error);
 				alert('Could not access the microphone. Please check your permissions.');
 			}
-		}*/
+		}
 
         function checkOrientation() {
             const lock = document.getElementById('orientation-lock');
@@ -64,7 +68,6 @@
         window.addEventListener('resize', checkOrientation);
 
         window.addEventListener("load", function () {
-              //accessAudio();
             checkOrientation();
             if ("serviceWorker" in navigator) {
               navigator.serviceWorker.register("ServiceWorker.js");
@@ -161,6 +164,7 @@
         }).then((instance) => {
           //loadingBar.style.display = "none";
 		  unityInstance = instance;
+		  accessAudio(unityInstance);
 		  unityInstance.SendMessage('Loader', 'LoadGameData');
         }).catch((message) => {
           alert(message);

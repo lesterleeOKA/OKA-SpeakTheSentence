@@ -298,7 +298,7 @@ public class RecordAudio : MonoBehaviour
         // Use default gain for the editor
         return 5.0f;
 #elif UNITY_WEBGL
-    return 2.0f;
+    return 5.0f;
 #elif UNITY_IOS
     // iPad browsers may already apply AGC, so use lower gain
     return 1.0f;
@@ -306,6 +306,24 @@ public class RecordAudio : MonoBehaviour
     // Default gain for other platforms
     return 2f;
 #endif
+    }
+
+    private void NormalizeAudioClip(AudioClip audioClip)
+    {
+        if (audioClip == null) return;
+        float[] samples = new float[audioClip.samples * audioClip.channels];
+        audioClip.GetData(samples, 0);
+
+        float max = 0f;
+        foreach (var s in samples)
+            max = Mathf.Max(max, Mathf.Abs(s));
+
+        if (max > 0f)
+        {
+            for (int i = 0; i < samples.Length; i++)
+                samples[i] /= max;
+            audioClip.SetData(samples, 0);
+        }
     }
 
     public void StopRecording()
@@ -349,6 +367,7 @@ public class RecordAudio : MonoBehaviour
         float gain = this.GetPlatformSpecificGain();
         LogController.Instance?.debug("Gain scale: " + gain);
         this.ProcessAudioClip(this.clip, gain);
+        this.NormalizeAudioClip(this.clip);
 
         // Parallel API calls
         bool azureDone = false;
@@ -897,7 +916,7 @@ public class RecordAudio : MonoBehaviour
                     }
                 }
 
-                Debug.Log("result: " + result.ToString().TrimEnd());
+                //Debug.Log("result: " + result.ToString().TrimEnd());
                 textpro.text = result.ToString().TrimEnd();
             }
         }
@@ -1002,6 +1021,9 @@ public class RecordAudio : MonoBehaviour
                 this.showCorrectSentence(QuestionController.Instance.currentQuestion.fullSentence, this.wordDetails);
                 break;
         }
+
+        if (this.accurancyText != null)
+            this.accurancyText.text = $"Word missing.";
     }
 
     public void ResetRecorder()

@@ -139,41 +139,22 @@ public class RecordAudio : MonoBehaviour
         }
     }
 
-    private void ProcessAudioClip(AudioClip audioClip, float gain)
-    {
-        if (audioClip == null) return;
-
-        // Get the audio data
-        float[] samples = new float[audioClip.samples * audioClip.channels];
-        audioClip.GetData(samples, 0);
-
-        if(this.useHighPassFilter)
-        {
-            this.ApplyHighPassFilter(samples, cutoffFrequency: 100f, sampleRate: audioClip.frequency);
-        }
-
-        for (int i = 0; i < samples.Length; i++)
-        {
-            samples[i] *= gain;
-        }
-        LogController.Instance.debug($"Applied gain of {gain}x to the audio clip.");
-
-        // Set the processed data back to the audio clip
-        audioClip.SetData(samples, 0);
-    }
-
-    private void ApplyHighPassFilter(float[] samples, float cutoffFrequency, float sampleRate)
+    private void ApplyHighPassFilter(float[] samples, int channels, float cutoffFrequency, float sampleRate)
     {
         float rc = 1.0f / (cutoffFrequency * 2 * Mathf.PI);
         float dt = 1.0f / sampleRate;
         float alpha = rc / (rc + dt);
 
-        float previousSample = samples[0];
-        for (int i = 1; i < samples.Length; i++)
+        // Process each channel independently
+        for (int channel = 0; channel < channels; channel++)
         {
-            float currentSample = samples[i];
-            samples[i] = alpha * (samples[i] - previousSample);
-            previousSample = currentSample;
+            float previousSample = samples[channel];
+            for (int i = channel; i < samples.Length; i += channels)
+            {
+                float currentSample = samples[i];
+                samples[i] = alpha * (samples[i] - previousSample);
+                previousSample = currentSample;
+            }
         }
     }
 
@@ -272,11 +253,11 @@ public class RecordAudio : MonoBehaviour
         if (!microphoneDevices.HasMicrophoneDevices)
         {
             LogController.Instance?.debug("No microphone devices available. use default microphone");
-            this.clip = Microphone.Start("", true, maxRecordLength, 16000);
+            this.clip = Microphone.Start("", true, maxRecordLength, 44100);
         }
         else
         {
-            this.clip = Microphone.Start(microphoneDevices.selectedDeviceName, true, maxRecordLength, 16000);
+            this.clip = Microphone.Start(microphoneDevices.selectedDeviceName, true, maxRecordLength, 44100);
         }
 
         if (this.clip)
@@ -308,22 +289,40 @@ public class RecordAudio : MonoBehaviour
 #endif
     }
 
-    private void NormalizeAudioClip(AudioClip audioClip)
+    private void NormalizeAndAmplifyAudioClip(AudioClip audioClip, float gain)
     {
         if (audioClip == null) return;
+
+        // Get audio samples
         float[] samples = new float[audioClip.samples * audioClip.channels];
         audioClip.GetData(samples, 0);
 
-        float max = 0f;
-        foreach (var s in samples)
-            max = Mathf.Max(max, Mathf.Abs(s));
+        // Apply high-pass filter if enabled
+        if (this.useHighPassFilter)
+        {
+            // Assuming the audio has multiple channels, process each separately
+            this.ApplyHighPassFilter(samples, audioClip.channels, cutoffFrequency: 100f, sampleRate: audioClip.frequency);
+        }
 
-        if (max > 0f)
+        // Normalize samples
+        float maxAmplitude = 0f;
+        foreach (var sample in samples)
+        {
+            maxAmplitude = Mathf.Max(maxAmplitude, Mathf.Abs(sample));
+        }
+
+        // Avoid division by zero
+        if (maxAmplitude > 0f)
         {
             for (int i = 0; i < samples.Length; i++)
-                samples[i] /= max;
-            audioClip.SetData(samples, 0);
+            {
+                // Normalize and amplify
+                samples[i] = (samples[i] / maxAmplitude) * gain;
+            }
         }
+
+        // Write the processed samples back to the audio clip
+        audioClip.SetData(samples, 0);
     }
 
     public void StopRecording()
@@ -366,8 +365,7 @@ public class RecordAudio : MonoBehaviour
         this.trimmedClip = trimmedClip;
         float gain = this.GetPlatformSpecificGain();
         LogController.Instance?.debug("Gain scale: " + gain);
-        this.ProcessAudioClip(this.clip, gain);
-        this.NormalizeAudioClip(this.clip);
+        this.NormalizeAndAmplifyAudioClip(this.clip, gain);
 
         // Parallel API calls
         bool azureDone = false;

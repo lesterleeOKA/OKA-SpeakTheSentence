@@ -220,6 +220,8 @@ public class CurrentQuestion
         this.qa = qa;
         this.questionText = null;
         this.questionTexts = null;
+        this.displayQuestion = "";
+        this.displayHint = "";
         switch (qa.questionType)
         {
             case "Picture":
@@ -261,7 +263,7 @@ public class CurrentQuestion
                     if (this.questionTexts[i].gameObject.name == "MarkerText")
                     {
                         this.questionText = questionTexts[i];
-                        this.questionText.text = !string.IsNullOrEmpty(qa.question) ? qa.question : "?";
+                        this.questionText.text = !string.IsNullOrEmpty(qa.question) ? qa.question : "";
                     }
                 }
                 this.audioPlayBtn = this.questionBgs[1].GetComponentInChildren<CanvasGroup>();

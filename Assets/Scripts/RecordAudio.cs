@@ -39,7 +39,7 @@ public class RecordAudio : MonoBehaviour
     public CanvasGroup[] resultBtns;
 
     [SerializeField] private AudioSource playbackSource;
-    [SerializeField] private GameObject recordButton;
+    [SerializeField] private CanvasGroup recordButton;
     [SerializeField] private CanvasGroup stopButton;
     [SerializeField] private RawImage playbackButton;
     [SerializeField] private Texture[] playbackBtnTexs;
@@ -66,6 +66,8 @@ public class RecordAudio : MonoBehaviour
     private string ApiUrl = "";
     private string JwtToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dfZW5hYmxlZCI6IjEiLCJ0b2tlbiI6IjUyNzcwMS04MTcyNGIyYTIxODk4YTE2NTA0ZTZiMTg0ZWZlMWQ5Mjc2OGIyYWM1YmI2ZmExMDc4NDVlZjM1MDRjNTY3NDBlIiwiZXhwaXJlcyI6MTgwODUzNjQ5NSwicmVuZXdfZW5hYmxlZCI6MSwidGltZSI6IjIwMjUtMDQtMjQgMDM6MTQ6NTUgR01UIiwidWlkIjoiNTI3NzAxIiwidXNlcl9yb2xlIjoiMiIsInNjaG9vbF9pZCI6IjMxNiIsImlwIjoiOjoxIiwidmVyc2lvbiI6bnVsbCwiZGV2aWNlIjoidW5rbm93biJ9.SO79u9MBCflyYh_TcsIBG740pWXgKPZOAsGNZESkoqo";
 
+    public WordDetail[] wordDetails;
+
     void Start()
     {
         StartCoroutine(this.initMicrophonePermission(1f));
@@ -77,6 +79,8 @@ public class RecordAudio : MonoBehaviour
         }
         this.passAccuracyScore = LoaderConfig.Instance.gameSetup.passAccuracyScore;
         this.passPronScore = LoaderConfig.Instance.gameSetup.passPronScore;
+
+        SetUI.Set(this.recordButton, false, 0f, 0.5f);
     }
 
     public void Init()
@@ -188,6 +192,7 @@ public class RecordAudio : MonoBehaviour
             if (!this.isInitialized)
             {
                 GameController.Instance?.UpdateNextQuestion();
+                SetUI.Set(this.recordButton, true, 0f);
                 this.isInitialized = true;
             }
         },
@@ -729,7 +734,7 @@ public class RecordAudio : MonoBehaviour
                     var correctAnswerWords = QuestionController.Instance.currentQuestion.correctAnswer
                     .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                    WordDetail[] wordDetails = null;
+                    this.wordDetails = null;
                     // Log the NBest array
                     if (Best != null)
                     {
@@ -738,7 +743,7 @@ public class RecordAudio : MonoBehaviour
                             result.AppendLine($"Score: {nBest.PronScore}");
                             if(nBest.Words != null)
                             {
-                                wordDetails = nBest.Words;
+                                this.wordDetails = nBest.Words;
                                 foreach(var word in nBest.Words)
                                 {
                                     if(word.ErrorType == "Omission")
@@ -785,8 +790,8 @@ public class RecordAudio : MonoBehaviour
                                     () =>
                                     {
                                         this.showCorrectSentence(
-                                            QuestionController.Instance.currentQuestion.fullSentence, 
-                                            wordDetails);
+                                            QuestionController.Instance.currentQuestion.fullSentence,
+                                            this.wordDetails);
                                     }
                                  );
                             }
@@ -861,6 +866,8 @@ public class RecordAudio : MonoBehaviour
 
                     if (isError)
                     {
+
+                        Debug.Log("result: " + errorType);
                         switch (errorType)
                         {
                             case "Mispronunciation":
@@ -984,9 +991,17 @@ public class RecordAudio : MonoBehaviour
             this.answerBox.texture = this.answerBoxTexs[status? 1 : 0];
         }*/
 
-        var correctAnswer = QuestionController.Instance.currentQuestion.correctAnswer;
-        var answerWords = correctAnswer.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-        this.showCorrectSentence(correctAnswer, null);
+        var questionType = QuestionController.Instance.currentQuestion.questiontype;
+
+        switch (questionType)
+        {
+            case QuestionType.Audio:
+                this.showCorrectSentence(QuestionController.Instance.currentQuestion.correctAnswer, this.wordDetails);
+                break;
+            case QuestionType.FillInBlank:
+                this.showCorrectSentence(QuestionController.Instance.currentQuestion.fullSentence, this.wordDetails);
+                break;
+        }
     }
 
     public void ResetRecorder()

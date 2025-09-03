@@ -122,7 +122,7 @@ public class TextToSpeech : MonoBehaviour
         }
         else
         {
-            // If no audio, wait a short time for UX consistency
+            LogController.Instance.debugError("AudioSource or AudioClip is not set or cannot downloaded.");
             yield return new WaitForSeconds(delay);
         }
 

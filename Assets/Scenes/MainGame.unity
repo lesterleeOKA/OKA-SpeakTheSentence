@@ -3114,7 +3114,7 @@ MonoBehaviour:
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 150
+  m_fontSizeMax: 70
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 4096
@@ -4254,7 +4254,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '?'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: efef8b91b300fa84f9a50e1ac422f2d8, type: 2}
   m_sharedMaterial: {fileID: 985774332121155581, guid: efef8b91b300fa84f9a50e1ac422f2d8, type: 2}
@@ -4281,12 +4281,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 133.05
+  m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 150
+  m_fontSizeMax: 70
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 4096
@@ -4700,6 +4700,7 @@ GameObject:
   - component: {fileID: 1793139401}
   - component: {fileID: 1793139400}
   - component: {fileID: 1793139399}
+  - component: {fileID: 1793139402}
   m_Layer: 5
   m_Name: RecordBtn
   m_TagString: Untagged
@@ -4892,6 +4893,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &1793139402
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793139393}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1803085433
 GameObject:
   m_ObjectHideFlags: 0
@@ -14053,7 +14066,7 @@ MonoBehaviour:
   - {fileID: 2046833400}
   - {fileID: 1021938335}
   playbackSource: {fileID: 5313288067539273716}
-  recordButton: {fileID: 1793139393}
+  recordButton: {fileID: 1793139402}
   stopButton: {fileID: 252134763}
   playbackButton: {fileID: 492286350}
   playbackBtnTexs:
@@ -14083,6 +14096,7 @@ MonoBehaviour:
   ttsFailure: 0
   ttsDone: 0
   isInitialized: 0
+  wordDetails: []
 --- !u!82 &5313288067539273716
 AudioSource:
   m_ObjectHideFlags: 0
@@ -15269,7 +15283,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '?'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: efef8b91b300fa84f9a50e1ac422f2d8, type: 2}
   m_sharedMaterial: {fileID: 985774332121155581, guid: efef8b91b300fa84f9a50e1ac422f2d8, type: 2}
@@ -15296,12 +15310,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 150
+  m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 150
+  m_fontSizeMax: 70
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 4096

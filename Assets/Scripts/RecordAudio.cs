@@ -109,6 +109,11 @@ public class RecordAudio : MonoBehaviour
                 int sampleCount = Mathf.Min(micPosition, this.clip.samples);
                 float[] samples = new float[sampleCount];
                 this.clip.GetData(samples, 0);
+                float gain = this.GetPlatformSpecificGain();
+                for (int i = 0; i < samples.Length; i++)
+                {
+                    samples[i] = Mathf.Clamp(samples[i] * gain, -1f, 1f);
+                }
                 this.waveformVisualizer?.UpdateWaveform(samples);
             }
 
@@ -1040,6 +1045,8 @@ public class RecordAudio : MonoBehaviour
 
     public void ResetRecorder()
     {
+        this.ttsDone = false;
+        this.ttsFailure = false;
         AudioController.Instance?.fadingBGM(true, 1f);
         this.playbackButton.texture = this.playbackBtnTexs[0];
         //this.ShowDirectCorrectAnswer(false);

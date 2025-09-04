@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 public class GameController : GameBaseController
 {
     public static GameController Instance = null;
@@ -18,8 +17,29 @@ public class GameController : GameBaseController
     {
         base.Start();
 
+        string result = "";
+        string instruction = LoaderConfig.Instance.apiManager.settings.instructionContent;
+        if (string.IsNullOrEmpty(instruction))
+        {
+            result = QuestionManager.Instance.questionData.questions[0].questionHint;
+        }
+        else
+        {
+            if (instruction.Contains("-"))
+            {
+                // Split the string and take the part before the first "-"
+                result = instruction.Split('-')[0];
+                LogController.Instance.debug(result); // Output: Listen to the audio and speak the words out
+                TextToSpeech.Instance?.UpdateTextToAudioFromAPI(result);
+            }
+            else
+            {
+                result = instruction;
+                LogController.Instance.debug("No '-' found in the string.");
+            }
+        }
         //Add real time download question hint from API;
-        TextToSpeech.Instance?.UpdateTextToAudioFromAPI(QuestionManager.Instance.questionData.questions[0].questionHint);
+        TextToSpeech.Instance?.UpdateTextToAudioFromAPI(result);
     }
 
     void createPlayer()

@@ -16,6 +16,14 @@ public class RecordAudio : MonoBehaviour
         recognize_tts=1, //語音辨識api
     }*/
 
+    public enum DetectMethod
+    {
+        None = 0,
+        Word = 1,
+        FullSentence = 2,
+        Spelling = 3
+    }
+
     public enum Stage
     {
         Record=0,
@@ -23,6 +31,7 @@ public class RecordAudio : MonoBehaviour
         UploadClip = 2,
         PlaybackResult = 3,
     }
+    public DetectMethod detectMethod = DetectMethod.FullSentence;
     public Stage stage = Stage.Record;
     //public RecognitionAPI recognitionAPI = RecognitionAPI.recognize_tts;
     public TextMeshProUGUI debugText, answerText, submitAudioText;
@@ -30,7 +39,6 @@ public class RecordAudio : MonoBehaviour
     public RawImage answerBox;
     public Texture[] answerBoxTexs;
     private AudioClip clip, trimmedClip;
-    public bool useTextToRecognize = false;
     public bool useHighPassFilter = false;
     [Header("Audio Pages for different process")]
     public CanvasGroup[] pages;
@@ -62,7 +70,7 @@ public class RecordAudio : MonoBehaviour
     public bool ttsFailure = false;
     public bool ttsDone = false;
     public bool isInitialized = false;
-
+    public string textToRecognize = "";
     private string ApiUrl = "";
     private string JwtToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dfZW5hYmxlZCI6IjEiLCJ0b2tlbiI6IjUyNzcwMS04MTcyNGIyYTIxODk4YTE2NTA0ZTZiMTg0ZWZlMWQ5Mjc2OGIyYWM1YmI2ZmExMDc4NDVlZjM1MDRjNTY3NDBlIiwiZXhwaXJlcyI6MTgwODUzNjQ5NSwicmVuZXdfZW5hYmxlZCI6MSwidGltZSI6IjIwMjUtMDQtMjQgMDM6MTQ6NTUgR01UIiwidWlkIjoiNTI3NzAxIiwidXNlcl9yb2xlIjoiMiIsInNjaG9vbF9pZCI6IjMxNiIsImlwIjoiOjoxIiwidmVyc2lvbiI6bnVsbCwiZGV2aWNlIjoidW5rbm93biJ9.SO79u9MBCflyYh_TcsIBG740pWXgKPZOAsGNZESkoqo";
 
@@ -165,6 +173,7 @@ public class RecordAudio : MonoBehaviour
 
     public void PlayAgainHint()
     {
+        QuestionController.Instance?.currentQuestion.stopAudio();
         float defaultDelay = !this.isInitialized ? 1f : 0f;
         this.hintBox.GetComponent<TextToSpeech>()?.PlayAudio(() =>
         {
@@ -198,11 +207,14 @@ public class RecordAudio : MonoBehaviour
                 break;
             case Stage.Recording:
                 this.StopPlayback();
+                QuestionController.Instance?.currentQuestion.stopAudio();
+                QuestionController.Instance?.currentQuestion.setInteractiveOfQuestionBoards(false);
                 SetUI.SetGroup(this.pages, 1);
                 StartCoroutine(this.delayEnableStopRecorder());
                 break;
             case Stage.UploadClip:
                 AudioController.Instance?.fadingBGM(true, 1f);
+                QuestionController.Instance?.currentQuestion.setInteractiveOfQuestionBoards(true);
                 break;
             case Stage.PlaybackResult:
                 SetUI.SetGroup(this.pages, 2);
@@ -539,6 +551,31 @@ public class RecordAudio : MonoBehaviour
         }
     }
 
+    public string TextToRecognize
+    {
+        get
+        {
+            this.textToRecognize = "";
+            switch (this.detectMethod)
+            {
+                case DetectMethod.None:
+                    this.textToRecognize = "";
+                    break;
+                case DetectMethod.Word:
+                    this.textToRecognize = QuestionController.Instance.currentQuestion.correctAnswer;
+                    break;
+                case DetectMethod.FullSentence:
+                    this.textToRecognize = QuestionController.Instance.currentQuestion.fullSentence;
+                    break;
+                case DetectMethod.Spelling:
+                    var word = QuestionController.Instance.currentQuestion.correctAnswer;
+                    this.textToRecognize = string.Join(" ", word.ToCharArray());
+                    break;
+            }
+            return this.textToRecognize;
+        }
+    }
+
     private IEnumerator SendAudioToAzureApi(AudioClip audioClip, Action<string> onSuccess, Action<string> onError)
     {
         if (this.answerText != null) this.answerText.text = "";
@@ -692,8 +729,7 @@ public class RecordAudio : MonoBehaviour
                     onSuccess?.Invoke("Success to pass to recognition request.");
                     yield return StartCoroutine(this.SendAudioRecognitionRequest(
                         audioUrl,
-                        this.useTextToRecognize ? 
-                        QuestionController.Instance.currentQuestion.fullSentence : ""
+                        this.TextToRecognize
                     ));
                     yield break;
                 }

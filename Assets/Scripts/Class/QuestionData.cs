@@ -411,14 +411,40 @@ public class CurrentQuestion
         }
     }
 
-    public void playAudio()
+    public void setInteractiveOfQuestionBoards(bool status)
     {
-        if(this.audioPlayBtn != null && this.currentAudioClip != null)
+        foreach (var board in this.questionBgs)
+        {
+            var boardCg = board.GetComponent<CanvasGroup>();
+            if (boardCg != null)
+            {
+                boardCg.interactable = status;
+                boardCg.blocksRaycasts = status;
+            }
+        }
+    }
+
+    public void stopAudio()
+    {
+        if (this.audioPlayBtn != null && this.currentAudioClip != null)
         {
             var audio = this.audioPlayBtn.GetComponentInChildren<AudioSource>();
             if (audio != null)
             {
                 audio.Stop();
+            }
+        }
+    }
+
+    public void playAudio()
+    {
+        if (this.audioPlayBtn != null && this.currentAudioClip != null)
+        {
+            var audio = this.audioPlayBtn.GetComponentInChildren<AudioSource>();
+            if (audio != null)
+            {
+                audio.Stop();
+                TextToSpeech.Instance?.StopAudio();
                 audio.clip = this.currentAudioClip;
                 audio.Play();
             }

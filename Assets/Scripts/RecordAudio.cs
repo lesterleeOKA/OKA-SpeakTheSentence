@@ -75,6 +75,7 @@ public class RecordAudio : MonoBehaviour
     private string JwtToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dfZW5hYmxlZCI6IjEiLCJ0b2tlbiI6IjUyNzcwMS04MTcyNGIyYTIxODk4YTE2NTA0ZTZiMTg0ZWZlMWQ5Mjc2OGIyYWM1YmI2ZmExMDc4NDVlZjM1MDRjNTY3NDBlIiwiZXhwaXJlcyI6MTgwODUzNjQ5NSwicmVuZXdfZW5hYmxlZCI6MSwidGltZSI6IjIwMjUtMDQtMjQgMDM6MTQ6NTUgR01UIiwidWlkIjoiNTI3NzAxIiwidXNlcl9yb2xlIjoiMiIsInNjaG9vbF9pZCI6IjMxNiIsImlwIjoiOjoxIiwidmVyc2lvbiI6bnVsbCwiZGV2aWNlIjoidW5rbm93biJ9.SO79u9MBCflyYh_TcsIBG740pWXgKPZOAsGNZESkoqo";
 
     public WordDetail[] wordDetails;
+    private Coroutine loadingTextCoroutine;
 
     void Start()
     {
@@ -356,6 +357,19 @@ public class RecordAudio : MonoBehaviour
         audioClip.SetData(samples, 0);
     }
 
+    private IEnumerator AnimateLoadingText(string content = "")
+    {
+        string[] loadingStates = { $"{content}...", $"{content}..", $"{content}." };
+        int index = 0;
+        while (true)
+        {
+            if (this.submitAudioText != null)
+                this.submitAudioText.text = loadingStates[index];
+            index = (index + 1) % loadingStates.Length;
+            yield return new WaitForSeconds(0.5f); // Adjust speed as needed
+        }
+    }
+
     public void StopRecording()
     {
         if (!isRecording)
@@ -363,6 +377,11 @@ public class RecordAudio : MonoBehaviour
             LogController.Instance?.debug("StopRecording called but not currently recording.");
             return;
         }
+
+        if (this.loadingTextCoroutine != null)
+            StopCoroutine(this.loadingTextCoroutine);
+
+        this.loadingTextCoroutine = StartCoroutine(AnimateLoadingText("Loading"));
 
         int micPosition = Microphone.GetPosition(null);
         bool wasRecording = Microphone.IsRecording(null);
@@ -744,6 +763,11 @@ public class RecordAudio : MonoBehaviour
             else
             {
                 LogController.Instance.debugError($"File upload failed (attempt {attempt}): {request.error}");
+                if (this.loadingTextCoroutine != null)
+                {
+                    StopCoroutine(this.loadingTextCoroutine);
+                    this.loadingTextCoroutine = null;
+                }
                 this.UpdateUI($"Upload failed (attempt {attempt}/{retryCount}): {request.error}");
                 if(this.submitAudioText != null) this.submitAudioText.text = $"Retry Upload ({attempt}/{retryCount})";
                 if (attempt < retryCount)
@@ -1093,6 +1117,12 @@ public class RecordAudio : MonoBehaviour
         //this.UpdateButtonStates();
         SetUI.SetGroup(this.pages, 0);
         this.controlResultPage(-1);
+
+        if (this.loadingTextCoroutine != null)
+        {
+            StopCoroutine(this.loadingTextCoroutine);
+            this.loadingTextCoroutine = null;
+        }
         if (this.submitAudioText != null) this.submitAudioText.text = "Listening...";
         SetUI.Set(this.stopButton, false, 0f, 0.5f);
     }

@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,6 +51,12 @@ public class PlayerIcon : MonoBehaviour
         {
             if (this.PlayerIcons[i] != null && _icon != null)
             {
+                if (this.PlayerIcons[i].GetComponent<AspectRatioFitter>() == null)
+                {
+                    this.PlayerIcons[i].AddComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+                }
+
+                this.PlayerIcons[i].GetComponent<AspectRatioFitter>().aspectRatio = (float)_icon.texture.width / (float)_icon.texture.height;
                 this.PlayerIcons[i].sprite = _icon;
             }
         }

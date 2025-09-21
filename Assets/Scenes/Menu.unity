@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1908,6 +1908,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75a3a5fdca04c44cb64c1fd3c590b4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loginPlayer: 1
+  displayNum: 1
   numberOfHelp: 5
   cg: {fileID: 0}
   popNumBg: {fileID: 442325090959564023}
@@ -1915,7 +1917,13 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 3685c18414ec04f4f8ad1bde7afd2f8f, type: 3}
   - {fileID: 2800000, guid: d9ef2601c2cd234448564fb63b63e53e, type: 3}
   help_number_text: {fileID: 6473257883474915611}
+  help_tool_name: {fileID: 1855674956}
   grayScaleMat: {fileID: 2100000, guid: f6b334aa1bc67a54b98b08b4b815d897, type: 2}
+  currentInventory:
+    help_tool_id: 0
+    help_tool_name: 
+    description: 
+    amount: 0
 --- !u!222 &4265782668205733716
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -4,20 +4,16 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
 
 [Serializable]
 public class LoadImage : Downloader
 {
-    private static bool isFileOperationInProgress = false;
-    private Queue<(string folderName, string fileName, Action<Texture> callback)> loadQueue = new Queue<(string, string, Action<Texture>)>();
-    private bool isProcessingQueue = false;
     [SerializeField] public LoadImageMethod loadImageMethod = LoadImageMethod.StreamingAssets;
     [SerializeField] private ImageType imageType = ImageType.jpg;
+    [SerializeField] public bool enableRetry = true;
     private AssetBundle assetBundle = null;
     [HideInInspector]
     public Texture[] allTextures;
-    public bool useGCCollect = true;
 
     public string ImageExtension
     {
@@ -35,59 +31,53 @@ public class LoadImage : Downloader
 
     public IEnumerator Load(string folderName = "", string fileName = "", Action<Texture> callback = null)
     {
-        // Enqueue the loading request
-        this.loadQueue.Enqueue((folderName, fileName, callback));
-
-        if (!this.isProcessingQueue)
+        if (LoaderConfig.Instance.apiManager.IsLogined)
         {
-            yield return this.ProcessLoadQueue();
+            this.loadImageMethod = LoadImageMethod.Url;
         }
-    }
 
-    private IEnumerator ProcessLoadQueue()
-    {
-        this.isProcessingQueue = true;
-
-        while (this.loadQueue.Count > 0)
+        Func<Action<Texture>, IEnumerator> method = loadImageMethod switch
         {
-            var (folderName, fileName, callback) = this.loadQueue.Dequeue();
+            LoadImageMethod.StreamingAssets => (cb) => this.LoadImageFromStreamingAssets(folderName, fileName, cb),
+            LoadImageMethod.Resources => (cb) => this.LoadImageFromResources(folderName, fileName, cb),
+            LoadImageMethod.AssetsBundle => (cb) => this.LoadImageFromAssetsBundle(fileName, cb),
+            LoadImageMethod.Url => (cb) => this.LoadImageFromURL(fileName, cb),
+            _ => (cb) => this.LoadImageFromStreamingAssets(folderName, fileName, cb)
+        };
 
-            while (isFileOperationInProgress)
-            {
-                yield return null;
-            }
-
-            isFileOperationInProgress = true;
-
-            // Perform the actual loading based on the selected method
-            switch (this.loadImageMethod)
-            {
-                case LoadImageMethod.StreamingAssets:
-                    yield return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
-                    break;
-                case LoadImageMethod.Resources:
-                    yield return this.LoadImageFromResources(folderName, fileName, callback);
-                    break;
-                case LoadImageMethod.AssetsBundle:
-                    yield return this.LoadImageFromAssetsBundle(fileName, callback);
-                    break;
-                case LoadImageMethod.Url:
-                    yield return this.LoadImageFromURL(fileName, callback);
-                    break;
-                default:
-                    yield return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
-                    break;
-            }
-
-            isFileOperationInProgress = false;
-        }
+        if (this.enableRetry)
+            yield return this.RetryCoroutine(method, callback);
+        else
+            yield return method(callback);
 
         if (this.useGCCollect)
         {
             yield return Resources.UnloadUnusedAssets();
             System.GC.Collect();
         }
-        this.isProcessingQueue = false;
+    }
+
+    private IEnumerator RetryCoroutine(Func<Action<Texture>, IEnumerator> method, Action<Texture> finalCallback)
+    {
+        int attempt = 0;
+        bool success = false;
+        Texture resultTexture = null;
+
+        while (attempt < this.maxRetryCount && !success)
+        {
+            attempt++;
+            yield return method((tex) => {
+                resultTexture = tex;
+                success = tex != null;
+            });
+            if (!success)
+            {
+                LogController.Instance?.debug($"Retry {attempt}/{this.maxRetryCount}...");
+                yield return new WaitForSeconds(this.retryDelaySeconds);
+            }
+        }
+        // Call the original callback with the result (success or null)
+        finalCallback?.Invoke(resultTexture);
     }
 
 
@@ -248,7 +238,7 @@ public class LoadImage : Downloader
             {
                 // Get the texture and apply it to the target renderer
                 Texture2D texture = DownloadHandlerTexture.GetContent(www);
-                LogController.Instance?.debug("loaded api qa texture: " + texture.texelSize);
+                Debug.Log("loaded api qa texture: " + texture.texelSize);
                 if (texture != null)
                 {
                     texture.filterMode = FilterMode.Bilinear;
@@ -260,7 +250,6 @@ public class LoadImage : Downloader
             }
         }
     }
-
 }
 
 

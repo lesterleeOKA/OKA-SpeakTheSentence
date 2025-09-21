@@ -3,14 +3,10 @@ using System.IO;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections.Generic;
 
 [Serializable]
 public class LoadAudio : Downloader
 {
-    private static bool isFileOperationInProgress = false;
-    private Queue<(string folderName, string fileName, Action<AudioClip> callback)> loadQueue = new Queue<(string, string, Action<AudioClip>)>();
-    private bool isProcessingQueue = false;
     [SerializeField] private LoadAudioMethod loadAudioMethod = LoadAudioMethod.StreamingAssets;
     [SerializeField] private AudioFormat audioFormat = AudioFormat.mp3;
 
@@ -30,54 +26,55 @@ public class LoadAudio : Downloader
 
     public IEnumerator Load(string folderName = "", string fileName = "", Action<AudioClip> callback = null)
     {
-        this.loadQueue.Enqueue((folderName, fileName, callback));
-        if (!this.isProcessingQueue)
-        {
-            yield return this.ProcessLoadQueue();
-        }
-    }
-
-    private IEnumerator ProcessLoadQueue()
-    {
-        this.isProcessingQueue = true;
-
         if (LoaderConfig.Instance.apiManager.IsLogined)
         {
             this.loadAudioMethod = LoadAudioMethod.Url;
         }
 
-        while (this.loadQueue.Count > 0)
+        switch (this.loadAudioMethod)
         {
-            var (folderName, fileName, callback) = loadQueue.Dequeue();
-
-            while (isFileOperationInProgress)
-            {
-                yield return null;
-            }
-
-            isFileOperationInProgress = true;
-
-            // Perform the actual loading based on the selected method
-            switch (this.loadAudioMethod)
-            {
-                case LoadAudioMethod.StreamingAssets:
-                    yield return this.LoadAudioFromStreamingAssets(folderName, fileName, callback);
-                    break;
-                case LoadAudioMethod.Resources:
-                    yield return this.LoadAudioFromResources(folderName, fileName, callback);
-                    break;
-                case LoadAudioMethod.Url:
-                    yield return this.LoadAudioFromURL(fileName, callback);
-                    break;
-                default:
-                    yield return this.LoadAudioFromStreamingAssets(folderName, fileName, callback);
-                    break;
-            }
-
-            isFileOperationInProgress = false;
+            case LoadAudioMethod.StreamingAssets:
+                yield return this.RetryCoroutine(
+                    (cb) => this.LoadAudioFromStreamingAssets(folderName, fileName, cb), callback); break;
+            case LoadAudioMethod.Resources:
+                yield return this.RetryCoroutine(
+                    (cb) => this.LoadAudioFromResources(folderName, fileName, cb), callback); break;
+            case LoadAudioMethod.Url:
+                yield return this.RetryCoroutine(
+                    (cb) => this.LoadAudioFromURL(fileName, cb), callback); break;
+            default:
+                yield return this.RetryCoroutine(
+                    (cb) => this.LoadAudioFromStreamingAssets(folderName, fileName, cb), callback); break;
         }
 
-        isProcessingQueue = false;
+        if (this.useGCCollect)
+        {
+            yield return Resources.UnloadUnusedAssets();
+            System.GC.Collect();
+        }
+    }
+
+    private IEnumerator RetryCoroutine(Func<Action<AudioClip>, IEnumerator> method, Action<AudioClip> finalCallback)
+    {
+        int attempt = 0;
+        bool success = false;
+        AudioClip resultAudioClip = null;
+
+        while (attempt < this.maxRetryCount && !success)
+        {
+            attempt++;
+            yield return method((clip) => {
+                resultAudioClip = clip;
+                success = clip != null;
+            });
+            if (!success)
+            {
+                LogController.Instance?.debug($"Retry {attempt}/{this.maxRetryCount}...");
+                yield return new WaitForSeconds(this.retryDelaySeconds);
+            }
+        }
+        // Call the original callback with the result (success or null)
+        finalCallback?.Invoke(resultAudioClip);
     }
 
     private IEnumerator LoadAudioFromStreamingAssets(string folderName = "", string fileName = "", Action<AudioClip> callback = null)
@@ -87,6 +84,7 @@ public class LoadAudio : Downloader
         switch (this.loadMethod)
         {
             case LoadMethod.www:
+
                 using (WWW www = new WWW(path))
                 {
                     yield return www;
@@ -150,27 +148,6 @@ public class LoadAudio : Downloader
                         LogController.Instance?.debugError($"Failed to load Audio from path: {path}, Error: {uwq.error}");
                     }
                 }
-
-                /*using (UnityWebRequest uwq = UnityWebRequestMultimedia.GetAudioClip(path, AudioType.MPEG))
-                {
-                    uwq.certificateHandler = new WebRequestSkipCert();
-                    yield return uwq.SendWebRequest();
-
-                    if (uwq.result == UnityWebRequest.Result.Success)
-                    {
-                        AudioClip audioClip = DownloadHandlerAudioClip.GetContent(uwq);
-
-                        if (audioClip != null && audioClip.length > 0)
-                        {
-                            LogController.Instance?.debug("Audio loaded successfully!");
-                            callback?.Invoke(audioClip);
-                        }
-                    }
-                    else
-                    {
-                        LogController.Instance?.debugError($"Failed to load Audio from path: {path}, Error: {uwq.error}");
-                    }
-                }*/
                 break;
         }
     }

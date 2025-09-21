@@ -1,10 +1,11 @@
-using System;
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Text.RegularExpressions;
 
 [Serializable]
 public class QuestionDataWrapper
@@ -29,6 +30,7 @@ public class QuestionList
     public string[] answers;
     public string correctAnswer;
     public string fullSentence;
+    public string wrongWord;
     public int star;
     public score score;
     public int correctAnswerIndex;
@@ -369,6 +371,51 @@ public class CurrentQuestion
                 {
                     SetUI.Set(this.audioPlayBtn, true, 0f);
                     this.audioPlayBtn.GetComponentInChildren<Button>()?.gameObject.SetActive(this.currentAudioClip != null? true : false);
+                }
+                this.questiontype = QuestionType.FillInBlank;
+                this.correctAnswer = qa.correctAnswer;
+                this.answersChoics = qa.answers;
+                this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;
+                this.playAudio();
+                break;
+            case "SentenceCorrect":
+            case "sentenceCorrect":
+                SetUI.SetGroup(this.questionBgs, 3, 0f);
+                this.questionTexts = this.questionBgs[3].GetComponentsInChildren<TextMeshProUGUI>();
+                this.fullSentence = qa.fullSentence;
+                for (int i = 0; i < this.questionTexts.Length; i++)
+                {
+                    this.questionTexts[i].text = "";
+                    if (this.questionTexts[i].gameObject.name == "MarkerText")
+                    {
+                        this.questionText = questionTexts[i];
+                    }
+
+                    // Get the full sentence
+                    string wrongSentence = qa.question;
+                    string[] wrongAnswerParts = qa.wrongWord.Split(' ');
+                    int wrongWordCount = qa.wrongWord.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
+
+                    string fullSentence = qa.fullSentence;
+                    string correctAnswer = qa.correctAnswer;
+                    foreach (var part in wrongAnswerParts)
+                    {
+                        if (wrongSentence.Contains(part))
+                        {
+                            this.displayQuestion = wrongSentence.Replace(part, $"<u><b>{part}</b></u>");
+                        }
+                    }
+
+                    this.questionText.text = this.displayQuestion;
+                    //this.displayQuestion = fullSentence;
+                    this.displayHint = qa.questionHint;
+                }
+
+                this.audioPlayBtn = this.questionBgs[3].GetComponentInChildren<CanvasGroup>();
+                if (this.audioPlayBtn != null)
+                {
+                    SetUI.Set(this.audioPlayBtn, true, 0f);
+                    this.audioPlayBtn.GetComponentInChildren<Button>()?.gameObject.SetActive(this.currentAudioClip != null ? true : false);
                 }
                 this.questiontype = QuestionType.FillInBlank;
                 this.correctAnswer = qa.correctAnswer;

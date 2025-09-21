@@ -8307,9 +8307,9 @@ RectTransform:
   - {fileID: 7077608552435745395}
   m_Father: {fileID: 2869489508044874406}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 170, y: -50}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1406139480638471771
@@ -12829,9 +12829,9 @@ RectTransform:
   - {fileID: 1841228479553853176}
   m_Father: {fileID: 2869489508044874406}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 30, y: -50}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4620219286591092630
@@ -12863,6 +12863,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75a3a5fdca04c44cb64c1fd3c590b4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loginPlayer: 1
+  displayNum: 1
   numberOfHelp: 5
   cg: {fileID: 8666645281054087495}
   popNumBg: {fileID: 9179034946227917225}
@@ -12870,7 +12872,13 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 3685c18414ec04f4f8ad1bde7afd2f8f, type: 3}
   - {fileID: 2800000, guid: d9ef2601c2cd234448564fb63b63e53e, type: 3}
   help_number_text: {fileID: 2347692940952353861}
+  help_tool_name: {fileID: 0}
   grayScaleMat: {fileID: 2100000, guid: f6b334aa1bc67a54b98b08b4b815d897, type: 2}
+  currentInventory:
+    help_tool_id: 0
+    help_tool_name: 
+    description: 
+    amount: 0
 --- !u!1 &4638484287862143712
 GameObject:
   m_ObjectHideFlags: 0
@@ -15200,9 +15208,9 @@ RectTransform:
   - {fileID: 2705697549169786360}
   m_Father: {fileID: 2869489508044874406}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 100, y: -50}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &6142024518852420236

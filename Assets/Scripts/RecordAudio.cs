@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using TMPro;
@@ -827,8 +829,7 @@ public class RecordAudio : MonoBehaviour
                     string displayText = "";
                     string correctAnswer = recognitionResponse.result.DisplayText;
                     bool hasErrorWord = false;
-                    var correctAnswerWords = QuestionController.Instance.currentQuestion.correctAnswer
-                    .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    //var correctAnswerWords = QuestionController.Instance.currentQuestion.correctAnswer.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                     this.wordDetails = null;
                     // Log the NBest array
@@ -840,13 +841,29 @@ public class RecordAudio : MonoBehaviour
                             if(nBest.Words != null)
                             {
                                 this.wordDetails = nBest.Words;
-                                foreach(var word in nBest.Words)
+                                var correctAnswerWords = QuestionController.Instance.currentQuestion.correctAnswer
+                                    .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                                var correctAnswerWordSet = new HashSet<string>(
+                                    correctAnswerWords.Select(w => Regex.Replace(w, @"[^\w]", "").ToLower())
+                                );
+
+                                foreach (var word in nBest.Words)
                                 {
-                                    if(word.ErrorType == "Omission")
+                                    string cleanWord = Regex.Replace(word.Word, @"[^\w]", "").ToLower();
+
+                                    if (word.ErrorType == "Omission")
                                     {
                                         this.ttsFailure = true;
                                         if (this.accurancyText != null)
                                             this.accurancyText.text = $"Word missing, please retry";
+                                        hasErrorWord = true;
+                                    }
+                                    else if (word.ErrorType == "Mispronunciation" && 
+                                        correctAnswerWordSet.Contains(cleanWord))
+                                    {
+                                        this.ttsFailure = true;
+                                        if (this.accurancyText != null)
+                                            this.accurancyText.text = $"Mispronunciation detected, please retry";
                                         hasErrorWord = true;
                                     }
                                 }
@@ -963,7 +980,7 @@ public class RecordAudio : MonoBehaviour
                     if (isError)
                     {
 
-                        Debug.Log("result: " + errorType);
+                        LogController.Instance.debug("result: " + errorType);
                         switch (errorType)
                         {
                             case "Mispronunciation":

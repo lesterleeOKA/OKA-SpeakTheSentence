@@ -1,10 +1,11 @@
-using System;
 using SimpleJSON;
-using UnityEngine;
-using UnityEngine.UI;
+using System;
 using System.Collections;
-using UnityEngine.Networking;
+using System.Text;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 [Serializable]
 public class APIManager
@@ -19,6 +20,8 @@ public class APIManager
     public string questionJson = string.Empty;
     [Tooltip("Account Json")]
     public string accountJson = string.Empty;
+    [Tooltip("Simple Account id")]
+    public int accountId = -1;
     [Tooltip("Role Account uid")]
     public int accountUid = -1;
     [Tooltip("Account Icon Image Url")]
@@ -33,8 +36,7 @@ public class APIManager
     private bool isShowLoginErrorBox = false;
     [SerializeField]
     private bool showingDebugBox = false;
-    public LoadImage loadImage;
-    public Texture peopleIcon;
+    public Texture peopleIcon, peopleFullBodyIcon;
     public string loginName = string.Empty;
     public GameSettings settings;
     public int maxRetries = 10;
@@ -175,6 +177,9 @@ public class APIManager
 
                         this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
                         this.accountJson = jsonNode["account"].ToString(); // Account json data;
+                        string accountIdString = jsonNode["account"]["id"];
+                        int accountId = int.Parse(accountIdString);
+                        this.accountId = accountId;
                         //LogController.Instance?.debug("accountJson: " + this.accountJson);
                         string accountUidString = jsonNode["account"]["uid"];
                         int accountUid = int.Parse(accountUidString);
@@ -233,7 +238,7 @@ public class APIManager
                                 imageUrl = "https:" + modifiedPhotoDataUrl;
                             }
                             //LogController.Instance?.debug($"Downloading People Icon!!{imageUrl}");
-                            yield return this.loadImage.Load("", imageUrl, _peopleIcon =>
+                            yield return LoaderConfig.Instance.gameSetup.Load("", imageUrl, _peopleIcon =>
                             {
                                 LogController.Instance?.debug($"Downloaded People Icon!!");
                                 this.peopleIcon = _peopleIcon;
@@ -259,8 +264,23 @@ public class APIManager
 
                         //E.g
                         //Debug.Log(jsonNode["account"]["display_name"].ToString());
-                        LogController.Instance?.debug(this.questionJson);
-                        onCompleted?.Invoke();
+                        var loader = LoaderConfig.Instance;
+                        if (loader.CurrentHostName.Contains("dev.starwishparty.com") ||
+                            loader.CurrentHostName.Contains("uat.starwishparty.com") ||
+                            loader.CurrentHostName.Contains("pre.starwishparty.com") ||
+                            loader.CurrentHostName.Contains("www.starwishparty.com"))
+                        {
+                            yield return this.GetStarwishAccountData(() =>
+                            {
+                                LogController.Instance?.debug(this.questionJson);
+                                onCompleted?.Invoke();
+                            });
+                        }
+                        else
+                        {
+                            LogController.Instance?.debug(this.questionJson);
+                            onCompleted?.Invoke();
+                        }
                     }
                     else
                     {
@@ -276,6 +296,189 @@ public class APIManager
             LogController.Instance?.debug(this.errorMessage);
             this.IsShowLoginErrorBox = true;
             onCompleted?.Invoke();
+        }
+    }
+
+    private IEnumerator GetStarwishAccountData(Action onCompleted = null)
+    {
+        ExternalCaller.UpdateLoadBarStatus("Loading Account Data");
+        string api = APIConstant.GetStarwishPartyAccountAPI(LoaderConfig.Instance);
+        LogController.Instance?.debug("called starwish account api: " + api);
+
+        if (string.IsNullOrEmpty(api))
+        {
+            LogController.Instance.debug("Current site not support starwish account api.");
+            yield break;
+        }
+
+        int retryCount = 0;
+        bool requestSuccessful = false;
+
+        while (retryCount < this.maxRetries && !requestSuccessful)
+        {
+            using (UnityWebRequest request = UnityWebRequest.Get(api))
+            {
+                request.SetRequestHeader("accept", "application/json");
+                request.SetRequestHeader("Authorization", "Bearer " + LoaderConfig.Instance.apiManager.jwt);
+
+                yield return request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    LogController.Instance.debugError($"Attempt {retryCount + 1} failed: {request.error}");
+                    retryCount++;
+
+                    if (retryCount >= this.maxRetries)
+                    {
+                        this.HandleError("Error loading Starwish account API after retries.", onCompleted, true);
+                        yield break;
+                    }
+
+                    yield return new WaitForSeconds(1f); // Optional delay before retry
+                }
+                else
+                {
+                    requestSuccessful = true;
+
+                    string jsonResponse = request.downloadHandler.text;
+                    LogController.Instance.debug("Starwish Account Response: " + jsonResponse);
+                    StarwishPartyAccountResponse swaResponse = JsonUtility.FromJson<StarwishPartyAccountResponse>(jsonResponse);
+
+                    if (swaResponse != null)
+                    {
+                        string[] photoUrls = new string[]
+                        {
+                        swaResponse.data.equipped_costume_data.img_src_wholebody,
+                        swaResponse.data.equipped_costume_data.img_src_head
+                        };
+
+                        foreach (string url in photoUrls)
+                        {
+                            if (!string.IsNullOrEmpty(url) && url != "null")
+                            {
+                                yield return LoaderConfig.Instance.gameSetup.Load("", url, loadedImage =>
+                                {
+                                    LogController.Instance?.debug($"Downloaded Image from URL: {url}");
+
+                                    if (url == swaResponse.data.equipped_costume_data.img_src_wholebody)
+                                    {
+                                        this.peopleFullBodyIcon = loadedImage;
+                                    }
+                                    else if (url == swaResponse.data.equipped_costume_data.img_src_head)
+                                    {
+                                        this.peopleIcon = loadedImage;
+                                    }
+                                });
+                            }
+                        }
+
+                        LogController.Instance.debug("Successfully downloaded Starwish account icon images.");
+                        onCompleted?.Invoke();
+                    }
+                }
+            }
+        }
+    }
+
+    public IEnumerator getHelpToolInventory(Action onCompleted = null)
+    {
+        string api = APIConstant.GetHelpToolInventoryAPI(LoaderConfig.Instance);
+        LogController.Instance?.debug("called helpTool Inventory api: " + api);
+
+        if (string.IsNullOrEmpty(api))
+        {
+            LogController.Instance.debug("Current site not support inventory api.");
+            onCompleted?.Invoke();
+            yield break;
+        }
+
+        int retryCount = 0;
+        bool requestSuccessful = false;
+
+        while (retryCount < this.maxRetries && !requestSuccessful)
+        {
+            UnityWebRequest request = UnityWebRequest.Get(api);
+            request.SetRequestHeader("accept", "application/json");
+            request.SetRequestHeader("Authorization", "Bearer " + LoaderConfig.Instance.apiManager.jwt);
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                requestSuccessful = true;
+
+                string json = request.downloadHandler.text;
+                LogController.Instance.debug("Inventory Response: " + json);
+                Inventory inventoryData = JsonUtility.FromJson<Inventory>(json);
+                LoaderConfig.Instance.gameSetup.inventory = inventoryData;
+                onCompleted?.Invoke();
+            }
+            else
+            {
+                LogController.Instance.debugError($"Attempt {retryCount + 1} failed: {request.error}");
+                retryCount++;
+
+                if (retryCount >= this.maxRetries)
+                {
+                    LogController.Instance.debugError("Failed to load inventory after maximum retries.");
+                    onCompleted?.Invoke();
+                    yield break;
+                }
+
+                yield return new WaitForSeconds(1f); // Optional delay before retry
+            }
+        }
+    }
+
+    public IEnumerator useHelpTool(int toolId = -1, Action onCompleted = null)
+    {
+        string api = APIConstant.UpdateUseOfHelpToolAPI(LoaderConfig.Instance);
+        LogController.Instance?.debug("called helpTool Inventory api: " + api);
+
+        string jsonBody = JsonUtility.ToJson(new HelpToolRequest
+        {
+            help_tool_id = toolId,
+            amount = 1
+        });
+
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
+
+        int retryCount = 0;
+        bool requestSuccessful = false;
+
+        while (retryCount < this.maxRetries && !requestSuccessful)
+        {
+            UnityWebRequest request = new UnityWebRequest(api, "POST");
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.certificateHandler = new WebRequestSkipCert();
+
+            request.SetRequestHeader("accept", "application/json");
+            request.SetRequestHeader("Content-Type", "application/json");
+            request.SetRequestHeader("Authorization", "Bearer " + LoaderConfig.Instance.apiManager.jwt);
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                requestSuccessful = true;
+                LogController.Instance.debug("Success: " + request.downloadHandler.text);
+                onCompleted?.Invoke();
+            }
+            else
+            {
+                LogController.Instance.debugError($"Attempt {retryCount + 1} failed: {request.error}");
+                retryCount++;
+
+                if (retryCount >= this.maxRetries)
+                {
+                    LogController.Instance.debugError("Failed to use help tool after maximum retries.");
+                    onCompleted?.Invoke();
+                    yield break;
+                }
+
+                yield return new WaitForSeconds(1f); // Optional delay before retry
+            }
         }
     }
 
@@ -381,7 +584,7 @@ public class APIManager
                                 imageUrl = "https:" + modifiedPhotoDataUrl;
                             }
                             //LogController.Instance?.debug($"Downloading People Icon!!{imageUrl}");
-                            yield return this.loadImage.Load("", imageUrl, _peopleIcon =>
+                            yield return LoaderConfig.Instance.gameSetup.Load("", imageUrl, _peopleIcon =>
                             {
                                 //LogController.Instance?.debug($"Downloaded People Icon!!");
                                 this.peopleIcon = _peopleIcon;
@@ -559,6 +762,41 @@ public static class APIConstant
     {
         string jsonParameter = string.IsNullOrEmpty(_dataKey) ? "[1]" : $"[\"comp-{_dataKey}\"]";
         return $"{loader.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json={jsonParameter}&jwt=" + _jwt;
+    }
+
+    public static string GetStarwishPartyAccountAPI(LoaderConfig loader)
+    {
+        return $"{loader.CurrentHostName}/OKAGames/public/index.php/api/accounts/{loader.apiManager.accountUid}";
+    }
+
+    public static string GetHelpToolInventoryAPI(LoaderConfig loader)
+    {
+        if (loader.CurrentHostName.Contains("dev.starwishparty.com") ||
+            loader.CurrentHostName.Contains("uat.starwishparty.com") ||
+            loader.CurrentHostName.Contains("pre.starwishparty.com") ||
+            loader.CurrentHostName.Contains("www.starwishparty.com"))
+        {
+            return $"{loader.CurrentHostName}/OKAGames/public/index.php/api/help-tools/user/inventory";
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    public static string UpdateUseOfHelpToolAPI(LoaderConfig loader)
+    {
+        if (loader.CurrentHostName.Contains("dev.starwishparty.com") ||
+            loader.CurrentHostName.Contains("uat.starwishparty.com") ||
+            loader.CurrentHostName.Contains("pre.starwishparty.com") ||
+            loader.CurrentHostName.Contains("www.starwishparty.com"))
+        {
+            return $"{loader.CurrentHostName}/OKAGames/public/index.php/api/help-tools/use";
+        }
+        else
+        {
+            return "";
+        }
     }
 
     public static string blobServerRelativePath

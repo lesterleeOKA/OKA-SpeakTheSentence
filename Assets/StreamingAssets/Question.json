@@ -181,6 +181,376 @@
       "questionHint": "Fill in the blanks with 'have' or 'has'."
     },
     {
+      "qid": "p1u9-g1",
+      "questionType": "FillInBlank",
+      "question": "I can _____ some children. They are running.",
+      "answers": null,
+      "correctAnswer": "see",
+      "fullSentence": "I can see some children. They are running.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g2",
+      "questionType": "FillInBlank",
+      "question": "I can _____ some bread. It smells yummy.",
+      "answers": null,
+      "correctAnswer": "smell",
+      "fullSentence": "I can smell some bread. It smells yummy.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g3",
+      "questionType": "FillInBlank",
+      "question": "I can _____ a squirrel. It is soft.",
+      "answers": null,
+      "correctAnswer": "touch",
+      "fullSentence": "I can touch a squirrel. It is soft.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g4",
+      "questionType": "FillInBlank",
+      "question": "I can _____ the birds. They are singing.",
+      "answers": null,
+      "correctAnswer": "hear",
+      "fullSentence": "I can hear the birds. They are singing.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g5",
+      "questionType": "FillInBlank",
+      "question": "I can _____ a bench. Can I sit down?",
+      "answers": null,
+      "correctAnswer": "see",
+      "fullSentence": "I can see a bench. Can I sit down?",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g6",
+      "questionType": "FillInBlank",
+      "question": "I can _____ the water. It is cool.",
+      "answers": null,
+      "correctAnswer": "touch",
+      "fullSentence": "I can touch the water. It is cool.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g7",
+      "questionType": "FillInBlank",
+      "question": "I can _____ my mom. She is laughing.",
+      "answers": null,
+      "correctAnswer": "hear",
+      "fullSentence": "I can hear my mom. She is laughing.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g8",
+      "questionType": "FillInBlank",
+      "question": "I can _____ a rainbow. It is beautiful.",
+      "answers": null,
+      "correctAnswer": "see",
+      "fullSentence": "I can see a rainbow. It is beautiful.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g9",
+      "questionType": "FillInBlank",
+      "question": "I can ____ the flowers. They are sweet.",
+      "answers": null,
+      "correctAnswer": "smell",
+      "fullSentence": "I can smell the flowers. They are sweet.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g10",
+      "questionType": "FillInBlank",
+      "question": "I can _____ a dog. It is barking.",
+      "answers": null,
+      "correctAnswer": "hear",
+      "fullSentence": "I can hear a dog. It is barking.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p2u2-g1",
+      "questionType": "FillInBlank",
+      "question": "________________ (talk) to Mr Chan in the classroom?",
+      "answers": null,
+      "correctAnswer": "Who is talking",
+      "fullSentence": "Who is talking to Mr Chan in the classroom?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g2",
+      "questionType": "FillInBlank",
+      "question": "________________ (fly) a kite with you in the park?",
+      "answers": null,
+      "correctAnswer": "Who is flying",
+      "fullSentence": "Who is flying a kite with you in the park?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g3",
+      "questionType": "FillInBlank",
+      "question": "________________ (sing) a song in the music room?",
+      "answers": null,
+      "correctAnswer": "Who is singing",
+      "fullSentence": "Who is singing a song in the music room?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g4",
+      "questionType": "FillInBlank",
+      "question": "________________ (buy) ice cream from the ice cream truck?",
+      "answers": null,
+      "correctAnswer": "Who is buying",
+      "fullSentence": "Who is buying ice cream from the ice cream truck?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g5",
+      "questionType": "FillInBlank",
+      "question": "________________ (read) storybooks to the children at the library?",
+      "answers": null,
+      "correctAnswer": "Who is reading",
+      "fullSentence": "Who is reading storybooks to the children at the library?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g6",
+      "questionType": "FillInBlank",
+      "question": "________________ (make) a banana bread at the kitchen?",
+      "answers": null,
+      "correctAnswer": "Who is making",
+      "fullSentence": "Who is making a banana bread at the kitchen?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g7",
+      "questionType": "FillInBlank",
+      "question": "________________ (take) pictures with Snow White?",
+      "answers": null,
+      "correctAnswer": "Who is taking",
+      "fullSentence": "Who is taking pictures with Snow White?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g8",
+      "questionType": "FillInBlank",
+      "question": "________________ (play) in the football match now?",
+      "answers": null,
+      "correctAnswer": "Who is playing",
+      "fullSentence": "Who is playing in the football match now?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g9",
+      "questionType": "FillInBlank",
+      "question": "________________ (dance) ballet with Kelly in the show?",
+      "answers": null,
+      "correctAnswer": "Who is dancing",
+      "fullSentence": "Who is dancing ballet with Kelly in the show?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g10",
+      "questionType": "FillInBlank",
+      "question": "________________ (go) to the toilet now?",
+      "answers": null,
+      "correctAnswer": "Who is going",
+      "fullSentence": "Who is going to the toilet now?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u8-h1",
+      "questionType": "FillInBlank",
+      "question": "The bees buzz ____ spring.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "The bees buzz in spring.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h2",
+      "questionType": "FillInBlank",
+      "question": "We pick apples ____ autumn.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "We pick apples in autumn.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h3",
+      "questionType": "FillInBlank",
+      "question": "Some animals take long naps ____ winter.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "Some animals take long naps in winter.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h4",
+      "questionType": "FillInBlank",
+      "question": "Lily and Liam catch fireflies ____ summer.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "Lily and Liam catch fireflies in summer.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h5",
+      "questionType": "FillInBlank",
+      "question": "We collect red leaves ____ autumn.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "We collect red leaves in autumn.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h6",
+      "questionType": "FillInBlank",
+      "question": "What do you like to do ____ summer?",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "What do you like to do in summer?",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h7",
+      "questionType": "FillInBlank",
+      "question": "____ spring, the birds come back.",
+      "answers": null,
+      "correctAnswer": "In",
+      "fullSentence": "In spring, the birds come back.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h8",
+      "questionType": "FillInBlank",
+      "question": "You can't wear shorts ____ winter.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "You can't wear shorts in winter.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h9",
+      "questionType": "FillInBlank",
+      "question": "Does she go to the beach ____ summer?",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "Does she go to the beach in summer?",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h10",
+      "questionType": "FillInBlank",
+      "question": "_____ winter, Christmas makes people happy.",
+      "answers": null,
+      "correctAnswer": "In",
+      "fullSentence": "In winter, Christmas makes people happy.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u10-i1",
+      "questionType": "sentenceCorrect",
+      "question": "I do not go to school in Saturday.",
+      "answers": null,
+      "correctAnswer": "on",
+      "fullSentence": "I do not go to school on Saturday.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "in"
+    },
+    {
+      "qid": "p2u10-i2",
+      "questionType": "sentenceCorrect",
+      "question": "What does you do on Monday?",
+      "answers": null,
+      "correctAnswer": "do",
+      "fullSentence": "What do you do on Monday?",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "does"
+    },
+    {
+      "qid": "p2u10-i3",
+      "questionType": "sentenceCorrect",
+      "question": "The restaurant do not open at night.",
+      "answers": null,
+      "correctAnswer": "does",
+      "fullSentence": "The restaurant does not open at night.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "do"
+    },
+    {
+      "qid": "p2u10-i4",
+      "questionType": "sentenceCorrect",
+      "question": "We play some board game at the party.",
+      "answers": null,
+      "correctAnswer": "games",
+      "fullSentence": "We play some board games at the party.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "game"
+    },
+    {
+      "qid": "p2u10-i5",
+      "questionType": "sentenceCorrect",
+      "question": "My tutor comes to my home on four thirty.",
+      "answers": null,
+      "correctAnswer": "at",
+      "fullSentence": "My tutor comes to my home at four thirty.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "on"
+    },
+    {
+      "qid": "p2u10-i6",
+      "questionType": "sentenceCorrect",
+      "question": "She do not have fencing lessons this Sunday.",
+      "answers": null,
+      "correctAnswer": "does",
+      "fullSentence": "She does not have fencing lessons this Sunday.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "do"
+    },
+    {
+      "qid": "p2u10-i7",
+      "questionType": "sentenceCorrect",
+      "question": "See you on the library at three o'clock!",
+      "answers": null,
+      "correctAnswer": "at",
+      "fullSentence": "See you at the library at three o'clock!",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "on"
+    },
+    {
+      "qid": "p2u10-i8",
+      "questionType": "sentenceCorrect",
+      "question": "Amy plays the piano and I plays the violin.",
+      "answers": null,
+      "correctAnswer": "play",
+      "fullSentence": "Amy plays the piano and I play the violin.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "plays"
+    },
+    {
+      "qid": "p2u10-i9",
+      "questionType": "sentenceCorrect",
+      "question": "They does not eat bread in the morning.",
+      "answers": null,
+      "correctAnswer": "do",
+      "fullSentence": "They do not eat bread in the morning.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "does"
+    },
+    {
+      "qid": "p2u10-i10",
+      "questionType": "sentenceCorrect",
+      "question": "What do your mom do in the evening?",
+      "answers": null,
+      "correctAnswer": "does",
+      "fullSentence": "What does your mom do in the evening?",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "do"
+    },
+    {
       "qid": "p3Bu4-a1",
       "questionType": "Audio",
       "question": "",

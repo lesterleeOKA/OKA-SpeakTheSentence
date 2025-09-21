@@ -4,6 +4,9 @@ using System;
 public class Downloader
 {
     public LoadMethod loadMethod = LoadMethod.UnityWebRequest;
+    public bool useGCCollect = true;
+    public int maxRetryCount = 3;
+    public float retryDelaySeconds = 1f;
 }
 
 public enum LoadMethod

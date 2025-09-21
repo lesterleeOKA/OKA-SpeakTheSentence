@@ -403,10 +403,13 @@ MonoBehaviour:
   currentURL: 
   gameSetup:
     loadMethod: 1
+    useGCCollect: 1
+    maxRetryCount: 3
+    retryDelaySeconds: 1
     loadImageMethod: 1
     imageType: 2
+    enableRetry: 0
     allTextures: []
-    useGCCollect: 1
     roAppDataKey: 
     gamePageName: 
     bgTexture: {fileID: 2800000, guid: 0bb68c800db3115449b311fc78cf127d, type: 3}
@@ -416,8 +419,11 @@ MonoBehaviour:
     gameExitType: 0
     instructions: {fileID: 0}
     gameTime: 300
+    inventory:
+      status: 
+      data: []
+    helpItemTypeOfId: 3
     retry_times: 3
-    numberOfHelpItem: 5
     returnUrl: 
     showFPS: 0
     playerNumber: 1
@@ -431,6 +437,7 @@ MonoBehaviour:
     gameSettingJson: 
     questionJson: 
     accountJson: 
+    accountId: -1
     accountUid: -1
     photoDataUrl: 
     payloads: 
@@ -438,13 +445,8 @@ MonoBehaviour:
     isRainbowAppLogined: 0
     isShowLoginErrorBox: 0
     showingDebugBox: 0
-    loadImage:
-      loadMethod: 1
-      loadImageMethod: 3
-      imageType: 1
-      allTextures: []
-      useGCCollect: 1
     peopleIcon: {fileID: 0}
+    peopleFullBodyIcon: {fileID: 0}
     loginName: 
     settings:
       chapterUnit: 
@@ -477,7 +479,7 @@ MonoBehaviour:
         correctAnswerText: 
         score: 0
         percent: 0
-  unitKey: 
+  unitKey: p2u10-i
   testURL: 
   skipAudioPanel: 0
   microphoneDevice:
@@ -517,12 +519,18 @@ MonoBehaviour:
   jsonFileName: Question.json
   loadImage:
     loadMethod: 1
+    useGCCollect: 1
+    maxRetryCount: 3
+    retryDelaySeconds: 1
     loadImageMethod: 1
     imageType: 1
+    enableRetry: 1
     allTextures: []
-    useGCCollect: 1
   loadAudio:
     loadMethod: 1
+    useGCCollect: 1
+    maxRetryCount: 3
+    retryDelaySeconds: 1
     loadAudioMethod: 1
     audioFormat: 1
   questionData:
@@ -778,7 +786,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1761761257498461912, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_Text
-      value: v1.05
+      value: v1.06
       objectReference: {fileID: 0}
     - target: {fileID: 1761761257498461912, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_FontData.m_Font

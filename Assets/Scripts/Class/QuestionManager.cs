@@ -155,6 +155,8 @@ public class QuestionManager : MonoBehaviour
                 case "text":
                 case "FillInBlank":
                 case "fillInBlank":
+                case "SentenceCorrect":
+                case "sentenceCorrect":
                     ExternalCaller.UpdateLoadBarStatus("Loading Question");
                     this.loadedItems++;
                     if (this.loadedItems == this.totalItems) onComplete?.Invoke();

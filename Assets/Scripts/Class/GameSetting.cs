@@ -97,16 +97,25 @@ public class GameSetting : MonoBehaviour
         {
             case "dev.openknowledge.hk":
             case "devapp.openknowledge.hk":
+            case "dev.starwishparty.com":
                 this.currentHostName = HostName.dev;
                 LogController.Instance?.UpdateVersion("dev");
                 break;
             case "uat.openknowledge.hk":
+            case "uat.starwishparty.com":
                 this.currentHostName = HostName.uat;
                 LogController.Instance?.UpdateVersion("uat");
+                break;
+            case "pre.openknowledge.hk":
+            case "pre.starwishparty.com":
+                this.currentHostName = HostName.preprod;
+                LogController.Instance?.UpdateVersion("preprod");
                 break;
             case "www.rainbowone.app":
             case "rainbowone.app":
             case "api.openknowledge.hk":
+            case "www.starwishparty.com":
+            case "starwishparty.com":
                 this.currentHostName = HostName.prod;
                 LogController.Instance?.UpdateVersion("prod");
                 break;
@@ -350,19 +359,6 @@ public class GameSetting : MonoBehaviour
         }
     }
 
-    public string SpeechAPIHostName
-    {
-        get
-        {
-            return this.currentHostName switch
-            {
-                HostName.dev => "https://dev.openknowledge.hk",
-                HostName.prod => "https://www.rainbowone.app",
-                _ => throw new NotImplementedException()
-            };
-        }
-    }
-
     public void Reload()
     {
         ExternalCaller.ReLoadCurrentPage();
@@ -393,8 +389,9 @@ public class GameSetup : LoadImage
     public int gameExitType = 0;
     public InstructionText instructions;
     public float gameTime;
+    public Inventory inventory;
+    public int helpItemTypeOfId = 3;
     public int retry_times = 3;
-    public int numberOfHelpItem = 5;
     public string returnUrl = "";
     public bool showFPS = false;
     public int playerNumber = 1;
@@ -447,10 +444,68 @@ public class GameSetup : LoadImage
     }
 }
 
+[Serializable]
+public class StarwishPartyAccountResponse
+{
+    public string status;
+    public AccountData data;
+}
+
+[Serializable]
+public class AccountData
+{
+    public string id;
+    public string currency;
+    public string equipped_costume;
+    public string[] owned_costume;
+    public string created_at;
+    public string updated_at;
+    public object deleted_at; // Use 'object' for nullable fields
+    public EquippedCostumeData equipped_costume_data;
+}
+
+[Serializable]
+public class EquippedCostumeData
+{
+    public string costume_id;
+    public string costume_name;
+    public string description;
+    public string price;
+    public string img_src_wholebody;
+    public string img_src_head;
+    public string created_at;
+    public string updated_at;
+    public object deleted_at; // Use 'object' for nullable fields
+}
+
+[Serializable]
+public class HelpToolInventory
+{
+    public int help_tool_id;
+    public string help_tool_name;
+    public string description;
+    public int amount;
+}
+
+[Serializable]
+public class Inventory
+{
+    public string status;
+    public HelpToolInventory[] data;
+}
+
+[Serializable]
+public class HelpToolRequest
+{
+    public int help_tool_id;
+    public int amount;
+}
+
 
 public enum HostName
 {
     dev,
     uat,
+    preprod,
     prod
 }

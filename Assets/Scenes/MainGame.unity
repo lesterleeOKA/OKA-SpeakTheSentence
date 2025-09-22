@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -252,7 +252,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 136077052}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -1696,7 +1696,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 604538602}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -5654,6 +5654,7 @@ MonoBehaviour:
       answers: []
       correctAnswer: 
       fullSentence: 
+      wrongWord: 
       star: 0
       score:
         full: 0
@@ -14090,6 +14091,8 @@ MonoBehaviour:
   qa_audio_btn: {fileID: 8687424222906535522}
   hintBox: {fileID: 1592051176}
   remindRecordBox: {fileID: 526901395}
+  recordingMixerGroup: {fileID: 6936082195002912998, guid: 5129a647226cbdf4da3e6fba951e5a8d, type: 2}
+  isPlaying: 0
   sttResponse:
     data: []
   recognitionResult:

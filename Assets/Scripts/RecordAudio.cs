@@ -40,7 +40,7 @@ public class RecordAudio : MonoBehaviour
     public Color32 answerTextOriginalColor;
     public RawImage answerBox;
     public Texture[] answerBoxTexs;
-    private AudioClip clip, trimmedClip;
+    private AudioClip clip, originalTrimmedClip;
     public bool useHighPassFilter = false;
     [Header("Audio Pages for different process")]
     public CanvasGroup[] pages;
@@ -60,9 +60,10 @@ public class RecordAudio : MonoBehaviour
     [SerializeField] private CanvasGroup remindRecordTip;
     [SerializeField] private Button qa_audio_btn;
     [SerializeField] public CanvasGroup hintBox, remindRecordBox;
+    public UnityEngine.Audio.AudioMixerGroup recordingMixerGroup;
 
     private bool isRecording = false;
-    private bool isPlaying = false;
+    public bool isPlaying = false;
     private float recordingTime = 0f;
     public SttResponse sttResponse;
     public RecognitionResult recognitionResult;
@@ -414,10 +415,14 @@ public class RecordAudio : MonoBehaviour
         trimmedClip.SetData(samples, 0);
 
         this.clip = trimmedClip;
-        this.trimmedClip = trimmedClip;
-        float gain = this.GetPlatformSpecificGain();
-        LogController.Instance?.debug("Gain scale: " + gain);
-        this.NormalizeAndAmplifyAudioClip(this.clip, gain);
+        this.originalTrimmedClip = AudioClip.Create(trimmedClip.name + "_original", trimmedClip.samples, trimmedClip.channels, trimmedClip.frequency, false);
+        float[] originalSamples = new float[trimmedClip.samples * trimmedClip.channels];
+        trimmedClip.GetData(originalSamples, 0);
+        this.originalTrimmedClip.SetData(originalSamples, 0);
+
+        //float gain = this.GetPlatformSpecificGain();
+        //LogController.Instance?.debug("Gain scale: " + gain);
+        //this.NormalizeAndAmplifyAudioClip(this.clip, gain);
 
         // Parallel API calls
         bool azureDone = false;
@@ -486,7 +491,7 @@ public class RecordAudio : MonoBehaviour
         }
         else
         {
-            if (this.trimmedClip == null)
+            if (this.originalTrimmedClip == null)
             {
                 this.UpdateUI("No recording available for playback.");
                 return;
@@ -496,8 +501,12 @@ public class RecordAudio : MonoBehaviour
                 playbackSource = gameObject.AddComponent<AudioSource>();
             }
 
-            playbackSource.clip = this.trimmedClip;
+#if UNITY_EDITOR
+            playbackSource.outputAudioMixerGroup = this.recordingMixerGroup;
+#endif
+            playbackSource.clip = this.originalTrimmedClip;
             playbackSource.loop = false;
+            playbackSource.volume = 2.0f;
 
             if (Mathf.Approximately(playbackSource.time, playbackSource.clip.length - 0.01f))
             {
@@ -506,7 +515,7 @@ public class RecordAudio : MonoBehaviour
 
             playbackSource.Play();
 
-            isPlaying = true;
+            this.isPlaying = true;
             this.playbackButton.texture = this.playbackBtnTexs[1];
         }
     }
@@ -843,6 +852,8 @@ public class RecordAudio : MonoBehaviour
                                 this.wordDetails = nBest.Words;
                                 var correctAnswerWords = QuestionController.Instance.currentQuestion.correctAnswer
                                     .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                                var correctAnswerWordsCount = QuestionController.Instance.currentQuestion.correctAnswer
+    .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
                                 var correctAnswerWordSet = new HashSet<string>(
                                     correctAnswerWords.Select(w => Regex.Replace(w, @"[^\w]", "").ToLower())
                                 );
@@ -858,13 +869,24 @@ public class RecordAudio : MonoBehaviour
                                             this.accurancyText.text = $"Word missing, please retry";
                                         hasErrorWord = true;
                                     }
-                                    else if (word.ErrorType == "Mispronunciation" && 
-                                        correctAnswerWordSet.Contains(cleanWord))
-                                    {
-                                        this.ttsFailure = true;
-                                        if (this.accurancyText != null)
-                                            this.accurancyText.text = $"Mispronunciation detected, please retry";
-                                        hasErrorWord = true;
+                                    else {
+                                        if (correctAnswerWordSet.Contains(cleanWord))
+                                        {
+                                            if (word.ErrorType == "Mispronunciation")
+                                            {
+                                                this.ttsFailure = true;
+                                                if (this.accurancyText != null)
+                                                    this.accurancyText.text = $"Mispronunciation detected, please retry";
+                                                hasErrorWord = true;
+                                            }
+                                            else if (word.AccuracyScore < 85 && (QuestionController.Instance.currentQuestion.questiontype == QuestionType.SentenceCorrect || correctAnswerWordsCount == 1))
+                                            {
+                                                this.ttsFailure = true;
+                                                if (this.accurancyText != null)
+                                                    this.accurancyText.text = $"Mispronunciation detected, please retry";
+                                                hasErrorWord = true;
+                                            }
+                                        }
                                     }
                                 }
                             }

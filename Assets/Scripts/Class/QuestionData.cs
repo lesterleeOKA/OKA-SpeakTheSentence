@@ -70,7 +70,8 @@ public enum QuestionType
     Text = 1,
     Picture = 2,
     Audio = 3,
-    FillInBlank = 4
+    FillInBlank = 4,
+    SentenceCorrect = 5,
 }
 
 [Serializable]
@@ -417,7 +418,7 @@ public class CurrentQuestion
                     SetUI.Set(this.audioPlayBtn, true, 0f);
                     this.audioPlayBtn.GetComponentInChildren<Button>()?.gameObject.SetActive(this.currentAudioClip != null ? true : false);
                 }
-                this.questiontype = QuestionType.FillInBlank;
+                this.questiontype = QuestionType.SentenceCorrect;
                 this.correctAnswer = qa.correctAnswer;
                 this.answersChoics = qa.answers;
                 this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;

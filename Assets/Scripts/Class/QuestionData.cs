@@ -1,7 +1,6 @@
 using DG.Tweening;
 using System;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
@@ -307,7 +306,7 @@ public class CurrentQuestion
                     }
 
                     // Get the full sentence
-                    string fullSentence = qa.fullSentence; // Assuming qa.fullSentence contains "I am six years old."
+                    string fullSentence = qa.fullSentence;
                     // Get the correct answer
                     string correctAnswer = qa.correctAnswer; // Assuming qa.correctAnswer contains "years old."
                     string extendedUnderline = "";

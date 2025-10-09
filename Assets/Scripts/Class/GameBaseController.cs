@@ -11,6 +11,7 @@ public class GameBaseController : MonoBehaviour
     public int maxPlayers = 2;
     public bool playing = false;
     public bool showingPopup = false;
+    public bool leaveGame = false;
 
     protected virtual void Awake()
     {
@@ -45,9 +46,21 @@ public class GameBaseController : MonoBehaviour
 
     public void retryGame()
     {
-        QuestionManager.Instance?.ReorderTheQuestionList();
-        if (AudioController.Instance != null) AudioController.Instance.changeBGMStatus(true);
-        LoaderConfig.Instance?.exitPage("Replay", null, () => SceneManager.LoadScene(2));
+        if (!this.leaveGame)
+        {
+            QuestionManager.Instance?.ReorderTheQuestionList();
+            if (AudioController.Instance != null) AudioController.Instance.changeBGMStatus(true);
+
+            if (LoaderConfig.Instance.apiManager.IsLogined)
+            {
+                LoaderConfig.Instance?.restartGameAPI(() => SceneManager.LoadScene(2));
+            }
+            else
+            {
+                LoaderConfig.Instance?.exitPage(false, "Replay", null, () => SceneManager.LoadScene(2));
+            }
+            this.leaveGame = true;
+        }
     }
 
     public void setGetScorePopup(bool status)
@@ -63,8 +76,8 @@ public class GameBaseController : MonoBehaviour
     }
 
 
-    public void BackToWebpage()
+    public void BackToWebpage(bool useExitAPI = false)
     {
-        LoaderConfig.Instance?.exitPage("Leave Game", ExternalCaller.BackToHomeUrlPage, null);
+        LoaderConfig.Instance?.exitPage(useExitAPI, "Leave Game", ExternalCaller.BackToHomeUrlPage, null);
     }
 }

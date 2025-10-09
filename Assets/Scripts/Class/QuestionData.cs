@@ -40,6 +40,7 @@ public class QuestionList
     public Texture texture;
     public AudioClip audioClip;
     public string questionHint;
+    public string checkSingleWord;
 }
 
 [Serializable]

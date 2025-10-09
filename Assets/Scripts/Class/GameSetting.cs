@@ -400,6 +400,7 @@ public class GameSetup : LoadImage
     [Range(0, 1)]
     public int lang = 0;
     public int gameSettingScore = -1;
+    public int gameTotalStars = 3;
 
     public void setBackground()
     {

@@ -91,6 +91,106 @@
       "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
     },
     {
+      "qid": "p1u3-f1",
+      "questionType": "FillInBlank",
+      "question": "_________ pencils",
+      "answers": null,
+      "correctAnswer": "two",
+      "fullSentence": "Two pencils",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1"
+    },
+    {
+      "qid": "p1u3-f2",
+      "questionType": "FillInBlank",
+      "question": "_________ girls",
+      "answers": null,
+      "correctAnswer": "four",
+      "fullSentence": "Four girls",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1"
+    },
+    {
+      "qid": "p1u3-f3",
+      "questionType": "FillInBlank",
+      "question": "_________ boys",
+      "answers": null,
+      "correctAnswer": "seven",
+      "fullSentence": "Seven boys",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1"
+    },
+    {
+      "qid": "p1u3-f4",
+      "questionType": "FillInBlank",
+      "question": "_________ dolls",
+      "answers": null,
+      "correctAnswer": "nine",
+      "fullSentence": "Nine dolls",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1"
+    },
+    {
+      "qid": "p1u3-f5",
+      "questionType": "FillInBlank",
+      "question": "_________ eraser",
+      "answers": null,
+      "correctAnswer": "one",
+      "fullSentence": "One eraser",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1"
+    },
+    {
+      "qid": "p1u3-f6",
+      "questionType": "FillInBlank",
+      "question": "_________ books",
+      "answers": null,
+      "correctAnswer": "ten",
+      "fullSentence": "Ten books",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1"
+    },
+    {
+      "qid": "p1u3-f7",
+      "questionType": "FillInBlank",
+      "question": "_________ apples",
+      "answers": null,
+      "correctAnswer": "five",
+      "fullSentence": "Five apples",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1"
+    },
+    {
+      "qid": "p1u3-f8",
+      "questionType": "FillInBlank",
+      "question": "_________ water bottles",
+      "answers": null,
+      "correctAnswer": "three",
+      "fullSentence": "Three water bottles",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1"
+    },
+    {
+      "qid": "p1u3-f9",
+      "questionType": "FillInBlank",
+      "question": "_________ oranges",
+      "answers": null,
+      "correctAnswer": "eight",
+      "fullSentence": "Eight oranges",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1"
+    },
+    {
+      "qid": "p1u3-f10",
+      "questionType": "FillInBlank",
+      "question": "_________ school bags",
+      "answers": null,
+      "correctAnswer": "six",
+      "fullSentence": "Six school bags",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1"
+    },
+    {
       "qid": "p1Bu2-g1",
       "questionType": "FillInBlank",
       "question": "I _____ many toys.",

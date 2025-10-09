@@ -75,16 +75,74 @@ public class GameController : GameBaseController
     public override void endGame()
     {
         bool showSuccess = false;
-        if (this.playerController != null)
+        var loader = LoaderConfig.Instance;
+        bool isLogined = loader != null && loader.apiManager.IsLogined;
+
+        if (isLogined)
         {
-            if (this.playerController.Score >= 30)
-            {
-                showSuccess = true;
-            }
-            this.endGamePage.updateFinalScore(0, this.playerController.Score);
+            var resultPageCg = this.endGamePage.messageBg.GetComponent<CanvasGroup>();
+            string playerScore = this.playerController.Score.ToString();
+
+            SetUI.SetInteract(resultPageCg, false);
+            string scoresJson = "[" + string.Join(",", playerScore) + "]";
+            StartCoroutine(
+                loader.apiManager.postScoreToStarAPI(scoresJson, (stars) => {
+                    LogController.Instance.debug("Score to Star API call completed!");
+
+                    if (this.playerController != null)
+                    {
+                        if (loader.CurrentHostName.Contains("dev.starwishparty.com") ||
+                            loader.CurrentHostName.Contains("uat.starwishparty.com") ||
+                            loader.CurrentHostName.Contains("pre.starwishparty.com") ||
+                            loader.CurrentHostName.Contains("www.starwishparty.com"))
+                        {
+                            if (stars[0] > 0)
+                            {
+                                StartCoroutine(loader.apiManager.AddCurrency(stars[0], () =>
+                                {
+                                    SetUI.SetInteract(resultPageCg, true);
+                                }));
+                            }
+                            else
+                            {
+                                SetUI.SetInteract(resultPageCg, true);
+                            }
+                        }
+                        else
+                        {
+                            SetUI.SetInteract(resultPageCg, true);
+                        }
+
+                        int star = (stars != null && stars.Length == 1) ? stars[0] : 0;
+                        this.endGamePage.updateFinalScoreWithStar(0, playerController.Score, star, () =>
+                        {
+                            if (this.endGamePage.scoreEndings[0].starNumber > 0)
+                            {
+                                showSuccess = true;
+                            }
+                        });
+                    }
+
+                    this.endGamePage.setStatus(true, showSuccess);
+                    base.endGame();
+                })
+            );
         }
-        this.endGamePage.setStatus(true, showSuccess);
-        base.endGame();
+        else
+        {
+            if (playerController != null)
+            {
+                this.endGamePage.updateFinalScore(0, this.playerController.Score, () =>
+                {
+                    if (this.endGamePage.scoreEndings[0].starNumber > 0)
+                    {
+                        showSuccess = true;
+                    }
+                });
+            }
+            this.endGamePage.setStatus(true, showSuccess);
+            base.endGame();
+        }
     }
 
     public void UpdateNextQuestion()

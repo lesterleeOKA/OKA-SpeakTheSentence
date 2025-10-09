@@ -7,6 +7,7 @@
 	<meta http-equiv="Cache-Control" content="no-cache, no-store, max-age=0, must-revalidate">
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="Expires" content="0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>{{{ PRODUCT_NAME }}}</title>
     <!--<link rel="shortcut icon" href="TemplateData/favicon.ico">-->
     <link rel="stylesheet" href="TemplateData/style.css">
@@ -30,11 +31,19 @@
           <!--<audio src="/silence.mp3" autoplay muted controls>-->
       </div>
 
-      <div id="orientation-lock">
-          <div class="orientation-message">
-              Please rotate your device to landscape.
-          </div>
-      </div>
+    <!--<div id="orientation-lock">
+        <div class="orientation-message">
+            Please rotate your device to landscape.
+        </div>
+    </div>-->
+    <div id="rotation-overlay" class="overlay">
+        <div class="iconContainer">
+            <div class="phone">
+                <i class="fa fa-repeat"></i>
+            </div>
+            <p>Rotate your device!</p>
+        </div>
+    </div>
       <script>
 		async function accessAudio(unityInstance) {
 			try {
@@ -56,11 +65,25 @@
 		}
 
         function checkOrientation() {
-            const lock = document.getElementById('orientation-lock');
-            if (window.matchMedia("(orientation: landscape)").matches) {
-                lock.style.display = 'none';
+            const overlay = document.getElementById('rotation-overlay');
+            const phone = overlay.querySelector('.phone');
+            const icon = overlay.querySelector('.phone i');
+            const text = overlay.querySelector('.iconContainer p');
+
+            if (window.matchMedia("(orientation: portrait)").matches) {
+                overlay.style.display = 'flex';
+
+                // Restart animations
+                restartAnimation(phone, 'phone-animate');
+                restartAnimation(icon, 'icon-animate');
+                restartAnimation(text, 'text-animate');
             } else {
-                lock.style.display = 'block';
+                overlay.style.display = 'none';
+
+                // Remove animation classes so they can be re-added next time
+                phone.classList.remove('phone-animate');
+                icon.classList.remove('icon-animate');
+                text.classList.remove('text-animate');
             }
         }
         // Listen for orientation changes

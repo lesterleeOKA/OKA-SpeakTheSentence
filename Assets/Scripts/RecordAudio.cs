@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -191,6 +192,12 @@ public class RecordAudio : MonoBehaviour
             if (!this.isInitialized)
             {
                 GameController.Instance?.UpdateNextQuestion();
+
+                string checkSingleWord = QuestionController.Instance.currentQuestion.qa.checkSingleWord;
+                LogController.Instance.debug("Current is checkSingleWord: " + checkSingleWord);
+                if (!string.IsNullOrEmpty(checkSingleWord) && checkSingleWord == "1")
+                    this.detectMethod = DetectMethod.Word;
+
                 SetUI.Set(this.recordButton, true, 0f);
                 this.isInitialized = true;
             }

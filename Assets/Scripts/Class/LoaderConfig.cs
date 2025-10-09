@@ -108,17 +108,25 @@ public class LoaderConfig : GameSetting
         this.apiManager.resetLoginErrorBox();
     }
 
-    public void exitPage(string state = "", Action<bool> leavePageWithValue = null, Action leavePageWithoutValue = null)
+    public void exitPage(bool useExitApi = false, string state = "", Action<bool> leavePageWithValue = null, Action leavePageWithoutValue = null)
     {
         bool isLogined = this.apiManager.IsLogined;
         if (isLogined)
         {
             LogController.Instance?.debug($"{state}, called exit api.");
-            StartCoroutine(this.apiManager.ExitGameRecord(() =>
+            if (useExitApi)
+            {
+                StartCoroutine(this.apiManager.ExitGameRecord(() =>
+                {
+                    leavePageWithValue?.Invoke(true);
+                    leavePageWithoutValue?.Invoke();
+                }));
+            }
+            else
             {
                 leavePageWithValue?.Invoke(true);
                 leavePageWithoutValue?.Invoke();
-            }));
+            }
         }
         else
         {
@@ -128,9 +136,33 @@ public class LoaderConfig : GameSetting
         }
     }
 
+    public void restartGameAPI(Action onCompleted = null)
+    {
+        bool isLogined = this.apiManager.IsLogined;
+        if (isLogined)
+        {
+            LogController.Instance?.debug("Called restart game api and renew payload.");
+            StartCoroutine(this.apiManager.restartGameAPI(onCompleted));
+        }
+    }
+
+    public void submitEndGameSummary()
+    {
+        bool isLogined = this.apiManager.IsLogined;
+        if (isLogined)
+        {
+            LogController.Instance?.debug("Called end game summary api.");
+            StartCoroutine(this.apiManager.ExitGameRecord(null));
+        }
+        else
+        {
+            LogController.Instance?.debug("Not logged in, skip end game summary api.");
+        }
+    }
+
     public void QuitGame()
     {
-        this.exitPage("Quit Game", null);
+        this.exitPage(true, "Quit Game", null);
     }
 
     private void OnApplicationQuit()

@@ -53,6 +53,6 @@ public class MainMenu : MonoBehaviour
     public void BackToWebpage()
     {
         AudioController.Instance?.PlayAudio(0);
-        LoaderConfig.Instance?.exitPage("Leave Game", ExternalCaller.BackToHomeUrlPage, null);
+        LoaderConfig.Instance?.exitPage(true, "Leave Game", ExternalCaller.BackToHomeUrlPage, null);
     }
 }

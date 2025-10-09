@@ -80,6 +80,15 @@ public static class SetUI
             _cg.blocksRaycasts = _status;
         }
     }
+
+    public static void SetInteract(CanvasGroup _cg = null, bool _status = false)
+    {
+        if (_cg != null)
+        {
+            _cg.interactable = _status;
+            _cg.blocksRaycasts = _status;
+        }
+    }
     public static void SetTarget(CanvasGroup _cg = null, bool _status = false, float _target = 0f, float _duration = 0f, float _delay = 0f, TweenCallback _onComplete = null)
     {
         if (_cg != null)

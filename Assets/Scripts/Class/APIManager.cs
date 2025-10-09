@@ -258,7 +258,8 @@ public class APIManager
                                 //LogController.Instance?.debug("Display name is empty. use first name and last name");
                                 var first_name = jsonNode["account"]["first_name"].ToString().Replace("\"", "");
                                 var last_name = jsonNode["account"]["last_name"].ToString().Replace("\"", "");
-                                this.loginName = last_name + " " + first_name;
+                                this.loginName = last_name;
+                                //this.loginName = last_name + " " + first_name;
                             }
                         }
 
@@ -478,6 +479,55 @@ public class APIManager
                 }
 
                 yield return new WaitForSeconds(1f); // Optional delay before retry
+            }
+        }
+    }
+
+    public IEnumerator AddCurrency(int amount, Action onCompleted = null)
+    {
+        string api = APIConstant.GameAddCurrencyAPI(LoaderConfig.Instance);
+        LogController.Instance?.debug("Called Add Currency API: " + api);
+
+        // Prepare JSON body
+        string jsonBody = $"{{\"amount\": {amount}}}";
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
+
+        int retryCount = 0;
+        bool requestSuccessful = false;
+
+        while (retryCount < this.maxRetries && !requestSuccessful)
+        {
+            using (UnityWebRequest www = new UnityWebRequest(api, "POST"))
+            {
+                www.uploadHandler = new UploadHandlerRaw(bodyRaw);
+                www.downloadHandler = new DownloadHandlerBuffer();
+                www.SetRequestHeader("accept", "application/json");
+                www.SetRequestHeader("Content-Type", "application/json");
+                www.SetRequestHeader("Authorization", "Bearer " + LoaderConfig.Instance.apiManager.jwt);
+                www.certificateHandler = new WebRequestSkipCert();
+
+                yield return www.SendWebRequest();
+
+                if (www.result == UnityWebRequest.Result.Success)
+                {
+                    requestSuccessful = true;
+                    LogController.Instance.debug("Success added currency: " + www.downloadHandler.text);
+                    onCompleted?.Invoke();
+                }
+                else
+                {
+                    LogController.Instance.debugError($"Attempt {retryCount + 1} failed: {www.error}");
+                    retryCount++;
+
+                    if (retryCount >= this.maxRetries)
+                    {
+                        LogController.Instance.debugError("Failed to add currency after maximum retries.");
+                        onCompleted?.Invoke();
+                        yield break;
+                    }
+
+                    yield return new WaitForSeconds(1f); // Optional delay before retry
+                }
             }
         }
     }
@@ -748,6 +798,118 @@ public class APIManager
             this.HandleError("Failed to call endgame api after " + maxRetries + " attempts.", onCompleted, true);
         }
     }
+
+    public IEnumerator postScoreToStarAPI(string scores, Action<int[]> onCompleted = null)
+    {
+        string api = APIConstant.GamePostScoreToStarAPI(LoaderConfig.Instance, this.payloads, this.jwt, scores);
+        LogController.Instance?.debug("called post score to star api: " + api);
+
+        WWWForm form = new WWWForm(); // No fields needed, parameters are in the URL
+        int retryCount = 0;
+        bool requestSuccessful = false;
+
+        while (retryCount < this.maxRetries && !requestSuccessful)
+        {
+            using (UnityWebRequest www = UnityWebRequest.Post(api, form))
+            {
+                www.SetRequestHeader("Content-Type", "application/json");
+                www.SetRequestHeader("typ", "jwt");
+                www.SetRequestHeader("alg", "HS256");
+                www.certificateHandler = new WebRequestSkipCert();
+
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    retryCount++;
+                    this.HandleError("Error: " + www.error + " Retrying..." + retryCount, null, true);
+                    yield return new WaitForSeconds(2);
+                }
+                else
+                {
+                    requestSuccessful = true;
+                    string responseText = www.downloadHandler.text;
+                    try
+                    {
+                        var parsedJson = SimpleJSON.JSONNode.Parse(responseText);
+                        var starsNode = parsedJson["stars"];
+                        int[] stars = new int[starsNode.Count];
+                        for (int i = 0; i < starsNode.Count; i++)
+                        {
+                            stars[i] = starsNode[i].AsInt;
+                        }
+                        LogController.Instance?.debug("Stars: " + string.Join(",", stars));
+                        onCompleted?.Invoke(stars);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.HandleError("Failed to parse JSON: " + ex.Message, null, true);
+                        onCompleted?.Invoke(new int[0]);
+                    }
+                }
+            }
+        }
+
+        if (!requestSuccessful)
+        {
+            this.HandleError("Failed to call post score to star API after " + maxRetries + " attempts.", null, true);
+            onCompleted?.Invoke(new int[0]);
+        }
+    }
+
+    public IEnumerator restartGameAPI(Action onCompleted = null)
+    {
+        string api = APIConstant.RestartGameDataAPI(LoaderConfig.Instance, this.payloads, this.jwt);
+        LogController.Instance?.debug("called post restart game api: " + api);
+
+        WWWForm form = new WWWForm(); // No fields needed, parameters are in the URL
+        int retryCount = 0;
+        bool requestSuccessful = false;
+
+        while (retryCount < this.maxRetries && !requestSuccessful)
+        {
+            using (UnityWebRequest www = UnityWebRequest.Post(api, form))
+            {
+                www.SetRequestHeader("Content-Type", "application/json");
+                www.SetRequestHeader("typ", "jwt");
+                www.SetRequestHeader("alg", "HS256");
+                www.certificateHandler = new WebRequestSkipCert();
+
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    retryCount++;
+                    this.HandleError("Error: " + www.error + " Retrying..." + retryCount, null, true);
+                    yield return new WaitForSeconds(2);
+                }
+                else
+                {
+                    requestSuccessful = true;
+                    string responseText = www.downloadHandler.text;
+                    try
+                    {
+                        var parsedJson = JSONNode.Parse(responseText);
+                        var newPayLoad = parsedJson["payloads"];
+                        this.payloads = newPayLoad.ToString();
+                        LogController.Instance?.debug("Updated new payLoad, " + this.payloads);
+                        onCompleted?.Invoke();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.HandleError("Failed to parse payLoad JSON: " + ex.Message, null, true);
+                        onCompleted?.Invoke();
+                    }
+                }
+            }
+        }
+
+        if (!requestSuccessful)
+        {
+            this.HandleError("Failed to call restart game api after " + maxRetries + " attempts.", null, true);
+            onCompleted?.Invoke();
+        }
+    }
 }
 
 public static class APIConstant
@@ -758,6 +920,24 @@ public static class APIConstant
         string jsonParameter = string.IsNullOrEmpty(_bookId) ? "[1]" : $"[\"{_bookId}\"]";
         return $"{loader.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json={jsonParameter}&jwt=" + _jwt;
     }
+
+    public static string RestartGameDataAPI(LoaderConfig loader, string payload = "", string _jwt = "")
+    {
+        string jsonParameter = $"[{{\"payloads\":{payload}}}]";
+        return $"{loader.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.start_game_session&json={jsonParameter}&jwt=" + _jwt;
+    }
+
+    public static string GamePostScoreToStarAPI(LoaderConfig loader, string payload = "", string _jwt = "", string scores = "")
+    {
+        string jsonParameter = $"[{{\"payloads\":{payload},\"scores\":{scores},\"gameTotalStars\":{LoaderConfig.Instance.gameSetup.gameTotalStars}}}]";
+        return $"{loader.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.calStarForPlayers&json={jsonParameter}&jwt={_jwt}";
+    }
+
+    public static string GameAddCurrencyAPI(LoaderConfig loader)
+    {
+        return $"{loader.CurrentHostName}/OKAGames/public/index.php/api/accounts/add-currency";
+    }
+
     public static string GameAppQuestionDataAPI(LoaderConfig loader, string _dataKey = "", string _jwt = "")
     {
         string jsonParameter = string.IsNullOrEmpty(_dataKey) ? "[1]" : $"[\"comp-{_dataKey}\"]";
@@ -807,6 +987,7 @@ public static class APIConstant
             {
                 HostName.dev => "https://okadev.blob.core.windows.net/media/",
                 HostName.uat => "https://okauat.blob.core.windows.net/media/",
+                HostName.preprod => "https://okapreprod.blob.core.windows.net/media/",
                 HostName.prod => "https://oka.blob.core.windows.net/media/",
                 _ => throw new NotImplementedException()
             };

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,10 +26,7 @@ public class EndGamePage
         {
             if (this.PlayerIcons[i] != null)
             {
-                if(i < playerNumber)
-                    this.PlayerIcons[i].SetActive(true);
-                else
-                    this.PlayerIcons[i].SetActive(false);
+                this.PlayerIcons[i].SetActive(true);
             }
         }
     }
@@ -52,11 +50,19 @@ public class EndGamePage
         SetUI.Set(this.EndGameLayer, status, status ? 0.5f : 0f);
     }
 
-    public void updateFinalScore(int _playerId, int _score)
+    public void updateFinalScore(int _playerId, int _score, Action onCompleted = null)
     {
         if (this.scoreEndings != null && this.scoreEndings[_playerId] != null)
         {
-            this.scoreEndings[_playerId].updateFinalScore(_score, starsImageSprites);
+            this.scoreEndings[_playerId].updateFinalScore(_score, -1, starsImageSprites, onCompleted);
+        }
+    }
+
+    public void updateFinalScoreWithStar(int _playerId, int _score, int _star = -1, Action onCompleted = null)
+    {
+        if (this.scoreEndings != null && this.scoreEndings[_playerId] != null)
+        {
+            this.scoreEndings[_playerId].updateFinalScore(_score, _star, starsImageSprites, onCompleted);
         }
     }
 
@@ -82,7 +88,7 @@ public class ScoreEnding
             }
         }
     }
-    public void updateFinalScore(int score, Sprite[] starsImageSprites)
+    public void updateFinalScore(int score, int star, Sprite[] starsImageSprites, Action onCompleted = null)
     {
         if (starsImageSprites == null) return;
 
@@ -91,21 +97,28 @@ public class ScoreEnding
             this.scoreText.Value = score;
         }
 
-        if (score > 30 && score <= 60)
+        var loaderApiManager = LoaderConfig.Instance.apiManager;
+        if (loaderApiManager.IsLogined)
         {
-            this.starNumber = 1;
+            if (star > -1)
+                this.starNumber = star;
+            else
+                this.calculateByGameRate(score);
         }
-        else if (score > 60 && score <= 90)
+        else if (loaderApiManager.IsLoginedRainbowOne)
         {
-            this.starNumber = 2;
-        }
-        else if (score > 90)
-        {
-            this.starNumber = 3;
+            this.calculateByGameRate(score);
         }
         else
         {
-            this.starNumber = 0;
+            if (score > 30 && score <= 60)
+                this.starNumber = 1;
+            else if (score > 60 && score <= 90)
+                this.starNumber = 2;
+            else if (score > 90)
+                this.starNumber = 3;
+            else
+                this.starNumber = 0;
         }
 
         for (int i = 0; i < this.starNumber; i++)
@@ -116,5 +129,35 @@ public class ScoreEnding
                 this.show_stars_list[i].transform.DOScale(Vector3.one, 1f).SetDelay(0.5f + delay);
             }
         }
+
+        onCompleted?.Invoke();
+    }
+
+    void calculateByGameRate(int score)
+    {
+        int totalQuestions = 0;
+        int eachQuestionScore = 10;
+
+        if (QuestionManager.Instance != null)
+            totalQuestions = QuestionManager.Instance.totalItems;
+
+        if (QuestionController.Instance != null && QuestionController.Instance.currentQuestion != null)
+        {
+            var qa = QuestionController.Instance.currentQuestion.qa;
+            if (qa != null && qa.score != null && qa.score.full > 0)
+                eachQuestionScore = qa.score.full;
+        }
+
+        int maxScore = totalQuestions * eachQuestionScore;
+        float percent = (float)score / maxScore;
+
+        if (percent > 0.9f)
+            this.starNumber = 3;
+        else if (percent > 0.6f && percent <= 0.9f)
+            this.starNumber = 2;
+        else if (percent > 0.3f && percent <= 0.6f)
+            this.starNumber = 1;
+        else
+            this.starNumber = 0;
     }
 }

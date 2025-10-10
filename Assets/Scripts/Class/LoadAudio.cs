@@ -10,7 +10,7 @@ public class LoadAudio : Downloader
     [SerializeField] private LoadAudioMethod loadAudioMethod = LoadAudioMethod.StreamingAssets;
     [SerializeField] private AudioFormat audioFormat = AudioFormat.mp3;
 
-    string AudioExtension
+    public string AudioExtension
     {
         get
         {

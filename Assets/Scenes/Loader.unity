@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -427,10 +427,12 @@ MonoBehaviour:
     returnUrl: 
     showFPS: 0
     playerNumber: 1
-    passAccuracyScore: 50
-    passPronScore: 50
+    qa_font_alignment: 2
+    passAccuracyScore: 40
+    passPronScore: 40
     lang: 0
     gameSettingScore: -1
+    gameTotalStars: 3
   apiManager:
     jwt: 
     appId: 
@@ -455,6 +457,7 @@ MonoBehaviour:
       instructionContent: 
       gameTime: 0
       exitType: 0
+      qa_font_alignment: 1
       playerNumber: 0
       retryTimes: 0
       pass_accuracy_score: 0
@@ -479,7 +482,7 @@ MonoBehaviour:
         correctAnswerText: 
         score: 0
         percent: 0
-  unitKey: p1u3-f
+  unitKey: p1u2-f
   testURL: 
   skipAudioPanel: 0
   microphoneDevice:

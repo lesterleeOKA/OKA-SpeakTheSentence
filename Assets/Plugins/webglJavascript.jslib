@@ -1,11 +1,14 @@
 mergeInto(LibraryManager.library, {
+    StartRecord: function(){
+        StartRecord();
+    },
+    StopRecord: function(){
+        StopRecord();
+    },
     SetWebPageTitle: function (titlePtr) {
         var title = UTF8ToString(titlePtr);
         document.title = title;
-    }
-});
-
-mergeInto(LibraryManager.library, {
+    },
     GetDeviceType: function() {
         var ua = navigator.userAgent || navigator.vendor || window.opera;
         // Portable: iPad, iPhone, iPod, Android, generic tablet/phone

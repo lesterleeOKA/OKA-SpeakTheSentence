@@ -94,7 +94,7 @@ public class CurrentQuestion
     public string[] answersChoics;
     public CanvasGroup[] questionBgs;
     private RawImage questionImage;
-    public CanvasGroup audioPlayBtn = null;
+    public Button audioPlayBtn = null;
     private AspectRatioFitter aspecRatioFitter = null;
     public CanvasGroup progressiveBar;
     public Image progressFillImage;
@@ -266,13 +266,13 @@ public class CurrentQuestion
                     if (this.questionTexts[i].gameObject.name == "MarkerText")
                     {
                         this.questionText = questionTexts[i];
-                        this.questionText.text = !string.IsNullOrEmpty(qa.question) ? qa.question : "";
                     }
                 }
-                this.audioPlayBtn = this.questionBgs[1].GetComponentInChildren<CanvasGroup>();
+                this.setQuestionText(!string.IsNullOrEmpty(qa.question) ? qa.question : "");
+                this.audioPlayBtn = this.questionBgs[1].GetComponentInChildren<Button>();
                 if (this.audioPlayBtn != null)
                 {
-                    SetUI.Set(this.audioPlayBtn, true, 0f);
+                    SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), true, 0f);
                 }
                 this.questiontype = QuestionType.Audio;
                 this.correctAnswer = qa.correctAnswer;
@@ -285,10 +285,7 @@ public class CurrentQuestion
                 SetUI.SetGroup(this.questionBgs, 2, 0f);
                 this.questiontype = QuestionType.Text;
                 this.questionText = this.questionBgs[2].GetComponentInChildren<TextMeshProUGUI>();
-                if (this.questionText != null)
-                {
-                    this.questionText.text = qa.question;
-                }
+                if (this.questionText != null) this.setQuestionText(qa.question);
                 this.correctAnswer = qa.correctAnswer;
                 this.answersChoics = qa.answers;
                 this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;
@@ -362,22 +359,19 @@ public class CurrentQuestion
                         @"_+",
                         underline
                     );
-                    this.questionText.text = this.displayQuestion;
+
+                    this.setQuestionText(this.displayQuestion);
+                    this.questionText.ForceMeshUpdate();
+                    RectTransform rt = this.questionText.GetComponent<RectTransform>();
+                    rt.sizeDelta = new Vector2(rt.sizeDelta.x, this.questionText.preferredHeight);
                     //this.displayQuestion = fullSentence;
                     this.displayHint = qa.questionHint;
-                }
-
-                this.audioPlayBtn = this.questionBgs[3].GetComponentInChildren<CanvasGroup>();
-                if(this.audioPlayBtn != null)
-                {
-                    SetUI.Set(this.audioPlayBtn, true, 0f);
-                    this.audioPlayBtn.GetComponentInChildren<Button>()?.gameObject.SetActive(this.currentAudioClip != null? true : false);
                 }
                 this.questiontype = QuestionType.FillInBlank;
                 this.correctAnswer = qa.correctAnswer;
                 this.answersChoics = qa.answers;
                 this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;
-                this.playAudio();
+                this.controlMediaElements(this.questionBgs[3]);
                 break;
             case "SentenceCorrect":
             case "sentenceCorrect":
@@ -407,22 +401,14 @@ public class CurrentQuestion
                         }
                     }
 
-                    this.questionText.text = this.displayQuestion;
-                    //this.displayQuestion = fullSentence;
+                    this.setQuestionText(this.displayQuestion);
                     this.displayHint = qa.questionHint;
-                }
-
-                this.audioPlayBtn = this.questionBgs[3].GetComponentInChildren<CanvasGroup>();
-                if (this.audioPlayBtn != null)
-                {
-                    SetUI.Set(this.audioPlayBtn, true, 0f);
-                    this.audioPlayBtn.GetComponentInChildren<Button>()?.gameObject.SetActive(this.currentAudioClip != null ? true : false);
                 }
                 this.questiontype = QuestionType.SentenceCorrect;
                 this.correctAnswer = qa.correctAnswer;
                 this.answersChoics = qa.answers;
                 this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;
-                this.playAudio();
+                this.controlMediaElements(this.questionBgs[3]);
                 break;
         }
 
@@ -435,6 +421,76 @@ public class CurrentQuestion
             this.numberQuestion += 1;
         else
             this.numberQuestion = 0;
+    }
+
+    void controlMediaElements(CanvasGroup questionCg = null)
+    {
+        var qaFillInBlank_image = qa.texture;
+        var qaFillInBlank_audio = qa.audioClip;
+        this.questionImage = questionCg.GetComponentInChildren<RawImage>();
+        this.audioPlayBtn = questionCg.GetComponentInChildren<Button>();
+
+        if (qaFillInBlank_image != null)
+        {
+            this.audioPlayBtn?.gameObject.SetActive(false);
+            if (this.questionImage != null && qaFillInBlank_image != null)
+            {
+                this.aspecRatioFitter = this.questionImage.GetComponent<AspectRatioFitter>();
+                this.questionImage.texture = qaFillInBlank_image;
+
+                var width = this.questionImage.GetComponent<RectTransform>().sizeDelta.x;
+                var height = this.questionImage.GetComponent<RectTransform>().sizeDelta.y;
+
+                this.questionImage.GetComponent<RectTransform>().sizeDelta = new Vector2(width, 280f);
+                if (qaFillInBlank_image.width > qaFillInBlank_image.height)
+                {
+                    this.aspecRatioFitter.aspectMode = AspectRatioFitter.AspectMode.WidthControlsHeight;
+                    this.questionImage.GetComponent<RectTransform>().sizeDelta = new Vector2(280f, height);
+                }
+                else
+                {
+                    this.aspecRatioFitter.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
+                    this.questionImage.GetComponent<RectTransform>().sizeDelta = new Vector2(width, 280f);
+                }
+
+                this.aspecRatioFitter.aspectRatio = (float)qaFillInBlank_image.width / (float)qaFillInBlank_image.height;
+            }
+        }
+        else if (qaFillInBlank_audio != null)
+        {
+            this.questionImage?.gameObject.SetActive(false);
+            SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), true, 0f);
+            this.playAudio();
+        }
+        else
+        {
+            this.audioPlayBtn?.gameObject.SetActive(false);
+            this.questionImage?.gameObject.SetActive(false);
+        }
+    }
+
+    void setQuestionText(string displayQuestion = "")
+    {
+        for (int i = 0; i < this.questionTexts.Length; i++)
+        {
+            this.questionTexts[i].text = "";
+            switch (LoaderConfig.Instance.gameSetup.qa_font_alignment)
+            {
+                case 1:
+                    this.questionTexts[i].alignment = TextAlignmentOptions.Left;
+                    break;
+                case 2:
+                    this.questionTexts[i].alignment = TextAlignmentOptions.Center;
+                    break;
+                case 3:
+                    this.questionTexts[i].alignment = TextAlignmentOptions.Right;
+                    break;
+                default:
+                    this.questionTexts[i].alignment = TextAlignmentOptions.Left;
+                    break;
+            }
+        }
+        this.questionText.text = displayQuestion;
     }
 
     public TextMeshProUGUI QuestionText

@@ -41,6 +41,8 @@ public class GameBaseController : MonoBehaviour
         SetUI.Set(this.TopUILayer, false, 0f);
         SetUI.Set(this.GameUILayer, false, 0f);
         SetUI.Set(this.TopRightUILayer, false, 0f);
+        this.setGetScorePopup(false);
+        this.setWrongPopup(false);
         this.playing = false;
     }
 

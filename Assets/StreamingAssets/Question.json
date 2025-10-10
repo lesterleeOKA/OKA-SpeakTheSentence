@@ -98,7 +98,8 @@
       "correctAnswer": "two",
       "fullSentence": "Two pencils",
       "questionHint": "Looks at the pictures and speak the correct answer.",
-      "checkSingleWord": "1"
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f1.jpg" ]
     },
     {
       "qid": "p1u3-f2",
@@ -108,7 +109,8 @@
       "correctAnswer": "four",
       "fullSentence": "Four girls",
       "questionHint": "Looks at the pictures and speak the correct answer.",
-      "checkSingleWord": "1"
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f2.jpg" ]
     },
     {
       "qid": "p1u3-f3",
@@ -118,7 +120,8 @@
       "correctAnswer": "seven",
       "fullSentence": "Seven boys",
       "questionHint": "Looks at the pictures and speak the correct answer.",
-      "checkSingleWord": "1"
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f3.jpg" ]
     },
     {
       "qid": "p1u3-f4",
@@ -128,7 +131,8 @@
       "correctAnswer": "nine",
       "fullSentence": "Nine dolls",
       "questionHint": "Looks at the pictures and speak the correct answer.",
-      "checkSingleWord": "1"
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f4.jpg" ]
     },
     {
       "qid": "p1u3-f5",
@@ -138,7 +142,8 @@
       "correctAnswer": "one",
       "fullSentence": "One eraser",
       "questionHint": "Looks at the pictures and speak the correct answer.",
-      "checkSingleWord": "1"
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f5.jpg" ]
     },
     {
       "qid": "p1u3-f6",
@@ -148,7 +153,8 @@
       "correctAnswer": "ten",
       "fullSentence": "Ten books",
       "questionHint": "Looks at the pictures and speak the correct answer.",
-      "checkSingleWord": "1"
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f6.jpg" ]
     },
     {
       "qid": "p1u3-f7",
@@ -158,7 +164,8 @@
       "correctAnswer": "five",
       "fullSentence": "Five apples",
       "questionHint": "Looks at the pictures and speak the correct answer.",
-      "checkSingleWord": "1"
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f7.jpg" ]
     },
     {
       "qid": "p1u3-f8",
@@ -168,7 +175,8 @@
       "correctAnswer": "three",
       "fullSentence": "Three water bottles",
       "questionHint": "Looks at the pictures and speak the correct answer.",
-      "checkSingleWord": "1"
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f8.jpg" ]
     },
     {
       "qid": "p1u3-f9",
@@ -178,7 +186,8 @@
       "correctAnswer": "eight",
       "fullSentence": "Eight oranges",
       "questionHint": "Looks at the pictures and speak the correct answer.",
-      "checkSingleWord": "1"
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f9.jpg" ]
     },
     {
       "qid": "p1u3-f10",
@@ -188,7 +197,8 @@
       "correctAnswer": "six",
       "fullSentence": "Six school bags",
       "questionHint": "Looks at the pictures and speak the correct answer.",
-      "checkSingleWord": "1"
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f10.jpg" ]
     },
     {
       "qid": "p1Bu2-g1",

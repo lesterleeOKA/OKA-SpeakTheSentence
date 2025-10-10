@@ -395,6 +395,7 @@ public class GameSetup : LoadImage
     public string returnUrl = "";
     public bool showFPS = false;
     public int playerNumber = 1;
+    public int qa_font_alignment = 1; // 0: left, 1: center, 2: right
     public int passAccuracyScore = 60;
     public int passPronScore = 60;
     [Range(0, 1)]

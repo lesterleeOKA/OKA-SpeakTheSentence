@@ -153,8 +153,6 @@ public class QuestionManager : MonoBehaviour
             {
                 case "Text":
                 case "text":
-                case "FillInBlank":
-                case "fillInBlank":
                 case "SentenceCorrect":
                 case "sentenceCorrect":
                     ExternalCaller.UpdateLoadBarStatus("Loading Question");
@@ -195,6 +193,52 @@ public class QuestionManager : MonoBehaviour
                             }
                         )
                     );
+                    break;
+                case "FillInBlank":
+                case "fillInBlank":
+                    if (!string.IsNullOrEmpty(mediaUrl))
+                    {
+                        string extension = Path.GetExtension(mediaUrl).ToLowerInvariant();
+                        if (extension == this.loadAudio.AudioExtension)
+                        {
+                            ExternalCaller.UpdateLoadBarStatus("Loading Audio");
+                            StartCoroutine(
+                                this.loadAudio.Load(
+                                    isLogined ? "" : "audio",
+                                    isLogined ? mediaUrl : qid,
+                                    audio =>
+                                    {
+                                        qa.audioClip = audio;
+                                        this.loadedItems++;
+                                        if (this.loadedItems == this.totalItems) onComplete?.Invoke();
+                                    }
+                                )
+                            );
+                            continue;
+                        }
+                        else if (extension == this.loadImage.ImageExtension)
+                        {
+                            ExternalCaller.UpdateLoadBarStatus("Loading Images");
+                            StartCoroutine(
+                                this.loadImage.Load(
+                                    isLogined ? "" : "picture",
+                                    isLogined ? mediaUrl : qid,
+                                    tex =>
+                                    {
+                                        qa.texture = tex;
+                                        this.loadedItems++;
+                                        if (this.loadedItems == this.totalItems) onComplete?.Invoke();
+                                    }
+                                )
+                            );
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        this.loadedItems++;
+                        if (this.loadedItems == this.totalItems) onComplete?.Invoke();
+                    }
                     break;
                 default:
                     LogController.Instance?.debug($"Unexpected QuestionType: {qa.questionType}");

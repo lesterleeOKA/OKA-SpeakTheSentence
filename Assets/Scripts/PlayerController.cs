@@ -251,7 +251,7 @@ public class PlayerController : UserData
             AudioController.Instance?.PlayAudio(1);
             onCorrectCompleted?.Invoke();
             yield return new WaitForSeconds(delay);
-            GameController.Instance?.setGetScorePopup(false);
+            //GameController.Instance?.setGetScorePopup(false);
             recorder.controlResultPage(0);
         }
         else
@@ -260,7 +260,7 @@ public class PlayerController : UserData
             AudioController.Instance?.PlayAudio(2);
             this.updateRetryTimes(0);
             yield return new WaitForSeconds(delay);
-            GameController.Instance?.setWrongPopup(false);
+            //GameController.Instance?.setWrongPopup(false);
             recorder.controlResultPage(this.Retry <= 0 ? 2 : 1);
             if(this.Retry > 0) { 
                 QuestionController.Instance.currentQuestion.QuestionText.text = QuestionController.Instance.currentQuestion.displayQuestion;

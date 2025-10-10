@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using TMPro;
@@ -11,22 +8,13 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class RecordAudio : MonoBehaviour
+public class RecordAudio : RecorderManager
 {
-    /*public enum RecognitionAPI
+    public static RecordAudio Instance = null;
+    void Awake()
     {
-        roWeb_Azure=0, //roWeb speech to text api
-        recognize_tts=1, //語音辨識api
-    }*/
-
-    public enum DetectMethod
-    {
-        None = 0,
-        Word = 1,
-        FullSentence = 2,
-        Spelling = 3
+        if (Instance == null) Instance = this;
     }
-
     public enum Stage
     {
         Record=0,
@@ -34,14 +22,13 @@ public class RecordAudio : MonoBehaviour
         UploadClip = 2,
         PlaybackResult = 3,
     }
-    public DetectMethod detectMethod = DetectMethod.FullSentence;
     public Stage stage = Stage.Record;
     //public RecognitionAPI recognitionAPI = RecognitionAPI.recognize_tts;
     public TextMeshProUGUI debugText, answerText, submitAudioText;
     public Color32 answerTextOriginalColor;
     public RawImage answerBox;
     public Texture[] answerBoxTexs;
-    private AudioClip clip, originalTrimmedClip;
+
     public bool useHighPassFilter = false;
     [Header("Audio Pages for different process")]
     public CanvasGroup[] pages;
@@ -56,11 +43,11 @@ public class RecordAudio : MonoBehaviour
     [SerializeField] private Texture[] playbackBtnTexs;
     [SerializeField] private Text stopRecordText, playbackText, accurancyText;
     [SerializeField] private int maxRecordLength = 10;
-    [SerializeField] private WaveformVisualizer waveformVisualizer;
+    public WaveformVisualizer waveformVisualizer;
     [SerializeField] private Slider playbackSlider;
     [SerializeField] private CanvasGroup remindRecordTip;
     [SerializeField] private Button qa_audio_btn;
-    [SerializeField] public CanvasGroup hintBox, remindRecordBox;
+    [SerializeField] public CanvasGroup hintBox, remindRecordBox, processButtonCg;
     public UnityEngine.Audio.AudioMixerGroup recordingMixerGroup;
 
     private bool isRecording = false;
@@ -71,10 +58,7 @@ public class RecordAudio : MonoBehaviour
     private bool grantedMicrophone = false;
     public int passAccuracyScore = 60;
     public int passPronScore = 60;
-    public bool ttsFailure = false;
-    public bool ttsDone = false;
     public bool isInitialized = false;
-    public string textToRecognize = "";
     private string ApiUrl = "";
     private string JwtToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dfZW5hYmxlZCI6IjEiLCJ0b2tlbiI6IjUyNzcwMS04MTcyNGIyYTIxODk4YTE2NTA0ZTZiMTg0ZWZlMWQ5Mjc2OGIyYWM1YmI2ZmExMDc4NDVlZjM1MDRjNTY3NDBlIiwiZXhwaXJlcyI6MTgwODUzNjQ5NSwicmVuZXdfZW5hYmxlZCI6MSwidGltZSI6IjIwMjUtMDQtMjQgMDM6MTQ6NTUgR01UIiwidWlkIjoiNTI3NzAxIiwidXNlcl9yb2xlIjoiMiIsInNjaG9vbF9pZCI6IjMxNiIsImlwIjoiOjoxIiwidmVyc2lvbiI6bnVsbCwiZGV2aWNlIjoidW5rbm93biJ9.SO79u9MBCflyYh_TcsIBG740pWXgKPZOAsGNZESkoqo";
 
@@ -103,8 +87,8 @@ public class RecordAudio : MonoBehaviour
 
     void Update()
     {
-        if (this.qa_audio_btn != null) this.qa_audio_btn.interactable = !isRecording;
-        if (isRecording && clip)
+        if (this.qa_audio_btn != null) this.qa_audio_btn.interactable = !this.isRecording;
+        if (this.isRecording && this.clip)
         {
             recordingTime += Time.deltaTime;
 
@@ -296,7 +280,13 @@ public class RecordAudio : MonoBehaviour
         }
         else
         {
+
             this.clip = Microphone.Start(microphoneDevices.selectedDeviceName, true, maxRecordLength, 44100);
+
+            if (this.loadingTextCoroutine != null)
+                StopCoroutine(this.loadingTextCoroutine);
+
+            this.loadingTextCoroutine = StartCoroutine(AnimateLoadingText("Recording"));
         }
 
         if (this.clip)
@@ -310,6 +300,7 @@ public class RecordAudio : MonoBehaviour
         {
             this.UpdateUI("Failed to start recording.");
         }
+
     }
 
     private float GetPlatformSpecificGain()
@@ -391,8 +382,8 @@ public class RecordAudio : MonoBehaviour
         if (this.loadingTextCoroutine != null)
             StopCoroutine(this.loadingTextCoroutine);
 
-        this.loadingTextCoroutine = StartCoroutine(AnimateLoadingText("Loading"));
-
+        this.loadingTextCoroutine = StartCoroutine(AnimateLoadingText("Processing"));
+        SetUI.Set(this.processButtonCg, true);
         int micPosition = Microphone.GetPosition(null);
         bool wasRecording = Microphone.IsRecording(null);
 
@@ -405,31 +396,27 @@ public class RecordAudio : MonoBehaviour
             this.ResetRecorder();
             return;
         }
-
         Microphone.End(null);
+
         isRecording = false;
         this.switchPage(Stage.UploadClip);
         StartCoroutine(this.TrimAudioClip(micPosition));
     }
 
-    private IEnumerator TrimAudioClip(int micPosition)
+    /*
+    public void SendAudioClipFromJavascriptToAPI(byte[] wavData)
     {
-        float actualLength = micPosition / (float)this.clip.frequency;
-        yield return new WaitForEndOfFrame();
-        AudioClip trimmedClip = AudioClip.Create(this.clip.name, micPosition, this.clip.channels, this.clip.frequency, false);
-        float[] samples = new float[micPosition * this.clip.channels];
-        this.clip.GetData(samples, 0);
-        trimmedClip.SetData(samples, 0);
+        StartCoroutine(this.SendToAPIForRecognitionDirectly(wavData));
+    }
 
-        this.clip = trimmedClip;
-        this.originalTrimmedClip = AudioClip.Create(trimmedClip.name + "_original", trimmedClip.samples, trimmedClip.channels, trimmedClip.frequency, false);
-        float[] originalSamples = new float[trimmedClip.samples * trimmedClip.channels];
-        trimmedClip.GetData(originalSamples, 0);
-        this.originalTrimmedClip.SetData(originalSamples, 0);
-
-        //float gain = this.GetPlatformSpecificGain();
-        //LogController.Instance?.debug("Gain scale: " + gain);
-        //this.NormalizeAndAmplifyAudioClip(this.clip, gain);
+    private IEnumerator SendToAPIForRecognitionDirectly(byte[] wavData)
+    {
+        if (this.originalTrimmedClip == null)
+        {
+            LogController.Instance?.debugError("originalTrimmedClip is null");
+            yield return null;
+        }
+        LogController.Instance?.debug($"this.originalTrimmedClip: {this.originalTrimmedClip.name}");
 
         // Parallel API calls
         bool azureDone = false;
@@ -439,7 +426,7 @@ public class RecordAudio : MonoBehaviour
         this.ttsFailure = false;
 
         // Start Azure STT
-        StartCoroutine(SendAudioToAzureApi(this.clip,
+        StartCoroutine(SendAudioToAzureApi(wavData, null,
             (transcript) => {
                 azureTranscript = transcript;
                 azureDone = true;
@@ -451,7 +438,92 @@ public class RecordAudio : MonoBehaviour
         ));
 
         // Start TTS recognition
-        StartCoroutine(UploadAudioFileServer(this.clip,
+        StartCoroutine(UploadAudioFileServer(wavData, null,
+            (response) => {
+                LogController.Instance.debug($"Start to pass to recognition request");
+            },
+            (error) => {
+                ttsError = error;
+                this.ttsDone = true;
+            }
+        ));
+
+        // Wait for both to finish
+        while (!azureDone || !this.ttsDone)
+            yield return null;
+
+        if (ttsError != null && azureError != null)
+        {
+            this.UpdateUI($"Both recognitions failed.\nAzure error: {azureError}\nTTS error: {ttsError}");
+            this.switchPage(Stage.Record);
+        }
+        else
+        {
+            // Final UI/page update
+            if (!this.ttsFailure)
+            {
+                this.UpdateUI("TTS recognition passed.");
+            }
+            else
+            {
+                this.UpdateUI("TTS failed, fallback to Azure STT result.");
+                this.switchPage(Stage.PlaybackResult);
+                var playerController = this.GetComponent<PlayerController>();
+                if (playerController != null)
+                {
+                    playerController.submitAnswer(this.answerText.text);
+                }
+            }
+        }
+    }*/
+
+    private IEnumerator TrimAudioClip(int micPosition)
+    {
+        float actualLength = micPosition / (float)this.clip.frequency;
+        yield return new WaitForEndOfFrame();
+        AudioClip trimmedClip = AudioClip.Create(this.clip.name, micPosition, this.clip.channels, this.clip.frequency, false);
+        float[] samples = new float[micPosition * this.clip.channels];
+        this.clip.GetData(samples, 0);
+        trimmedClip.SetData(samples, 0);
+
+        this.clip = trimmedClip;
+        /*
+        this.originalTrimmedClip = AudioClip.Create(trimmedClip.name + "_original", trimmedClip.samples, trimmedClip.channels, trimmedClip.frequency, false);
+        float[] originalSamples = new float[trimmedClip.samples * trimmedClip.channels];
+        trimmedClip.GetData(originalSamples, 0);
+        this.originalTrimmedClip.SetData(originalSamples, 0);
+        //float gain = this.GetPlatformSpecificGain();
+        //LogController.Instance?.debug("Gain scale: " + gain);
+        //this.NormalizeAndAmplifyAudioClip(this.clip, gain);
+
+        if (this.originalTrimmedClip == null) { 
+            LogController.Instance?.debugError("originalTrimmedClip is null");
+            yield return null;
+        }
+
+        //LogController.Instance?.debug($"this.originalTrimmedClip{this.originalTrimmedClip.name}");*/
+
+        // Parallel API calls
+        bool azureDone = false;
+        this.ttsDone = false;
+        string azureTranscript = null;
+        string azureError = null, ttsError = null;
+        this.ttsFailure = false;
+
+        // Start Azure STT
+        StartCoroutine(SendAudioToAzureApi(null, this.clip,
+            (transcript) => {
+                azureTranscript = transcript;
+                azureDone = true;
+            },
+            (error) => {
+                azureError = error;
+                azureDone = true;
+            }
+        ));
+
+        // Start TTS recognition
+        StartCoroutine(UploadAudioFileServer(null, this.clip,
             (response) => {
                 LogController.Instance.debug($"Start to pass to recognition request");
             },
@@ -498,7 +570,7 @@ public class RecordAudio : MonoBehaviour
         }
         else
         {
-            if (this.originalTrimmedClip == null)
+            if (this.clip == null)
             {
                 this.UpdateUI("No recording available for playback.");
                 return;
@@ -511,9 +583,9 @@ public class RecordAudio : MonoBehaviour
 #if UNITY_EDITOR
             playbackSource.outputAudioMixerGroup = this.recordingMixerGroup;
 #endif
-            playbackSource.clip = this.originalTrimmedClip;
+            playbackSource.clip = this.clip;
             playbackSource.loop = false;
-            playbackSource.volume = 2.0f;
+            playbackSource.volume = 1.0f;
 
             if (Mathf.Approximately(playbackSource.time, playbackSource.clip.length - 0.01f))
             {
@@ -588,36 +660,11 @@ public class RecordAudio : MonoBehaviour
         }
     }
 
-    public string TextToRecognize
-    {
-        get
-        {
-            this.textToRecognize = "";
-            switch (this.detectMethod)
-            {
-                case DetectMethod.None:
-                    this.textToRecognize = "";
-                    break;
-                case DetectMethod.Word:
-                    this.textToRecognize = QuestionController.Instance.currentQuestion.correctAnswer;
-                    break;
-                case DetectMethod.FullSentence:
-                    this.textToRecognize = QuestionController.Instance.currentQuestion.fullSentence;
-                    break;
-                case DetectMethod.Spelling:
-                    var word = QuestionController.Instance.currentQuestion.correctAnswer;
-                    this.textToRecognize = string.Join(" ", word.ToCharArray());
-                    break;
-            }
-            return this.textToRecognize;
-        }
-    }
-
-    private IEnumerator SendAudioToAzureApi(AudioClip audioClip, Action<string> onSuccess, Action<string> onError)
+    private IEnumerator SendAudioToAzureApi(byte[] _wavData, AudioClip audioClip, Action<string> onSuccess, Action<string> onError)
     {
         if (this.answerText != null) this.answerText.text = "";
         this.UpdateUI("Processing audio...");
-        byte[] wavData = ConvertAudioClipToWav(audioClip);
+        byte[] wavData = (_wavData != null) ? _wavData : ConvertAudioClipToWav(audioClip);
 
         if (wavData == null)
         {
@@ -687,7 +734,8 @@ public class RecordAudio : MonoBehaviour
         }
     }
 
-    public IEnumerator UploadAudioFileServer(AudioClip audioClip, 
+    public IEnumerator UploadAudioFileServer(byte[] _wavData,
+                                        AudioClip audioClip, 
                                        Action<string> onSuccess, 
                                        Action<string> onError, 
                                        int retryCount = 5, 
@@ -720,7 +768,7 @@ public class RecordAudio : MonoBehaviour
             options = { fileType: "video" };
             uploadType = 3;
         }*/
-        byte[] audioData = ConvertAudioClipToWav(audioClip);
+        byte[] audioData = (_wavData != null) ? _wavData : ConvertAudioClipToWav(audioClip);
 
         if (audioData == null)
         {
@@ -785,6 +833,7 @@ public class RecordAudio : MonoBehaviour
                 {
                     StopCoroutine(this.loadingTextCoroutine);
                     this.loadingTextCoroutine = null;
+                    SetUI.Set(this.processButtonCg, false);
                 }
                 this.UpdateUI($"Upload failed (attempt {attempt}/{retryCount}): {request.error}");
                 if(this.submitAudioText != null) this.submitAudioText.text = $"Retry Upload ({attempt}/{retryCount})";
@@ -844,9 +893,7 @@ public class RecordAudio : MonoBehaviour
                     string transcript = "";
                     string displayText = "";
                     string correctAnswer = recognitionResponse.result.DisplayText;
-                    bool hasErrorWord = false;
-                    //var correctAnswerWords = QuestionController.Instance.currentQuestion.correctAnswer.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
+                    this.hasErrorWord = false;
                     this.wordDetails = null;
                     // Log the NBest array
                     if (Best != null)
@@ -854,56 +901,11 @@ public class RecordAudio : MonoBehaviour
                         foreach (var nBest in Best)
                         {
                             result.AppendLine($"Score: {nBest.PronScore}");
-                            if(nBest.Words != null)
-                            {
-                                this.wordDetails = nBest.Words;
-                                var correctAnswerWords = QuestionController.Instance.currentQuestion.correctAnswer
-                                    .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                                var correctAnswerWordsCount = QuestionController.Instance.currentQuestion.correctAnswer
-    .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
-                                var correctAnswerWordSet = new HashSet<string>(
-                                    correctAnswerWords.Select(w => Regex.Replace(w, @"[^\w]", "").ToLower())
-                                );
+                            this.wordDetails = nBest.Words;
+                            this.checkSpeech(this.wordDetails, result, this.accurancyText);
 
-                                foreach (var word in nBest.Words)
-                                {
-                                    string cleanWord = Regex.Replace(word.Word, @"[^\w]", "").ToLower();
-
-                                    if (word.ErrorType == "Omission")
-                                    {
-                                        this.ttsFailure = true;
-                                        if (this.accurancyText != null)
-                                            this.accurancyText.text = $"Word missing, please retry";
-                                        hasErrorWord = true;
-                                    }
-                                    else {
-                                        if (correctAnswerWordSet.Contains(cleanWord))
-                                        {
-                                            if (word.ErrorType == "Mispronunciation")
-                                            {
-                                                this.ttsFailure = true;
-                                                if (this.accurancyText != null)
-                                                    this.accurancyText.text = $"Mispronunciation detected, please retry";
-                                                hasErrorWord = true;
-                                            }
-                                            else if (word.AccuracyScore < 85 && (QuestionController.Instance.currentQuestion.questiontype == QuestionType.SentenceCorrect || correctAnswerWordsCount == 1))
-                                            {
-                                                this.ttsFailure = true;
-                                                if (this.accurancyText != null)
-                                                    this.accurancyText.text = $"Mispronunciation detected, please retry";
-                                                hasErrorWord = true;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                result.AppendLine("No words found in NBest.");
-                            }
-
-                            if (this.accurancyText != null && !hasErrorWord) 
-                                this.accurancyText.text = $"Rating: {nBest.PronScore}%";
+                            if (this.accurancyText != null && !this.hasErrorWord) 
+                                this.accurancyText.text = $"{nBest.PronScore}%"; //Rating
 
                             if (nBest.AccuracyScore <= this.passAccuracyScore &&
                                 nBest.PronScore <= this.passPronScore)
@@ -1020,7 +1022,7 @@ public class RecordAudio : MonoBehaviour
                                 break;
                             case "Omission":
                                 if (markerText)
-                                    result.Append($"<mark=#2A1A17 padding='0,12,5,10'>{word}</mark> ");
+                                    result.Append($"<mark=#EF9E98 padding='0,12,5,10'>{word}</mark> ");
                                 else
                                     result.Append($"<color=red>{word}</color> ");
                                 break;
@@ -1035,7 +1037,14 @@ public class RecordAudio : MonoBehaviour
                     }
                     else
                     {
-                        result.Append($"{word} ");
+                        if(word.Equals(currentQuestion.correctAnswer) && markerText)
+                        {
+                            result.Append($"<mark=#A6E32A padding='0,12,5,10'>{word}</mark> ");
+                        }
+                        else
+                        {
+                            result.Append($"{word} ");
+                        }
                     }
                 }
 
@@ -1151,8 +1160,13 @@ public class RecordAudio : MonoBehaviour
 
     public void ResetRecorder()
     {
+        this.originalTrimmedClip = null;
+        this.clip = null;
+        GameController.Instance?.setGetScorePopup(false);
+        GameController.Instance?.setWrongPopup(false);
         this.ttsDone = false;
         this.ttsFailure = false;
+        SetUI.Set(this.processButtonCg, false);
         AudioController.Instance?.fadingBGM(true, 1f);
         this.playbackButton.texture = this.playbackBtnTexs[0];
         //this.ShowDirectCorrectAnswer(false);

@@ -5,6 +5,7 @@ using System;
 public class GameSettings : Settings
 {
     public int exitType = 0; //0: default none login, 1: exit back to roWeb/previous page, 3: restart game
+    public int qa_font_alignment = 1;
     public int playerNumber = 0;
     public int retryTimes;
     public int pass_accuracy_score;
@@ -28,6 +29,12 @@ public static class SetParams
             LoaderConfig.Instance.gameSetup.retry_times = settings.retryTimes;
             LoaderConfig.Instance.gameSetup.passAccuracyScore = settings.pass_accuracy_score;
             LoaderConfig.Instance.gameSetup.passPronScore = settings.pass_pron_score;
+
+            if (jsonNode["setting"]["qa_font_alignment"] != null)
+            {
+                settings.qa_font_alignment = jsonNode["setting"]["qa_font_alignment"];
+                LoaderConfig.Instance.gameSetup.qa_font_alignment = settings.qa_font_alignment;
+            }
 
             if (jsonNode["setting"]["exit_type"] != null)
             {

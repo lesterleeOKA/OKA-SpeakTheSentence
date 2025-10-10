@@ -482,7 +482,7 @@ MonoBehaviour:
         correctAnswerText: 
         score: 0
         percent: 0
-  unitKey: p1u2-f
+  unitKey: 
   testURL: 
   skipAudioPanel: 0
   microphoneDevice:

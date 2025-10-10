@@ -455,10 +455,12 @@ public class CurrentQuestion
 
                 this.aspecRatioFitter.aspectRatio = (float)qaFillInBlank_image.width / (float)qaFillInBlank_image.height;
             }
+            questionCg.GetComponent<VerticalLayoutGroup>().spacing = 0f;
         }
         else if (qaFillInBlank_audio != null)
         {
             this.questionImage?.gameObject.SetActive(false);
+            questionCg.GetComponent<VerticalLayoutGroup>().spacing = 50f;
             SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), true, 0f);
             this.playAudio();
         }
@@ -520,7 +522,7 @@ public class CurrentQuestion
         foreach (var board in this.questionBgs)
         {
             var boardCg = board.GetComponent<CanvasGroup>();
-            if (boardCg != null)
+            if (boardCg != null && boardCg.alpha == 1f)
             {
                 boardCg.interactable = status;
                 boardCg.blocksRaycasts = status;

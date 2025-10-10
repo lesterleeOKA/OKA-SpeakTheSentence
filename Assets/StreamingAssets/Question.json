@@ -201,6 +201,116 @@
       "media": [ "p1u3-f10.jpg" ]
     },
     {
+      "qid": "p1u4-f1",
+      "questionType": "FillInBlank",
+      "question": "______________ a clock.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There is",
+      "fullSentence": "There is a clock.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f1.jpg" ]
+    },
+    {
+      "qid": "p1u4-f2",
+      "questionType": "FillInBlank",
+      "question": "______________ many desks.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There are",
+      "fullSentence": "There are many desks.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f2.jpg" ]
+    },
+    {
+      "qid": "p1u4-f3",
+      "questionType": "FillInBlank",
+      "question": "______________ posters.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There are",
+      "fullSentence": "There are posters.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f3.jpg" ]
+    },
+    {
+      "qid": "p1u4-f4",
+      "questionType": "FillInBlank",
+      "question": "______________ a blackboard.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There is",
+      "fullSentence": "There is a blackboard.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f4.jpg" ]
+    },
+    {
+      "qid": "p1u4-f5",
+      "questionType": "FillInBlank",
+      "question": "______________ two fans.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There are",
+      "fullSentence": "There are two fans.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f5.jpg" ]
+    },
+    {
+      "qid": "p1u4-f6",
+      "questionType": "FillInBlank",
+      "question": "______________ a bin.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There is",
+      "fullSentence": "There is a bin.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f6.jpg" ]
+    },
+    {
+      "qid": "p1u4-f7",
+      "questionType": "FillInBlank",
+      "question": "______________ four chairs.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There are",
+      "fullSentence": "There are four chairs.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f7.jpg" ]
+    },
+    {
+      "qid": "p1u4-f8",
+      "questionType": "FillInBlank",
+      "question": "______________ a boy.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There is",
+      "fullSentence": "There is a boy.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f8.jpg" ]
+    },
+    {
+      "qid": "p1u4-f9",
+      "questionType": "FillInBlank",
+      "question": "______________ a bed.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There is",
+      "fullSentence": "There is a bed.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f9.jpg" ]
+    },
+    {
+      "qid": "p1u4-f10",
+      "questionType": "FillInBlank",
+      "question": "______________ cups.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There are",
+      "fullSentence": "There are cups.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f10.jpg" ]
+    },
+    {
       "qid": "p1Bu2-g1",
       "questionType": "FillInBlank",
       "question": "I _____ many toys.",

@@ -491,6 +491,186 @@
       "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
     },
     {
+      "qid": "p1u11-h1",
+      "questionType": "FillInBlank",
+      "question": "She ______ (be) six years old.",
+      "answers": null,
+      "correctAnswer": "is",
+      "fullSentence": "She is six years old.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h2",
+      "questionType": "FillInBlank",
+      "question": "We ______ (have) new T-shirts!",
+      "answers": null,
+      "correctAnswer": "have",
+      "fullSentence": "We have new T-shirts!",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h3",
+      "questionType": "FillInBlank",
+      "question": "They ______ (be) at home with their mom.",
+      "answers": null,
+      "correctAnswer": "are",
+      "fullSentence": "They are at home with their mom.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h4",
+      "questionType": "FillInBlank",
+      "question": "Hi, I ______ (walk) my dog.",
+      "answers": null,
+      "correctAnswer": "am walking",
+      "fullSentence": "Hi, I am walking my dog.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h5",
+      "questionType": "FillInBlank",
+      "question": "Dad ______ (clean) his shoes now.",
+      "answers": null,
+      "correctAnswer": "is cleaning",
+      "fullSentence": "Dad is cleaning his shoes now.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h6",
+      "questionType": "FillInBlank",
+      "question": "I ______ (like) the colour blue.",
+      "answers": null,
+      "correctAnswer": "like",
+      "fullSentence": "I like the colour blue.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h7",
+      "questionType": "FillInBlank",
+      "question": "You ______ (go) to the swimming pool now.",
+      "answers": null,
+      "correctAnswer": "are going",
+      "fullSentence": "You are going to the swimming pool now.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h8",
+      "questionType": "FillInBlank",
+      "question": "Wait. I _______ (wash) my hands.",
+      "answers": null,
+      "correctAnswer": "am washing",
+      "fullSentence": "Wait. I am washing my hands.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h9",
+      "questionType": "FillInBlank",
+      "question": "Nick ______ (run) fast.",
+      "answers": null,
+      "correctAnswer": "runs",
+      "fullSentence": "Nick runs fast.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h10",
+      "questionType": "FillInBlank",
+      "question": "Sally _______ (want) a yellow skirt.",
+      "answers": null,
+      "correctAnswer": "wants",
+      "fullSentence": "Sally wants a yellow skirt.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u12-f1",
+      "questionType": "FillInBlank",
+      "question": "___________ Amy do? She can sing.",
+      "answers": null,
+      "correctAnswer": "What can",
+      "fullSentence": "What can Amy do? She can sing.",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f2",
+      "questionType": "FillInBlank",
+      "question": "___________ a bird fly?",
+      "answers": null,
+      "correctAnswer": "Can",
+      "fullSentence": "Can a bird fly?",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f3",
+      "questionType": "FillInBlank",
+      "question": "___________ the baby swim?",
+      "answers": null,
+      "correctAnswer": "Can",
+      "fullSentence": "Can the baby swim?",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f4",
+      "questionType": "FillInBlank",
+      "question": "___________ a robot do? It can talk.",
+      "answers": null,
+      "correctAnswer": "What can",
+      "fullSentence": "What can a robot do? It can talk.",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f5",
+      "questionType": "FillInBlank",
+      "question": "___________ you draw?",
+      "answers": null,
+      "correctAnswer": "Can",
+      "fullSentence": "Can you draw?",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f6",
+      "questionType": "FillInBlank",
+      "question": "Can a goldfish run? No, it ________.",
+      "answers": null,
+      "correctAnswer": "cannot",
+      "fullSentence": "Can a goldfish run? No, it cannot.",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f7",
+      "questionType": "FillInBlank",
+      "question": "Can a rabbit jump? Yes, it ________.",
+      "answers": null,
+      "correctAnswer": "can",
+      "fullSentence": "Can a rabbit jump? Yes, it can.",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f8",
+      "questionType": "FillInBlank",
+      "question": "___________ your cousins do? They can cook.",
+      "answers": null,
+      "correctAnswer": "What can",
+      "fullSentence": "What can your cousins do? They can cook.",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f9",
+      "questionType": "FillInBlank",
+      "question": "___________ Mr Lee dance?",
+      "answers": null,
+      "correctAnswer": "Can",
+      "fullSentence": "Can Mr Lee dance?",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f10",
+      "questionType": "FillInBlank",
+      "question": "___________ Joe catch the ball? No, he ________.",
+      "answers": null,
+      "correctAnswer": "Can, cannot",
+      "fullSentence": "Can Joe catch the ball? No, he cannot.",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
       "qid": "p2u2-g1",
       "questionType": "FillInBlank",
       "question": "________________ (talk) to Mr Chan in the classroom?",

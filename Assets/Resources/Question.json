@@ -1,0 +1,2786 @@
+{
+  "questions": [
+    {
+      "qid": "p1u2-f1",
+      "questionType": "FillInBlank",
+      "question": "_____________ are you, Ella?",
+      "answers": null,
+      "correctAnswer": "How old",
+      "fullSentence": "How old are you, Ella?",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f2",
+      "questionType": "FillInBlank",
+      "question": "I am seven ______________.",
+      "answers": null,
+      "correctAnswer": "years old",
+      "fullSentence": "I am seven years old.",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f3",
+      "questionType": "FillInBlank",
+      "question": "_____________ is your sister, Rose?",
+      "answers": null,
+      "correctAnswer": "How old",
+      "fullSentence": "How old is your sister, Rose?",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f4",
+      "questionType": "FillInBlank",
+      "question": "She is ten ______________.",
+      "answers": null,
+      "correctAnswer": "years old",
+      "fullSentence": "She is ten years old.",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f5",
+      "questionType": "FillInBlank",
+      "question": "_____________ are you, Jack and Mark?",
+      "answers": null,
+      "correctAnswer": "How old",
+      "fullSentence": "How old are you, Jack and Mark?",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f6",
+      "questionType": "FillInBlank",
+      "question": "We are five ______________.",
+      "answers": null,
+      "correctAnswer": "years old",
+      "fullSentence": "We are five years old.",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f7",
+      "questionType": "FillInBlank",
+      "question": "_____________ is your cat?",
+      "answers": null,
+      "correctAnswer": "How old",
+      "fullSentence": "How old is your cat?",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f8",
+      "questionType": "FillInBlank",
+      "question": "It is three ______________.",
+      "answers": null,
+      "correctAnswer": "years old",
+      "fullSentence": "It is three years old.",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f9",
+      "questionType": "FillInBlank",
+      "question": "_____________ are you, Jay?",
+      "answers": null,
+      "correctAnswer": "How old",
+      "fullSentence": "How old are you, Jay?",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u2-f10",
+      "questionType": "FillInBlank",
+      "question": "I am six _____________________.",
+      "answers": null,
+      "correctAnswer": "years old",
+      "fullSentence": "I am six years old.",
+      "questionHint": "Speak the complete sentences with 'How old' or 'years old'."
+    },
+    {
+      "qid": "p1u3-f1",
+      "questionType": "FillInBlank",
+      "question": "_________ pencils",
+      "answers": null,
+      "correctAnswer": "two",
+      "fullSentence": "Two pencils",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f1.jpg" ]
+    },
+    {
+      "qid": "p1u3-f2",
+      "questionType": "FillInBlank",
+      "question": "_________ girls",
+      "answers": null,
+      "correctAnswer": "four",
+      "fullSentence": "Four girls",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f2.jpg" ]
+    },
+    {
+      "qid": "p1u3-f3",
+      "questionType": "FillInBlank",
+      "question": "_________ boys",
+      "answers": null,
+      "correctAnswer": "seven",
+      "fullSentence": "Seven boys",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f3.jpg" ]
+    },
+    {
+      "qid": "p1u3-f4",
+      "questionType": "FillInBlank",
+      "question": "_________ dolls",
+      "answers": null,
+      "correctAnswer": "nine",
+      "fullSentence": "Nine dolls",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f4.jpg" ]
+    },
+    {
+      "qid": "p1u3-f5",
+      "questionType": "FillInBlank",
+      "question": "_________ eraser",
+      "answers": null,
+      "correctAnswer": "one",
+      "fullSentence": "One eraser",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f5.jpg" ]
+    },
+    {
+      "qid": "p1u3-f6",
+      "questionType": "FillInBlank",
+      "question": "_________ books",
+      "answers": null,
+      "correctAnswer": "ten",
+      "fullSentence": "Ten books",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f6.jpg" ]
+    },
+    {
+      "qid": "p1u3-f7",
+      "questionType": "FillInBlank",
+      "question": "_________ apples",
+      "answers": null,
+      "correctAnswer": "five",
+      "fullSentence": "Five apples",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f7.jpg" ]
+    },
+    {
+      "qid": "p1u3-f8",
+      "questionType": "FillInBlank",
+      "question": "_________ water bottles",
+      "answers": null,
+      "correctAnswer": "three",
+      "fullSentence": "Three water bottles",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f8.jpg" ]
+    },
+    {
+      "qid": "p1u3-f9",
+      "questionType": "FillInBlank",
+      "question": "_________ oranges",
+      "answers": null,
+      "correctAnswer": "eight",
+      "fullSentence": "Eight oranges",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f9.jpg" ]
+    },
+    {
+      "qid": "p1u3-f10",
+      "questionType": "FillInBlank",
+      "question": "_________ school bags",
+      "answers": null,
+      "correctAnswer": "six",
+      "fullSentence": "Six school bags",
+      "questionHint": "Looks at the pictures and speak the correct answer.",
+      "checkSingleWord": "1",
+      "media": [ "p1u3-f10.jpg" ]
+    },
+    {
+      "qid": "p1u4-f1",
+      "questionType": "FillInBlank",
+      "question": "______________ a clock.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There is",
+      "fullSentence": "There is a clock.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f1.jpg" ]
+    },
+    {
+      "qid": "p1u4-f2",
+      "questionType": "FillInBlank",
+      "question": "______________ many desks.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There are",
+      "fullSentence": "There are many desks.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f2.jpg" ]
+    },
+    {
+      "qid": "p1u4-f3",
+      "questionType": "FillInBlank",
+      "question": "______________ posters.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There are",
+      "fullSentence": "There are posters.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f3.jpg" ]
+    },
+    {
+      "qid": "p1u4-f4",
+      "questionType": "FillInBlank",
+      "question": "______________ a blackboard.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There is",
+      "fullSentence": "There is a blackboard.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f4.jpg" ]
+    },
+    {
+      "qid": "p1u4-f5",
+      "questionType": "FillInBlank",
+      "question": "______________ two fans.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There are",
+      "fullSentence": "There are two fans.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f5.jpg" ]
+    },
+    {
+      "qid": "p1u4-f6",
+      "questionType": "FillInBlank",
+      "question": "______________ a bin.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There is",
+      "fullSentence": "There is a bin.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f6.jpg" ]
+    },
+    {
+      "qid": "p1u4-f7",
+      "questionType": "FillInBlank",
+      "question": "______________ four chairs.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There are",
+      "fullSentence": "There are four chairs.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f7.jpg" ]
+    },
+    {
+      "qid": "p1u4-f8",
+      "questionType": "FillInBlank",
+      "question": "______________ a boy.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There is",
+      "fullSentence": "There is a boy.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f8.jpg" ]
+    },
+    {
+      "qid": "p1u4-f9",
+      "questionType": "FillInBlank",
+      "question": "______________ a bed.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There is",
+      "fullSentence": "There is a bed.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f9.jpg" ]
+    },
+    {
+      "qid": "p1u4-f10",
+      "questionType": "FillInBlank",
+      "question": "______________ cups.",
+      "answers": [ "There is", "There are" ],
+      "correctAnswer": "There are",
+      "fullSentence": "There are cups.",
+      "questionHint": "Looks at the pictures and speak the complete sentences with 'There is' or 'There are'.",
+      "checkSingleWord": "1",
+      "media": [ "p1u4-f10.jpg" ]
+    },
+    {
+      "qid": "p1Bu2-g1",
+      "questionType": "FillInBlank",
+      "question": "I _____ many toys.",
+      "answers": null,
+      "correctAnswer": "have",
+      "fullSentence": "I have many toys.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g2",
+      "questionType": "FillInBlank",
+      "question": "She ____ a new doll.",
+      "answers": null,
+      "correctAnswer": "has",
+      "fullSentence": "She has a new doll.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g3",
+      "questionType": "FillInBlank",
+      "question": "It _____ three balls.",
+      "answers": null,
+      "correctAnswer": "has",
+      "fullSentence": "It has three balls.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g4",
+      "questionType": "FillInBlank",
+      "question": "Mike and Sam ____ ten robots.",
+      "answers": null,
+      "correctAnswer": "have",
+      "fullSentence": "Mike and Sam have ten robots.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g5",
+      "questionType": "FillInBlank",
+      "question": "He _____ a balloon.",
+      "answers": null,
+      "correctAnswer": "has",
+      "fullSentence": "He has a balloon.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g6",
+      "questionType": "FillInBlank",
+      "question": "We _____ no puzzles.",
+      "answers": null,
+      "correctAnswer": "have",
+      "fullSentence": "We have no puzzles.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g7",
+      "questionType": "FillInBlank",
+      "question": "Lily _____ two teddy bears.",
+      "answers": null,
+      "correctAnswer": "has",
+      "fullSentence": "Lily has two teddy bears.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g8",
+      "questionType": "FillInBlank",
+      "question": "You _____ some toy planes.",
+      "answers": null,
+      "correctAnswer": "have",
+      "fullSentence": "You have some toy planes.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g9",
+      "questionType": "FillInBlank",
+      "question": "They _____ blue, red and yellow toy trucks.",
+      "answers": null,
+      "correctAnswer": "have",
+      "fullSentence": "They have blue, red and yellow toy trucks.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1Bu2-g10",
+      "questionType": "FillInBlank",
+      "question": "Ken _____ twenty toy cars.",
+      "answers": null,
+      "correctAnswer": "has",
+      "fullSentence": "Ken has twenty toy cars.",
+      "questionHint": "Fill in the blanks with 'have' or 'has'."
+    },
+    {
+      "qid": "p1u9-g1",
+      "questionType": "FillInBlank",
+      "question": "I can _____ some children. They are running.",
+      "answers": null,
+      "correctAnswer": "see",
+      "fullSentence": "I can see some children. They are running.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g2",
+      "questionType": "FillInBlank",
+      "question": "I can _____ some bread. It smells yummy.",
+      "answers": null,
+      "correctAnswer": "smell",
+      "fullSentence": "I can smell some bread. It smells yummy.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g3",
+      "questionType": "FillInBlank",
+      "question": "I can _____ a squirrel. It is soft.",
+      "answers": null,
+      "correctAnswer": "touch",
+      "fullSentence": "I can touch a squirrel. It is soft.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g4",
+      "questionType": "FillInBlank",
+      "question": "I can _____ the birds. They are singing.",
+      "answers": null,
+      "correctAnswer": "hear",
+      "fullSentence": "I can hear the birds. They are singing.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g5",
+      "questionType": "FillInBlank",
+      "question": "I can _____ a bench. Can I sit down?",
+      "answers": null,
+      "correctAnswer": "see",
+      "fullSentence": "I can see a bench. Can I sit down?",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g6",
+      "questionType": "FillInBlank",
+      "question": "I can _____ the water. It is cool.",
+      "answers": null,
+      "correctAnswer": "touch",
+      "fullSentence": "I can touch the water. It is cool.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g7",
+      "questionType": "FillInBlank",
+      "question": "I can _____ my mom. She is laughing.",
+      "answers": null,
+      "correctAnswer": "hear",
+      "fullSentence": "I can hear my mom. She is laughing.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g8",
+      "questionType": "FillInBlank",
+      "question": "I can _____ a rainbow. It is beautiful.",
+      "answers": null,
+      "correctAnswer": "see",
+      "fullSentence": "I can see a rainbow. It is beautiful.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g9",
+      "questionType": "FillInBlank",
+      "question": "I can ____ the flowers. They are sweet.",
+      "answers": null,
+      "correctAnswer": "smell",
+      "fullSentence": "I can smell the flowers. They are sweet.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u9-g10",
+      "questionType": "FillInBlank",
+      "question": "I can _____ a dog. It is barking.",
+      "answers": null,
+      "correctAnswer": "hear",
+      "fullSentence": "I can hear a dog. It is barking.",
+      "questionHint": "Finish the sentences with 'hear', 'see', 'smell', 'touch'."
+    },
+    {
+      "qid": "p1u11-h1",
+      "questionType": "FillInBlank",
+      "question": "She ______ (be) six years old.",
+      "answers": null,
+      "correctAnswer": "is",
+      "fullSentence": "She is six years old.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h2",
+      "questionType": "FillInBlank",
+      "question": "We ______ (have) new T-shirts!",
+      "answers": null,
+      "correctAnswer": "have",
+      "fullSentence": "We have new T-shirts!",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h3",
+      "questionType": "FillInBlank",
+      "question": "They ______ (be) at home with their mom.",
+      "answers": null,
+      "correctAnswer": "are",
+      "fullSentence": "They are at home with their mom.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h4",
+      "questionType": "FillInBlank",
+      "question": "Hi, I ______ (walk) my dog.",
+      "answers": null,
+      "correctAnswer": "am walking",
+      "fullSentence": "Hi, I am walking my dog.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h5",
+      "questionType": "FillInBlank",
+      "question": "Dad ______ (clean) his shoes now.",
+      "answers": null,
+      "correctAnswer": "is cleaning",
+      "fullSentence": "Dad is cleaning his shoes now.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h6",
+      "questionType": "FillInBlank",
+      "question": "I ______ (like) the colour blue.",
+      "answers": null,
+      "correctAnswer": "like",
+      "fullSentence": "I like the colour blue.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h7",
+      "questionType": "FillInBlank",
+      "question": "You ______ (go) to the swimming pool now.",
+      "answers": null,
+      "correctAnswer": "are going",
+      "fullSentence": "You are going to the swimming pool now.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h8",
+      "questionType": "FillInBlank",
+      "question": "Wait. I _______ (wash) my hands.",
+      "answers": null,
+      "correctAnswer": "am washing",
+      "fullSentence": "Wait. I am washing my hands.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h9",
+      "questionType": "FillInBlank",
+      "question": "Nick ______ (run) fast.",
+      "answers": null,
+      "correctAnswer": "runs",
+      "fullSentence": "Nick runs fast.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u11-h10",
+      "questionType": "FillInBlank",
+      "question": "Sally _______ (want) a yellow skirt.",
+      "answers": null,
+      "correctAnswer": "wants",
+      "fullSentence": "Sally wants a yellow skirt.",
+      "questionHint": "Finish the sentences with the correct tenses."
+    },
+    {
+      "qid": "p1u12-f1",
+      "questionType": "FillInBlank",
+      "question": "___________ Amy do? She can sing.",
+      "answers": null,
+      "correctAnswer": "What can",
+      "fullSentence": "What can Amy do? She can sing.",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f2",
+      "questionType": "FillInBlank",
+      "question": "___________ a bird fly?",
+      "answers": null,
+      "correctAnswer": "Can",
+      "fullSentence": "Can a bird fly?",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f3",
+      "questionType": "FillInBlank",
+      "question": "___________ the baby swim?",
+      "answers": null,
+      "correctAnswer": "Can",
+      "fullSentence": "Can the baby swim?",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f4",
+      "questionType": "FillInBlank",
+      "question": "___________ a robot do? It can talk.",
+      "answers": null,
+      "correctAnswer": "What can",
+      "fullSentence": "What can a robot do? It can talk.",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f5",
+      "questionType": "FillInBlank",
+      "question": "___________ you draw?",
+      "answers": null,
+      "correctAnswer": "Can",
+      "fullSentence": "Can you draw?",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f6",
+      "questionType": "FillInBlank",
+      "question": "Can a goldfish run? No, it ________.",
+      "answers": null,
+      "correctAnswer": "cannot",
+      "fullSentence": "Can a goldfish run? No, it cannot.",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f7",
+      "questionType": "FillInBlank",
+      "question": "Can a rabbit jump? Yes, it ________.",
+      "answers": null,
+      "correctAnswer": "can",
+      "fullSentence": "Can a rabbit jump? Yes, it can.",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f8",
+      "questionType": "FillInBlank",
+      "question": "___________ your cousins do? They can cook.",
+      "answers": null,
+      "correctAnswer": "What can",
+      "fullSentence": "What can your cousins do? They can cook.",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f9",
+      "questionType": "FillInBlank",
+      "question": "___________ Mr Lee dance?",
+      "answers": null,
+      "correctAnswer": "Can",
+      "fullSentence": "Can Mr Lee dance?",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p1u12-f10",
+      "questionType": "FillInBlank",
+      "question": "___________ Joe catch the ball? No, he ________.",
+      "answers": null,
+      "correctAnswer": "Can, cannot",
+      "fullSentence": "Can Joe catch the ball? No, he cannot.",
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+    },
+    {
+      "qid": "p2u1-f1",
+      "questionType": "FillInBlank",
+      "question": "____________ a bakery near our school?",
+      "answers": null,
+      "correctAnswer": "Is there",
+      "fullSentence": "Is there a bakery near our school?",
+      "questionHint": "Complete the questions and answers."
+    },
+    {
+      "qid": "p2u1-f2",
+      "questionType": "FillInBlank",
+      "question": "Yes, ____________ a Yummy Bakery.",
+      "answers": null,
+      "correctAnswer": "there is",
+      "fullSentence": "Yes, there is a Yummy Bakery.",
+      "questionHint": "Complete the questions and answers."
+    },
+    {
+      "qid": "p2u1-f3",
+      "questionType": "FillInBlank",
+      "question": "____________ a shoes shop? I need new shoes.",
+      "answers": null,
+      "correctAnswer": "Is there",
+      "fullSentence": "Is there a shoes shop? I need new shoes.",
+      "questionHint": "Complete the questions and answers."
+    },
+    {
+      "qid": "p2u1-f4",
+      "questionType": "FillInBlank",
+      "question": "No, ____________ .",
+      "answers": null,
+      "correctAnswer": "there is not",
+      "fullSentence": "No, there is not.",
+      "questionHint": "Complete the questions and answers."
+    },
+    {
+      "qid": "p2u1-f5",
+      "questionType": "FillInBlank",
+      "question": "____________ a grocery store near your home?",
+      "answers": null,
+      "correctAnswer": "Is there",
+      "fullSentence": "Is there a grocery store near your home?",
+      "questionHint": "Complete the questions and answers."
+    },
+    {
+      "qid": "p2u1-f6",
+      "questionType": "FillInBlank",
+      "question": "No, ____________. We can go to the supermarket.",
+      "answers": null,
+      "correctAnswer": "there is not",
+      "fullSentence": "No, there is not. We can go to the supermarket.",
+      "questionHint": "Complete the questions and answers."
+    },
+    {
+      "qid": "p2u1-f7",
+      "questionType": "FillInBlank",
+      "question": "____________ a clinic near the mall?",
+      "answers": null,
+      "correctAnswer": "Is there",
+      "fullSentence": "Is there a clinic near the mall?",
+      "questionHint": "Complete the questions and answers."
+    },
+    {
+      "qid": "p2u1-f8",
+      "questionType": "FillInBlank",
+      "question": "Yes, ____________ . Are you ok?",
+      "answers": null,
+      "correctAnswer": "there is",
+      "fullSentence": "Yes, there is. Are you ok?",
+      "questionHint": "Complete the questions and answers."
+    },
+    {
+      "qid": "p2u1-f9",
+      "questionType": "FillInBlank",
+      "question": "____________ a library? I want to read books.",
+      "answers": null,
+      "correctAnswer": "Is there",
+      "fullSentence": "Is there a library? I want to read books.",
+      "questionHint": "Complete the questions and answers."
+    },
+    {
+      "qid": "p2u1-f10",
+      "questionType": "FillInBlank",
+      "question": "Yes, ____________ . Let's go!",
+      "answers": null,
+      "correctAnswer": "there is",
+      "fullSentence": "Yes, there is. Let's go!",
+      "questionHint": "Complete the questions and answers."
+    },
+
+    {
+      "qid": "p2u2-g1",
+      "questionType": "FillInBlank",
+      "question": "________________ (talk) to Mr Chan in the classroom?",
+      "answers": null,
+      "correctAnswer": "Who is talking",
+      "fullSentence": "Who is talking to Mr Chan in the classroom?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g2",
+      "questionType": "FillInBlank",
+      "question": "________________ (fly) a kite with you in the park?",
+      "answers": null,
+      "correctAnswer": "Who is flying",
+      "fullSentence": "Who is flying a kite with you in the park?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g3",
+      "questionType": "FillInBlank",
+      "question": "________________ (sing) a song in the music room?",
+      "answers": null,
+      "correctAnswer": "Who is singing",
+      "fullSentence": "Who is singing a song in the music room?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g4",
+      "questionType": "FillInBlank",
+      "question": "________________ (buy) ice cream from the ice cream truck?",
+      "answers": null,
+      "correctAnswer": "Who is buying",
+      "fullSentence": "Who is buying ice cream from the ice cream truck?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g5",
+      "questionType": "FillInBlank",
+      "question": "________________ (read) storybooks to the children at the library?",
+      "answers": null,
+      "correctAnswer": "Who is reading",
+      "fullSentence": "Who is reading storybooks to the children at the library?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g6",
+      "questionType": "FillInBlank",
+      "question": "________________ (make) a banana bread at the kitchen?",
+      "answers": null,
+      "correctAnswer": "Who is making",
+      "fullSentence": "Who is making a banana bread at the kitchen?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g7",
+      "questionType": "FillInBlank",
+      "question": "________________ (take) pictures with Snow White?",
+      "answers": null,
+      "correctAnswer": "Who is taking",
+      "fullSentence": "Who is taking pictures with Snow White?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g8",
+      "questionType": "FillInBlank",
+      "question": "________________ (play) in the football match now?",
+      "answers": null,
+      "correctAnswer": "Who is playing",
+      "fullSentence": "Who is playing in the football match now?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g9",
+      "questionType": "FillInBlank",
+      "question": "________________ (dance) ballet with Kelly in the show?",
+      "answers": null,
+      "correctAnswer": "Who is dancing",
+      "fullSentence": "Who is dancing ballet with Kelly in the show?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u2-g10",
+      "questionType": "FillInBlank",
+      "question": "________________ (go) to the toilet now?",
+      "answers": null,
+      "correctAnswer": "Who is going",
+      "fullSentence": "Who is going to the toilet now?",
+      "questionHint": "Complete the questions with 'who' and present continuous tense."
+    },
+    {
+      "qid": "p2u7-f1",
+      "questionType": "FillInBlank",
+      "question": "The rain ______ (stop) and a rainbow comes!",
+      "answers": null,
+      "correctAnswer": "stops",
+      "fullSentence": "The rain stops and a rainbow comes!",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided."
+    },
+    {
+      "qid": "p2u7-f2",
+      "questionType": "FillInBlank",
+      "question": "My dog _____ (have) its own gloves too!",
+      "answers": null,
+      "correctAnswer": "has",
+      "fullSentence": "My dog has its own gloves too!",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided."
+    },
+    {
+      "qid": "p2u7-f3",
+      "questionType": "FillInBlank",
+      "question": "She _____ (love) the smell of grass after the rain.",
+      "answers": null,
+      "correctAnswer": "loves",
+      "fullSentence": "She loves the smell of grass after the rain.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided."
+    },
+    {
+      "qid": "p2u7-f4",
+      "questionType": "FillInBlank",
+      "question": "What ____ (be) the weather like today?",
+      "answers": null,
+      "correctAnswer": "is",
+      "fullSentence": "What is the weather like today?",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided."
+    },
+    {
+      "qid": "p2u7-f5",
+      "questionType": "FillInBlank",
+      "question": "Can I _____ (buy) a new cardigan?",
+      "answers": null,
+      "correctAnswer": "buy",
+      "fullSentence": "Can I buy a new cardigan?",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided."
+    },
+    {
+      "qid": "p2u7-f6",
+      "questionType": "FillInBlank",
+      "question": "I _____ (not know) where my umbrella is.",
+      "answers": null,
+      "correctAnswer": "do not know",
+      "fullSentence": "I do not know where my umbrella is.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided."
+    },
+    {
+      "qid": "p2u7-f7",
+      "questionType": "FillInBlank",
+      "question": "It ____ (be) windy today. Let's fly kites!",
+      "answers": null,
+      "correctAnswer": "is",
+      "fullSentence": "It is windy today. Let's fly kites!",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided."
+    },
+    {
+      "qid": "p2u7-f8",
+      "questionType": "FillInBlank",
+      "question": "My dad ______ (not like) thick sweaters. They're heavy.",
+      "answers": null,
+      "correctAnswer": "does not like",
+      "fullSentence": "My dad does not like thick sweaters. They're heavy.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided."
+    },
+    {
+      "qid": "p2u7-f9",
+      "questionType": "FillInBlank",
+      "question": "He _____ (wear) boots now because it is snowy.",
+      "answers": null,
+      "correctAnswer": "is wearing",
+      "fullSentence": "He is wearing boots now because it is snowy.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided."
+    },
+    {
+      "qid": "p2u7-f10",
+      "questionType": "FillInBlank",
+      "question": "The sun ______ (go) up in the morning.",
+      "answers": null,
+      "correctAnswer": "goes",
+      "fullSentence": "The sun goes up in the morning.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided."
+    },
+    {
+      "qid": "p2u8-f1",
+      "answers": null,
+      "question": "Let's _____ (play) hide-and-seek!",
+      "fullSentence": "Let's play hide-and-seek!",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "play"
+    },
+    {
+      "qid": "p2u8-f2",
+      "answers": null,
+      "question": "You can ____ (go) skiing in Japan.",
+      "fullSentence": "You can go skiing in Japan.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "go"
+    },
+    {
+      "qid": "p2u8-f3",
+      "answers": null,
+      "question": "He ____ (have) a barbecue party in autumn.",
+      "fullSentence": "He has a barbecue party in autumn.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "has"
+    },
+    {
+      "qid": "p2u8-f4",
+      "answers": null,
+      "question": "My favourite ice cream ____ (be) strawberry with chocolate!",
+      "fullSentence": "My favourite ice cream is strawberry with chocolate!",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "is"
+    },
+    {
+      "qid": "p2u8-f5",
+      "answers": null,
+      "question": "She _____ (like) to make snowmen with her friends.",
+      "fullSentence": "She likes to make snowmen with her friends.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "likes"
+    },
+    {
+      "qid": "p2u8-f6",
+      "answers": null,
+      "question": "It is hot. I ____ (want) to eat a lot of ice lollies.",
+      "fullSentence": "It is hot. I want to eat a lot of ice lollies.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "want"
+    },
+    {
+      "qid": "p2u8-f7",
+      "answers": null,
+      "question": "They ____ (watch) sunset at the country park now.",
+      "fullSentence": "They are watching sunset at the country park now.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "are watching"
+    },
+    {
+      "qid": "p2u8-f8",
+      "answers": null,
+      "question": "Rose ______ hiking every Saturday.",
+      "fullSentence": "Rose goes hiking every Saturday.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "goes"
+    },
+    {
+      "qid": "p2u8-f9",
+      "answers": null,
+      "question": "Look! My grandma _____ (plant) vegetables.",
+      "fullSentence": "Look! My grandma is planting vegetables.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "is planting"
+    },
+    {
+      "qid": "p2u8-f10",
+      "answers": null,
+      "question": "We ____ (visit) the flower show at the park every year.",
+      "fullSentence": "We visit the flower show at the park every year.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "visit"
+    },
+    {
+      "qid": "p2u8-h1",
+      "questionType": "FillInBlank",
+      "question": "The bees buzz ____ spring.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "The bees buzz in spring.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h2",
+      "questionType": "FillInBlank",
+      "question": "We pick apples ____ autumn.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "We pick apples in autumn.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h3",
+      "questionType": "FillInBlank",
+      "question": "Some animals take long naps ____ winter.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "Some animals take long naps in winter.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h4",
+      "questionType": "FillInBlank",
+      "question": "Lily and Liam catch fireflies ____ summer.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "Lily and Liam catch fireflies in summer.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h5",
+      "questionType": "FillInBlank",
+      "question": "We collect red leaves ____ autumn.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "We collect red leaves in autumn.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h6",
+      "questionType": "FillInBlank",
+      "question": "What do you like to do ____ summer?",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "What do you like to do in summer?",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h7",
+      "questionType": "FillInBlank",
+      "question": "____ spring, the birds come back.",
+      "answers": null,
+      "correctAnswer": "In",
+      "fullSentence": "In spring, the birds come back.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h8",
+      "questionType": "FillInBlank",
+      "question": "You can't wear shorts ____ winter.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "You can't wear shorts in winter.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h9",
+      "questionType": "FillInBlank",
+      "question": "Does she go to the beach ____ summer?",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "Does she go to the beach in summer?",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u8-h10",
+      "questionType": "FillInBlank",
+      "question": "_____ winter, Christmas makes people happy.",
+      "answers": null,
+      "correctAnswer": "In",
+      "fullSentence": "In winter, Christmas makes people happy.",
+      "questionHint": "Complete the sentences with 'in'."
+    },
+    {
+      "qid": "p2u9-f1",
+      "answers": null,
+      "question": "I _____ (walk) to school at half past seven.",
+      "fullSentence": "I walk to school at half past seven.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "walk"
+    },
+    {
+      "qid": "p2u9-f2",
+      "answers": null,
+      "question": "Amy ____ (pack) her lunch box in the morning.",
+      "fullSentence": "Amy packs her lunch box in the morning.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "packs"
+    },
+    {
+      "qid": "p2u9-f3",
+      "answers": null,
+      "question": "What ___ you ____ (have) for breakfast today?",
+      "fullSentence": "What do you have for breakfast today?",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "do, have"
+    },
+    {
+      "qid": "p2u9-f4",
+      "answers": null,
+      "question": "Please ____ (wash) your face. It's dirty.",
+      "fullSentence": "Please wash your face. It's dirty.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "wash"
+    },
+    {
+      "qid": "p2u9-f5",
+      "answers": null,
+      "question": "I ____ (not want) to eat dinner.",
+      "fullSentence": "I don't want to eat dinner.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "don't want"
+    },
+    {
+      "qid": "p2u9-f6",
+      "answers": null,
+      "question": "My dad ____ (have) a meeting at five fifteen.",
+      "fullSentence": "My dad has a meeting at five fifteen.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "has"
+    },
+    {
+      "qid": "p2u9-f7",
+      "answers": null,
+      "question": "We ______ (brush) our dog's hair in the evening.",
+      "fullSentence": "We brush our dog's hair in the evening.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "brush"
+    },
+    {
+      "qid": "p2u9-f8",
+      "answers": null,
+      "question": "Everyone _____ (line) up in front of the restaurant.",
+      "fullSentence": "Everyone lines up in front of the restaurant.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "lines"
+    },
+    {
+      "qid": "p2u9-f9",
+      "answers": null,
+      "question": "Jerry ______ (go) to the library at three o'clock.",
+      "fullSentence": "Jerry goes to the library at three o'clock.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "goes"
+    },
+    {
+      "qid": "p2u9-f10",
+      "answers": null,
+      "question": "Grandma ______ (take) a bath now.",
+      "fullSentence": "Grandma is taking a bath now.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "is taking"
+    },
+    {
+      "qid": "p2u10-i1",
+      "questionType": "sentenceCorrect",
+      "question": "I do not go to school in Saturday.",
+      "answers": null,
+      "correctAnswer": "on",
+      "fullSentence": "I do not go to school on Saturday.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "in"
+    },
+    {
+      "qid": "p2u10-i2",
+      "questionType": "sentenceCorrect",
+      "question": "What does you do on Monday?",
+      "answers": null,
+      "correctAnswer": "do",
+      "fullSentence": "What do you do on Monday?",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "does"
+    },
+    {
+      "qid": "p2u10-i3",
+      "questionType": "sentenceCorrect",
+      "question": "The restaurant do not open at night.",
+      "answers": null,
+      "correctAnswer": "does",
+      "fullSentence": "The restaurant does not open at night.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "do"
+    },
+    {
+      "qid": "p2u10-i4",
+      "questionType": "sentenceCorrect",
+      "question": "We play some board game at the party.",
+      "answers": null,
+      "correctAnswer": "games",
+      "fullSentence": "We play some board games at the party.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "game"
+    },
+    {
+      "qid": "p2u10-i5",
+      "questionType": "sentenceCorrect",
+      "question": "My tutor comes to my home on four thirty.",
+      "answers": null,
+      "correctAnswer": "at",
+      "fullSentence": "My tutor comes to my home at four thirty.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "on"
+    },
+    {
+      "qid": "p2u10-i6",
+      "questionType": "sentenceCorrect",
+      "question": "She do not have fencing lessons this Sunday.",
+      "answers": null,
+      "correctAnswer": "does",
+      "fullSentence": "She does not have fencing lessons this Sunday.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "do"
+    },
+    {
+      "qid": "p2u10-i7",
+      "questionType": "sentenceCorrect",
+      "question": "See you on the library at three o'clock!",
+      "answers": null,
+      "correctAnswer": "at",
+      "fullSentence": "See you at the library at three o'clock!",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "on"
+    },
+    {
+      "qid": "p2u10-i8",
+      "questionType": "sentenceCorrect",
+      "question": "Amy plays the piano and I plays the violin.",
+      "answers": null,
+      "correctAnswer": "play",
+      "fullSentence": "Amy plays the piano and I play the violin.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "plays"
+    },
+    {
+      "qid": "p2u10-i9",
+      "questionType": "sentenceCorrect",
+      "question": "They does not eat bread in the morning.",
+      "answers": null,
+      "correctAnswer": "do",
+      "fullSentence": "They do not eat bread in the morning.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "does"
+    },
+    {
+      "qid": "p2u10-i10",
+      "questionType": "sentenceCorrect",
+      "question": "What do your mom do in the evening?",
+      "answers": null,
+      "correctAnswer": "does",
+      "fullSentence": "What does your mom do in the evening?",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "do"
+    },
+    {
+      "qid": "p2u11-g1",
+      "answers": null,
+      "question": "What _____ Alan _____ (do) at Christmas?",
+      "fullSentence": "What does Alan do at Christmas?",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "does, do"
+    },
+    {
+      "qid": "p2u11-g2",
+      "answers": null,
+      "question": "He _____ (watch) Christmas lights with his family.",
+      "fullSentence": "He watches Christmas lights with his family.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "watches"
+    },
+    {
+      "qid": "p2u11-g3",
+      "answers": null,
+      "question": "What ______ you _____ (do) at Chinese New Year?",
+      "fullSentence": "What do you do at Chinese New Year?",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "do, do"
+    },
+    {
+      "qid": "p2u11-g4",
+      "answers": null,
+      "question": "We ______ (wear) our new, red clothes.",
+      "fullSentence": "We wear our new, red clothes.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "wear"
+    },
+    {
+      "qid": "p2u11-g5",
+      "answers": null,
+      "question": "What _______ grandma and grandpa _____ (do) at Easter?",
+      "fullSentence": "What do grandma and grandpa do at Easter?",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "do, do"
+    },
+    {
+      "qid": "p2u11-g6",
+      "answers": null,
+      "question": "They ______ (hide) the eggs for the egg hunt.",
+      "fullSentence": "They hide the eggs for the egg hunt.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "hide"
+    },
+    {
+      "qid": "p2u11-g7",
+      "answers": null,
+      "question": "What ______ Lisa _____ (do) at the Mid-Autumn Festival?",
+      "fullSentence": "What does Lisa do at the Mid-Autumn Festival?",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "does, do"
+    },
+    {
+      "qid": "p2u11-g8",
+      "answers": null,
+      "question": "She _____ (enjoy) the big, full moon at the park.",
+      "fullSentence": "She enjoys the big, full moon at the park.",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "enjoys"
+    },
+    {
+      "qid": "p2u11-g9",
+      "answers": null,
+      "question": "What ______ your dog _____ (do) at Christmas?",
+      "fullSentence": "What does your dog do at Christmas?",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "does, do"
+    },
+    {
+      "qid": "p2u11-g10",
+      "answers": null,
+      "question": "He ______ (sleep) from day till night!",
+      "fullSentence": "He sleeps from day till night!",
+      "questionHint": "Complete the sentences with the correct form of the verbs provided.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "sleeps"
+    },
+    {
+      "qid": "p3u3-h1",
+      "questionType": "sentenceCorrect",
+      "question": "We are the champions on the world!",
+      "answers": null,
+      "correctAnswer": "of",
+      "fullSentence": "We are the champions of the world!",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "on"
+    },
+    {
+      "qid": "p3u3-h2",
+      "questionType": "sentenceCorrect",
+      "question": "The swimming gala is at 10 AM to 12 PM",
+      "answers": null,
+      "correctAnswer": "from",
+      "fullSentence": "The swimming gala is from 10 AM to 12 PM.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "at"
+    },
+    {
+      "qid": "p3u3-h3",
+      "questionType": "sentenceCorrect",
+      "question": "Lunch is from 1 between 2:30.",
+      "answers": null,
+      "correctAnswer": "to",
+      "fullSentence": "Lunch is from 1 to 2:30.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "between"
+    },
+    {
+      "qid": "p3u3-h4",
+      "questionType": "sentenceCorrect",
+      "question": "The picnic is at Saturday at the park.",
+      "answers": null,
+      "correctAnswer": "on",
+      "fullSentence": "The picnic is on Saturday at the park.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "at"
+    },
+    {
+      "qid": "p3u3-h5",
+      "questionType": "sentenceCorrect",
+      "question": "No extra-curricular activities on class, please!",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "No extra-curricular activities in class, please!",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "on"
+    },
+    {
+      "qid": "p3u3-h6",
+      "questionType": "sentenceCorrect",
+      "question": "The exam starts in 9 AM.",
+      "answers": null,
+      "correctAnswer": "at",
+      "fullSentence": "The exam starts at 9 AM.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "in"
+    },
+    {
+      "qid": "p3u3-h7",
+      "questionType": "sentenceCorrect",
+      "question": "The bus never arrives until time.",
+      "answers": null,
+      "correctAnswer": "on",
+      "fullSentence": "The bus never arrives on time.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "until"
+    },
+    {
+      "qid": "p3u3-h8",
+      "questionType": "sentenceCorrect",
+      "question": "The contest is in Monday to Wednesday.",
+      "answers": null,
+      "correctAnswer": "from",
+      "fullSentence": "The contest is from Monday to Wednesday.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "in"
+    },
+    {
+      "qid": "p3u3-h9",
+      "questionType": "sentenceCorrect",
+      "question": "Summer is from Spring and Autumn.",
+      "answers": null,
+      "correctAnswer": "between",
+      "fullSentence": "Summer is between Spring and Autumn.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "from"
+    },
+    {
+      "qid": "p3u3-h10",
+      "questionType": "sentenceCorrect",
+      "question": "We hand out certificates between Sports Day.",
+      "answers": null,
+      "correctAnswer": "on",
+      "fullSentence": "We hand out certificates on Sports Day.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "between"
+    },
+    {
+      "qid": "p3u4-a1",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a bookshop",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a2",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a cafe",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a3",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a clothes shop",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a4",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a department store",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a5",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a hair salon",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a6",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a pet shop",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a7",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a bakery",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a8",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a supermarket",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a9",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a jewellery shop",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a10",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a chemist's shop",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a11",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "advertisement",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a12",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "flyer",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a13",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "customer",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a14",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "cashier",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a15",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a shopping centre",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a16",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "sale",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a17",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a sports shop",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a18",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a shoe shop",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a19",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a sweet shop",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u4-a20",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a fast-food shop",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a1",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a bowl of tomato soup",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a2",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a can of cola",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a3",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a cup of coffee",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a4",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a glass of juice",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a5",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a piece of toast",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a6",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a plate of spaghetti",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a7",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a scoop of ice-cream",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a8",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a slice of pizza",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a9",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a carton of milk",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a10",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a packet of chips",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a11",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a bowl of noodles",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a12",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a plate of chicken wings",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a13",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a plate of salad",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a14",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a mug of hot chocolate",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a15",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a glass of lemon tea",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a16",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a bowl of fried rice",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a17",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a carton of milk",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a18",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a bottle of water",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a19",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "order",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3u6-a20",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "starving",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a1",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "blow soap bubbles",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a2",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "chase butterflies",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a3",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "eat marshmallows",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a4",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "fly a kite",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a5",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "light a fire",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a6",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "play hide-and-seek",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a7",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "ride a bicycle",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a8",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "go hiking",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a9",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "have barbecues",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a10",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "climb a tree",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a11",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "see a rainbow",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a12",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "ride a horse",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a13",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "tell a ghost story",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a14",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "play a card game",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a15",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "go fishing",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a16",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "set up a tent",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a17",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "sail on a yacht",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a18",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "try outdoor cooking",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a19",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "sunbathe",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu4-a20",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "row a boat",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a1",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Chinese New Year",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a2",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Christmas",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a3",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Easter",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a4",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Dragon Boat Festival",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a5",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Mid-Autumn Festival",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a6",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Halloween",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a7",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Ching Ming Festival",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a8",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Father’s Day",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a9",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Mother’s Day",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a10",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Chung Yeung Festival",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a11",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Valentine's Day",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a12",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Hungry Ghost Festival",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a13",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Laba Festival",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a14",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Thanksgiving",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a15",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Diwali",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a16",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Dia de los Muertos",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a17",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Hanukkah",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a18",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Buddha's Birthday",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a19",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Ramadan",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p3Bu6-a20",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "Songkran",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a1",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "cheesecake",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a2",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "chicken and mushroom pie",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a3",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "fish balls",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a4",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "hamburger",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a5",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "ham and pineapple pizza",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a6",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "mango pudding",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a7",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "onion rings",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a8",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "pork chop",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a9",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "prawn salad",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a10",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "spaghetti with tomato sauce",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a11",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "tuna sandwich",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a12",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "garlic bread",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a13",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "chicken nuggets",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a14",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "cupcakes",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a15",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "chicken wings",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a16",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "potato chips",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a17",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "fruit tart",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a18",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "pancake",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a19",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "ice lollies",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu1-a20",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "French fries",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a1",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "balanced diet",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a2",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "fruit",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a3",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "vegetables",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a4",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "grain products",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a5",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "bread and cereals",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a6",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "noodles and pasta",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a7",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "rice",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a8",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "protein food",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a9",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "meat",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a10",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "seafood",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a11",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "dairy products",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a12",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "fatty food",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a13",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "salty food",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a14",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "sugary food",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a15",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "food pyramid",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a16",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "junk food",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a17",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "soft drinks",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a18",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "pepper",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a19",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "condiments",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu2-a20",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "nuts",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a1",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "an entrance",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a2",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "an information counter",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a3",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a ticket counter",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a4",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a display",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a5",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "an exhibition hall",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a6",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "an interactive zone",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a7",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a theatre",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a8",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "audio guide service",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a9",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a souvenir shop",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a10",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "an exit",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a11",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "an escalator",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a12",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "an elevator",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a13",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "collections",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a14",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "art gallery",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a15",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "museum pass",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a16",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "guided tour",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a17",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "an artefact",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a18",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a gadget",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a19",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "reenactments",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu5-a20",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "a curator",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a1",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "practise my skills",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a2",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "join the school team",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a3",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "do more exercise",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a4",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "have a healthy diet",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a5",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "stay healthy",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a6",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "set my alarm clock",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a7",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "be punctual",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a8",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "do more revision",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a9",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "set my study timetable",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a10",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "improve my school results",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a11",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "go to bed early",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a12",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "keep a diary",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a13",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "tidy my room",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a14",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "watch less TV",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a15",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "read more books",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a16",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "practise my handwriting",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a17",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "cut my fingernails regularly",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a18",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "offer your seat to people who need it",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a19",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "greet my teachers",
+      "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p4bu6-a20",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "enjoy the show quietly",
+      "questionHint": "Listen and speak the phrases."
+    }
+  ]
+
+}

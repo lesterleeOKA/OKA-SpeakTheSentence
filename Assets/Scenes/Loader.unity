@@ -518,8 +518,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e4ea16069d0ff48be9e50dd4d50e3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadMethod: 1
-  jsonFileName: Question.json
+  loadMethod: 3
+  jsonFileName: Question
   loadImage:
     loadMethod: 1
     useGCCollect: 1
@@ -789,7 +789,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1761761257498461912, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_Text
-      value: v1.07
+      value: v1.08
       objectReference: {fileID: 0}
     - target: {fileID: 1761761257498461912, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_FontData.m_Font

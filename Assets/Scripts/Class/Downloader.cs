@@ -13,5 +13,6 @@ public enum LoadMethod
 {
     www = 0,
     UnityWebRequest = 1,
+    Resources = 3,
     //API = 2,
 }

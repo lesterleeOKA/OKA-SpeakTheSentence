@@ -109,7 +109,6 @@ public class APIManager
                                Action getDataFromRoAppAPI = null,
                                Action onCompleted = null)
     {
-        ExternalCaller.UpdateLoadBarStatus("Loading Data");
         getParseURLParams?.Invoke();
 
         if (!string.IsNullOrEmpty(this.appId) && !string.IsNullOrEmpty(this.jwt))
@@ -274,6 +273,7 @@ public class APIManager
                             yield return this.GetStarwishAccountData(() =>
                             {
                                 LogController.Instance?.debug(this.questionJson);
+                                ExternalCaller.UpdateLoadBarStatus("Loaded Data");
                                 onCompleted?.Invoke();
                             });
                         }

@@ -236,13 +236,12 @@ public class GameSetting : MonoBehaviour
         StartCoroutine(this.gameSetup.Load("GameUI", "bg", _bgTexture =>
         {
             LogController.Instance?.debug($"Downloaded bg Image!!");
-            ExternalCaller.UpdateLoadBarStatus("Loading Bg");
             if(_bgTexture != null) this.gameSetup.bgTexture = _bgTexture;
 
             StartCoroutine(this.gameSetup.Load("GameUI", "preview", _previewTexture =>
             {
                 LogController.Instance?.debug($"Downloaded preview Image!!");
-                ExternalCaller.UpdateLoadBarStatus("Loading Instruction");
+                ExternalCaller.UpdateLoadBarStatus("Loaded UI");
                 if(_previewTexture != null) this.gameSetup.previewTexture = _previewTexture;
                 onCompleted?.Invoke();
             }));
@@ -281,7 +280,7 @@ public class GameSetting : MonoBehaviour
             {
                 texture = _texture;
                 LogController.Instance?.debug($"Downloaded image from: {url}");
-                ExternalCaller.UpdateLoadBarStatus($"Loading SetupUI");
+                ExternalCaller.UpdateLoadBarStatus($"Loaded UI");
             }));
 
             // Assign textures based on their URL

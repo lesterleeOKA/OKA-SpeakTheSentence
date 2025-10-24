@@ -71,7 +71,8 @@ public class QuestionManager : MonoBehaviour
 
     IEnumerator loadQuestionFile(string unitKey = "", Action onCompleted = null)
     {
-        var questionPath = Path.Combine(Application.streamingAssetsPath, this.jsonFileName);
+        this.jsonFileName = LoaderConfig.Instance.gameSetup.lang == 1 ? this.jsonFileName + "_ch" : this.jsonFileName;
+        var questionPath = Path.Combine(Application.streamingAssetsPath, this.jsonFileName + ".json");
 
         switch (this.loadMethod)
         {
@@ -88,6 +89,7 @@ public class QuestionManager : MonoBehaviour
                     LogController.Instance?.debug(questionPath);
                     var json = www.text;
                     this.questionData = JsonUtility.FromJson<QuestionData>(json);
+
                     if (!string.IsNullOrEmpty(unitKey))
                     {
                         this.questionData.questions = this.questionData.questions.Where(q => q.qid != null && q.qid.StartsWith(unitKey)).ToList();
@@ -126,10 +128,37 @@ public class QuestionManager : MonoBehaviour
                             yield return this.loadImage.loadImageAssetBundleFile(this.questionData.questions[0].qid);
                         }
 
-                        //LogController.Instance.debug($"loaded questions: {json}");
                         LogController.Instance?.debug($"loaded filtered questions: {this.questionData.questions.Count}");
                         this.GetRandomQuestions(onCompleted);
                     }
+                }
+                break;
+            case LoadMethod.Resources:
+                // Remove file extension for Resources.Load
+                string resourcePath = this.jsonFileName;
+                TextAsset textAsset = Resources.Load<TextAsset>(resourcePath);
+                if (textAsset == null)
+                {
+                    LogController.Instance?.debugError($"Error loading question json from Resources: {resourcePath}");
+                }
+                else
+                {
+                    LogController.Instance?.debug($"Loaded question json from Resources: {resourcePath}");
+                    var json = textAsset.text;
+                    this.questionData = JsonUtility.FromJson<QuestionData>(json);
+
+                    if (!string.IsNullOrEmpty(unitKey))
+                    {
+                        this.questionData.questions = this.questionData.questions.Where(q => q.qid != null && q.qid.StartsWith(unitKey)).ToList();
+                    }
+
+                    if (this.questionData.questions[0].questionType == "picture" && this.loadImage.loadImageMethod == LoadImageMethod.AssetsBundle)
+                    {
+                        yield return this.loadImage.loadImageAssetBundleFile(this.questionData.questions[0].qid);
+                    }
+
+                    LogController.Instance?.debug($"loaded filtered questions: {this.questionData.questions.Count}");
+                    this.GetRandomQuestions(onCompleted);
                 }
                 break;
         }
@@ -155,14 +184,14 @@ public class QuestionManager : MonoBehaviour
                 case "text":
                 case "SentenceCorrect":
                 case "sentenceCorrect":
-                    ExternalCaller.UpdateLoadBarStatus("Loading Question");
                     this.loadedItems++;
-                    if (this.loadedItems == this.totalItems) onComplete?.Invoke();
+                    if (this.loadedItems == this.totalItems) {
+                        ExternalCaller.UpdateLoadBarStatus("Loaded QA");
+                        onComplete?.Invoke();
+                    }
                     break;
                 case "Picture":
                 case "picture":
-                    ExternalCaller.UpdateLoadBarStatus("Loading Images");
-
                     if (string.IsNullOrEmpty(qa.correctAnswer) && !string.IsNullOrEmpty(qa.question))
                         qa.correctAnswer = qa.question;
                     StartCoroutine(
@@ -173,14 +202,16 @@ public class QuestionManager : MonoBehaviour
                             {
                                 qa.texture = tex;
                                 this.loadedItems++;
-                                if (this.loadedItems == this.totalItems) onComplete?.Invoke();
+                                if (this.loadedItems == this.totalItems) {
+                                    ExternalCaller.UpdateLoadBarStatus("Loaded Images");
+                                    onComplete?.Invoke();
+                                }
                             }
                          )
                       );
                     break;
                 case "Audio":
                 case "audio":
-                    ExternalCaller.UpdateLoadBarStatus("Loading Audio");
                     StartCoroutine(
                         this.loadAudio.Load(
                             isLogined ? "" : folderName,
@@ -189,7 +220,10 @@ public class QuestionManager : MonoBehaviour
                             {
                                 qa.audioClip = audio;
                                 this.loadedItems++;
-                                if (this.loadedItems == this.totalItems) onComplete?.Invoke();
+                                if (this.loadedItems == this.totalItems) {
+                                    ExternalCaller.UpdateLoadBarStatus("Loaded Audio");
+                                    onComplete?.Invoke();
+                                }
                             }
                         )
                     );
@@ -201,7 +235,6 @@ public class QuestionManager : MonoBehaviour
                         string extension = Path.GetExtension(mediaUrl).ToLowerInvariant();
                         if (extension == this.loadAudio.AudioExtension)
                         {
-                            ExternalCaller.UpdateLoadBarStatus("Loading Audio");
                             StartCoroutine(
                                 this.loadAudio.Load(
                                     isLogined ? "" : "audio",
@@ -210,7 +243,11 @@ public class QuestionManager : MonoBehaviour
                                     {
                                         qa.audioClip = audio;
                                         this.loadedItems++;
-                                        if (this.loadedItems == this.totalItems) onComplete?.Invoke();
+                                        if (this.loadedItems == this.totalItems)
+                                        {
+                                            ExternalCaller.UpdateLoadBarStatus("Loaded Audio");
+                                            onComplete?.Invoke();
+                                        }
                                     }
                                 )
                             );
@@ -218,7 +255,6 @@ public class QuestionManager : MonoBehaviour
                         }
                         else if (extension == this.loadImage.ImageExtension)
                         {
-                            ExternalCaller.UpdateLoadBarStatus("Loading Images");
                             StartCoroutine(
                                 this.loadImage.Load(
                                     isLogined ? "" : "picture",
@@ -227,7 +263,11 @@ public class QuestionManager : MonoBehaviour
                                     {
                                         qa.texture = tex;
                                         this.loadedItems++;
-                                        if (this.loadedItems == this.totalItems) onComplete?.Invoke();
+                                        if (this.loadedItems == this.totalItems)
+                                        {
+                                            ExternalCaller.UpdateLoadBarStatus("Loaded Images");
+                                            onComplete?.Invoke();
+                                        }
                                     }
                                 )
                             );
@@ -237,13 +277,21 @@ public class QuestionManager : MonoBehaviour
                     else
                     {
                         this.loadedItems++;
-                        if (this.loadedItems == this.totalItems) onComplete?.Invoke();
+                        if (this.loadedItems == this.totalItems)
+                        {
+                            ExternalCaller.UpdateLoadBarStatus("Loaded QA");
+                            onComplete?.Invoke();
+                        }
                     }
                     break;
                 default:
                     LogController.Instance?.debug($"Unexpected QuestionType: {qa.questionType}");
                     this.loadedItems++;
-                    if (this.loadedItems == this.totalItems) onComplete?.Invoke();
+                    if (this.loadedItems == this.totalItems)
+                    {
+                        ExternalCaller.UpdateLoadBarStatus("Loaded QA");
+                        onComplete?.Invoke();
+                    }
                     break;
             }
         }

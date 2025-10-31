@@ -64,8 +64,8 @@ public class RecordAudio : RecorderManager
 
     public WordDetail[] wordDetails;
     private Coroutine loadingTextCoroutine;
-    private string hostName = "www.rainbowone.app";
     //private string hostName = "dev.openknowledge.hk";
+    //private string hostName = "www.rainbowone.app";
     void Start()
     {
         StartCoroutine(this.initMicrophonePermission(1f));
@@ -679,7 +679,7 @@ public class RecordAudio : RecorderManager
         form.AddBinaryData("file", wavData, fileName, "audio/wav");
         form.AddField("json", "[\"en-GB\"]");
 
-        this.ApiUrl = $"https://{this.hostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/";
+        this.ApiUrl = $"https://{LoaderConfig.Instance.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/";
         LogController.Instance.debug($"SendAudioToAzureApi: {this.ApiUrl}");
         UnityWebRequest request = UnityWebRequest.Post(this.ApiUrl, form);
         request.SetRequestHeader("Authorization", $"Bearer {JwtToken}");
@@ -739,7 +739,7 @@ public class RecordAudio : RecorderManager
                                        int retryCount = 5, 
                                        float retryDelay = 2f)
     {
-        string uploadUrl = $"https://{this.hostName}/RainbowOne/index.php/transport/Slave/upload/2";
+        string uploadUrl = $"https://{LoaderConfig.Instance.CurrentHostName}/RainbowOne/index.php/transport/Slave/upload/2";
         LogController.Instance.debug($"Upload URL: {uploadUrl}");
         //roWeb upload structure:
         /*if (["pdf", "doc", "docx"].indexOf(extension) != -1)
@@ -795,9 +795,9 @@ public class RecordAudio : RecorderManager
                 if (!string.IsNullOrEmpty(uploadResponse.url))
                 {
                     string audioUrl = "";
-                    if(this.hostName == "dev.openknowledge.hk")
+                    if (LoaderConfig.Instance.currentHostName != HostName.prod)
                     {
-                        audioUrl = "//" + this.hostName + uploadResponse.url.Replace("\\", "");
+                        audioUrl = "//" + LoaderConfig.Instance.CurrentHostName + uploadResponse.url.Replace("\\", "");
                     }
                     else
                     {
@@ -856,10 +856,20 @@ public class RecordAudio : RecorderManager
         LogController.Instance.debug("jsonPayload: " + jsonPayload);
 
         WWWForm form = new WWWForm();
-        form.AddField("api", "ROSpeechRecognition.recognize_tts");
+        string fieldValue = "";
+        if (LoaderConfig.Instance.currentHostName != HostName.prod)
+        {
+            fieldValue = "ROSpeechRecognition.test_recognize_tts";
+        }
+        else
+        {
+            fieldValue = "ROSpeechRecognition.recognize_tts";
+        }
+
+        form.AddField("api", fieldValue);
         form.AddField("json", jsonPayload);
 
-        this.ApiUrl = $"https://{this.hostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/";
+        this.ApiUrl = $"https://{LoaderConfig.Instance.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/";
         
         UnityWebRequest request = UnityWebRequest.Post(this.ApiUrl, form);
         request.SetRequestHeader("Authorization", $"Bearer {this.JwtToken}");

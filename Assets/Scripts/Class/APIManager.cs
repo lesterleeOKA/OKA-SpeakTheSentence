@@ -273,12 +273,13 @@ public class APIManager
                             yield return this.GetStarwishAccountData(() =>
                             {
                                 LogController.Instance?.debug(this.questionJson);
-                                ExternalCaller.UpdateLoadBarStatus("Loaded Data");
+                                ExternalCaller.UpdateLoadBarStatus("Loaded AC");
                                 onCompleted?.Invoke();
                             });
                         }
                         else
                         {
+                            ExternalCaller.UpdateLoadBarStatus("Loaded Data");
                             LogController.Instance?.debug(this.questionJson);
                             onCompleted?.Invoke();
                         }
@@ -302,7 +303,6 @@ public class APIManager
 
     private IEnumerator GetStarwishAccountData(Action onCompleted = null)
     {
-        ExternalCaller.UpdateLoadBarStatus("Loading Account Data");
         string api = APIConstant.GetStarwishPartyAccountAPI(LoaderConfig.Instance);
         LogController.Instance?.debug("called starwish account api: " + api);
 
@@ -357,15 +357,37 @@ public class APIManager
                         {
                             if (!string.IsNullOrEmpty(url) && url != "null")
                             {
-                                yield return LoaderConfig.Instance.gameSetup.Load("", url, loadedImage =>
+                                string originalUrl = url.Replace("\"", "").Trim();
+                                // Ensure scheme
+                                string absoluteUrl = originalUrl;
+                                if (absoluteUrl.StartsWith("//"))
                                 {
-                                    LogController.Instance?.debug($"Downloaded Image from URL: {url}");
+                                    absoluteUrl = "https:" + absoluteUrl;
+                                }
+                                else if (!absoluteUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    absoluteUrl = "https:" + absoluteUrl;
+                                }
 
-                                    if (url == swaResponse.data.equipped_costume_data.img_src_wholebody)
+                                string urlToLoad = absoluteUrl;
+                                int qIndex = absoluteUrl.IndexOf('?');
+                                string basePart = qIndex >= 0 ? absoluteUrl.Substring(0, qIndex) : absoluteUrl;
+                                string query = qIndex >= 0 ? absoluteUrl.Substring(qIndex) : "";
+
+                                if (basePart.EndsWith(".svg", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    urlToLoad = basePart.Substring(0, basePart.LastIndexOf('.')) + ".png" + query;
+                                    LogController.Instance?.debug($"SVG detected for '{originalUrl}', switching to PNG url '{urlToLoad}'");
+                                }
+
+                                yield return LoaderConfig.Instance.gameSetup.Load("", urlToLoad, loadedImage =>
+                                {
+                                    LogController.Instance?.debug($"Downloaded Image from URL: {urlToLoad}");
+                                    if (originalUrl == swaResponse.data.equipped_costume_data.img_src_wholebody)
                                     {
                                         this.peopleFullBodyIcon = loadedImage;
                                     }
-                                    else if (url == swaResponse.data.equipped_costume_data.img_src_head)
+                                    else if (originalUrl == swaResponse.data.equipped_costume_data.img_src_head)
                                     {
                                         this.peopleIcon = loadedImage;
                                     }

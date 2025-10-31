@@ -354,7 +354,10 @@ public class GameSetting : MonoBehaviour
         }
         get
         {
-            return this._currentHostName;
+            if(string.IsNullOrEmpty(this._currentHostName)) 
+                return "dev.openknowledge.hk";
+            else
+                return this._currentHostName;
         }
     }
 

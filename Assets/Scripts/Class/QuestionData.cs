@@ -375,7 +375,7 @@ public class CurrentQuestion
                 break;
             case "SentenceCorrect":
             case "sentenceCorrect":
-                SetUI.SetGroup(this.questionBgs, 3, 0f);
+                 SetUI.SetGroup(this.questionBgs, 3, 0f);
                 this.questionTexts = this.questionBgs[3].GetComponentsInChildren<TextMeshProUGUI>();
                 this.fullSentence = qa.fullSentence;
                 for (int i = 0; i < this.questionTexts.Length; i++)
@@ -386,21 +386,86 @@ public class CurrentQuestion
                         this.questionText = questionTexts[i];
                     }
 
-                    // Get the full sentence
-                    string wrongSentence = qa.question;
-                    string[] wrongAnswerParts = qa.wrongWord.Split(' ');
-                    int wrongWordCount = qa.wrongWord.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
+                    // Prepare sentences
+                    string wrongSentence = qa.question ?? "";
+                    string fullSentence = qa.fullSentence ?? "";
 
-                    string fullSentence = qa.fullSentence;
-                    string correctAnswer = qa.correctAnswer;
-                    foreach (var part in wrongAnswerParts)
+                    // Tokenize using regex to preserve original spacing/punctuation when rebuilding
+                    var wrongMatches = Regex.Matches(wrongSentence, @"\S+");
+                    var fullMatches = Regex.Matches(fullSentence, @"\S+");
+
+                    int diffIndex = -1;
+                    int minLen = Math.Min(wrongMatches.Count, fullMatches.Count);
+
+                    // Find first differing token (compare cleaned words case-insensitively)
+                    for (int t = 0; t < minLen; t++)
                     {
-                        if (wrongSentence.Contains(part))
+                        string wToken = Regex.Replace(wrongMatches[t].Value, @"[^\w]", "").ToLower();
+                        string fToken = Regex.Replace(fullMatches[t].Value, @"[^\w]", "").ToLower();
+                        if (!string.Equals(wToken, fToken, StringComparison.Ordinal))
                         {
-                            this.displayQuestion = wrongSentence.Replace(part, $"<u><b>{part}</b></u>");
+                            diffIndex = t;
+                            break;
                         }
                     }
 
+                    // If all compared tokens equal but lengths differ, mark the extra token in wrong sentence (e.g. missing/extra word)
+                    if (diffIndex == -1 && wrongMatches.Count != fullMatches.Count)
+                    {
+                        diffIndex = minLen; // this will underline the first extra/missing word position (if exists)
+                    }
+
+                    // Rebuild display string preserving original separators and underline only the differing token
+                    string display = wrongSentence;
+                    if (diffIndex >= 0 && wrongMatches.Count > 0)
+                    {
+                        var sb = new System.Text.StringBuilder();
+                        int prevEnd = 0;
+                        for (int t = 0; t < wrongMatches.Count; t++)
+                        {
+                            var match = wrongMatches[t];
+                            // append intermediate separators (spaces, punctuation) between tokens exactly as original
+                            if (match.Index > prevEnd)
+                            {
+                                sb.Append(wrongSentence.Substring(prevEnd, match.Index - prevEnd));
+                            }
+
+                            string tokenText = match.Value;
+                            if (t == diffIndex)
+                            {
+                                // underline only the first differing token
+                                sb.Append($"<u><b>{tokenText}</b></u>");
+                            }
+                            else
+                            {
+                                sb.Append(tokenText);
+                            }
+
+                            prevEnd = match.Index + match.Length;
+                        }
+                        // append remaining tail (if any)
+                        if (prevEnd < wrongSentence.Length)
+                        {
+                            sb.Append(wrongSentence.Substring(prevEnd));
+                        }
+
+                        display = sb.ToString();
+                    }
+
+                    // Fallback: if no tokens found, just underline the wrongWord (if provided)
+                    if ((wrongMatches.Count == 0 || diffIndex < 0) && !string.IsNullOrEmpty(qa.wrongWord))
+                    {
+                        // underline first occurrence of qa.wrongWord (case-sensitive to preserve original)
+                        int idx = wrongSentence.IndexOf(qa.wrongWord, StringComparison.Ordinal);
+                        if (idx >= 0)
+                        {
+                            display = wrongSentence.Substring(0, idx)
+                                + $"<u><b>{qa.wrongWord}</b></u>"
+                                + wrongSentence.Substring(idx + qa.wrongWord.Length);
+                        }
+                    }
+
+                    this.displayQuestion = display;
                     this.setQuestionText(this.displayQuestion);
                     this.displayHint = qa.questionHint;
                 }

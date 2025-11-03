@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6662,7 +6662,7 @@ MonoBehaviour:
     - {fileID: 6551230982349676037}
     - {fileID: 7080236590685822650}
     - {fileID: 7726289071877179846}
-    audioPlayBtn: {fileID: 6551230982349676037}
+    audioPlayBtn: {fileID: 0}
     progressiveBar: {fileID: 8585786252649548706}
     progressFillImage: {fileID: 9220208815677778940}
     questionTexts: []

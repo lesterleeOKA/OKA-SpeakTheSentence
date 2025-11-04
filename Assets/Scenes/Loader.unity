@@ -482,7 +482,7 @@ MonoBehaviour:
         correctAnswerText: 
         score: 0
         percent: 0
-  unitKey: p2u10-i
+  unitKey: 
   testURL: 
   skipAudioPanel: 0
   microphoneDevice:

@@ -41,7 +41,7 @@ public class RecordAudio : RecorderManager
     [SerializeField] private CanvasGroup stopButton;
     [SerializeField] private RawImage playbackButton;
     [SerializeField] private Texture[] playbackBtnTexs;
-    [SerializeField] private Text stopRecordText, playbackText, accurancyText;
+    [SerializeField] private Text stopRecordText, playbackText, accurancyTitle, accurancyText;
     [SerializeField] private int maxRecordLength = 10;
     public WaveformVisualizer waveformVisualizer;
     [SerializeField] private Slider playbackSlider;
@@ -55,6 +55,7 @@ public class RecordAudio : RecorderManager
     private float recordingTime = 0f;
     public SttResponse sttResponse;
     public RecognitionResult recognitionResult;
+    public GPTTranscribeResult gptTranscribeResult;
     private bool grantedMicrophone = false;
     public int passAccuracyScore = 60;
     public int passPronScore = 60;
@@ -179,9 +180,13 @@ public class RecordAudio : RecorderManager
                 GameController.Instance?.UpdateNextQuestion();
 
                 string checkSingleWord = QuestionController.Instance.currentQuestion.qa.checkSingleWord;
+                string hasPrompt = QuestionController.Instance.currentQuestion.qa.prompt;
                 LogController.Instance.debug("Current is checkSingleWord: " + checkSingleWord);
                 if (!string.IsNullOrEmpty(checkSingleWord) && checkSingleWord == "1")
                     this.detectMethod = DetectMethod.Word;
+
+                if (!string.IsNullOrEmpty(hasPrompt))
+                    this.detectMethod = DetectMethod.prompt;
 
                 SetUI.Set(this.recordButton, true, 0f);
                 this.isInitialized = true;
@@ -308,9 +313,9 @@ public class RecordAudio : RecorderManager
     {
 #if UNITY_EDITOR
         // Use default gain for the editor
-        return 5.0f;
+        return 4.0f;
 #elif UNITY_WEBGL
-    return 1f;
+    return 2f;
 #elif UNITY_IOS
     // iPad browsers may already apply AGC, so use lower gain
     return 1.0f;
@@ -320,44 +325,44 @@ public class RecordAudio : RecorderManager
 #endif
     }
 
-    private void NormalizeAndAmplifyAudioClip(AudioClip audioClip, float gain)
+    private float[] NormalizeSamples(float[] samples, int channels, float gain, int sampleRate)
     {
-        if (audioClip == null) return;
+        if (samples == null || samples.Length == 0) return samples;
 
-        // Get audio samples
-        float[] samples = new float[audioClip.samples * audioClip.channels];
-        audioClip.GetData(samples, 0);
+        // Work on a copy to avoid mutating the original playback samples
+        float[] proc = (float[])samples.Clone();
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-        // For WebGL, skip normalization/amplification to avoid distortion
-        audioClip.SetData(samples, 0);
-        return;
+    // Skip heavy processing on WebGL (keep original)
+    return proc;
 #endif
-        // Apply high-pass filter if enabled
+
+        // Optional high-pass filter
         if (this.useHighPassFilter)
         {
-            // Assuming the audio has multiple channels, process each separately
-            this.ApplyHighPassFilter(samples, audioClip.channels, cutoffFrequency: 50f, sampleRate: audioClip.frequency);
+            ApplyHighPassFilter(proc, channels, cutoffFrequency: 50f, sampleRate: sampleRate);
         }
 
-        // Normalize samples
-        float maxAmplitude = 0f;
-        foreach (var sample in samples)
+        // Find max amplitude
+        float maxAmp = 0f;
+        for (int i = 0; i < proc.Length; i++)
         {
-            maxAmplitude = Mathf.Max(maxAmplitude, Mathf.Abs(sample));
+            float a = Mathf.Abs(proc[i]);
+            if (a > maxAmp) maxAmp = a;
         }
 
-        // Avoid division by zero
-        if (maxAmplitude > 0f)
+        if (maxAmp > 0f)
         {
-            float scale = gain / maxAmplitude;
-            for (int i = 0; i < samples.Length; i++)
-                samples[i] = Mathf.Clamp(samples[i] * scale, -1f, 1f);
+            float scale = gain / maxAmp;
+            for (int i = 0; i < proc.Length; i++)
+            {
+                proc[i] = Mathf.Clamp(proc[i] * scale, -1f, 1f);
+            }
         }
 
-        // Write the processed samples back to the audio clip
-        audioClip.SetData(samples, 0);
+        return proc;
     }
+
 
     private IEnumerator AnimateLoadingText(string content = "")
     {
@@ -385,8 +390,8 @@ public class RecordAudio : RecorderManager
 
         this.loadingTextCoroutine = StartCoroutine(AnimateLoadingText("Processing"));
         SetUI.Set(this.processButtonCg, true);
-        int micPosition = Microphone.GetPosition(null);
-        bool wasRecording = Microphone.IsRecording(null);
+        int micPosition = Microphone.GetPosition(LoaderConfig.Instance.microphoneDevice.selectedDeviceName);
+        bool wasRecording = Microphone.IsRecording(LoaderConfig.Instance.microphoneDevice.selectedDeviceName);
 
         if (!wasRecording || micPosition <= 0)
         {
@@ -397,7 +402,7 @@ public class RecordAudio : RecorderManager
             this.ResetRecorder();
             return;
         }
-        Microphone.End(null);
+        Microphone.End(LoaderConfig.Instance.microphoneDevice.selectedDeviceName);
 
         isRecording = false;
         this.switchPage(Stage.UploadClip);
@@ -487,22 +492,13 @@ public class RecordAudio : RecorderManager
         this.clip.GetData(samples, 0);
         trimmedClip.SetData(samples, 0);
 
-        this.clip = trimmedClip;
-        /*
-        this.originalTrimmedClip = AudioClip.Create(trimmedClip.name + "_original", trimmedClip.samples, trimmedClip.channels, trimmedClip.frequency, false);
-        float[] originalSamples = new float[trimmedClip.samples * trimmedClip.channels];
-        trimmedClip.GetData(originalSamples, 0);
-        this.originalTrimmedClip.SetData(originalSamples, 0);
-        //float gain = this.GetPlatformSpecificGain();
-        //LogController.Instance?.debug("Gain scale: " + gain);
-        //this.NormalizeAndAmplifyAudioClip(this.clip, gain);
+        this.playBackClip = trimmedClip;
+        float[] processedSamples = NormalizeSamples(samples, trimmedClip.channels, 4f, trimmedClip.frequency);
+        AudioClip processedClip = AudioClip.Create(trimmedClip.name + "_proc", micPosition, trimmedClip.channels, trimmedClip.frequency, false);
+        processedClip.SetData(processedSamples, 0);
 
-        if (this.originalTrimmedClip == null) { 
-            LogController.Instance?.debugError("originalTrimmedClip is null");
-            yield return null;
-        }
-
-        //LogController.Instance?.debug($"this.originalTrimmedClip{this.originalTrimmedClip.name}");*/
+        // use processed clip for analysis / upload, keep playBackClip unchanged
+        this.clip = processedClip;
 
         // Parallel API calls
         bool azureDone = false;
@@ -571,7 +567,7 @@ public class RecordAudio : RecorderManager
         }
         else
         {
-            if (this.clip == null)
+            if (this.playBackClip == null)
             {
                 this.UpdateUI("No recording available for playback.");
                 return;
@@ -584,7 +580,7 @@ public class RecordAudio : RecorderManager
 #if UNITY_EDITOR
             playbackSource.outputAudioMixerGroup = this.recordingMixerGroup;
 #endif
-            playbackSource.clip = this.clip;
+            playbackSource.clip = this.playBackClip;
             playbackSource.loop = false;
             playbackSource.volume = 1.0f;
 
@@ -805,10 +801,10 @@ public class RecordAudio : RecorderManager
                     }
                     LogController.Instance.debug("uploadResponse url : " + audioUrl);
                     onSuccess?.Invoke("Success to pass to recognition request.");
-                    yield return StartCoroutine(this.SendAudioRecognitionRequest(
+                    yield return SendAudioTTSRecognitionRequest(
                         audioUrl,
                         this.TextToRecognize
-                    ));
+                    );
                     yield break;
                 }
                 else
@@ -840,7 +836,7 @@ public class RecordAudio : RecorderManager
         onError?.Invoke("Upload failed after multiple attempts.");
     }
 
-    private IEnumerator SendAudioRecognitionRequest(string audioUrl, string textToRecognize="", string language= "en-US", string purpose= "enSpeech")
+    private IEnumerator SendAudioTTSRecognitionRequest(string audioUrl, string textToRecognize="", string language= "en-US", string purpose= "enSpeech")
     {
         if (string.IsNullOrEmpty(audioUrl))
         {
@@ -851,26 +847,41 @@ public class RecordAudio : RecorderManager
         this.UpdateUI("Converting AudioClip to binary data...");
 
         this.UpdateUI("Sending audio recognition request...");
-        string jsonPayload = $"[\"{audioUrl}\",\"{textToRecognize}\",\"{language}\",\"{purpose}\"]";
 
-        LogController.Instance.debug("jsonPayload: " + jsonPayload);
-
+        string jsonPayload = "";
         WWWForm form = new WWWForm();
         string fieldValue = "";
-        if (LoaderConfig.Instance.currentHostName != HostName.prod)
-        {
-            fieldValue = "ROSpeechRecognition.test_recognize_tts";
+
+        if(this.detectMethod != DetectMethod.prompt) { 
+            if (LoaderConfig.Instance.currentHostName != HostName.prod)
+            {
+                fieldValue = "ROSpeechRecognition.test_recognize_tts";
+            }
+            else
+            {
+                fieldValue = "ROSpeechRecognition.recognize_tts";
+            }
+            jsonPayload = $"[\"{audioUrl}\",\"{textToRecognize}\",\"{language}\",\"{purpose}\"]";
+
+            if (LoaderConfig.Instance.currentHostName == HostName.prod)
+                this.ApiUrl = $"https://{LoaderConfig.Instance.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/";
+            else
+                this.ApiUrl = $"https://uat.starwishparty.com/RainbowOne/index.php/PHPGateway/proxy/2.8/";
         }
         else
         {
-            fieldValue = "ROSpeechRecognition.recognize_tts";
+            fieldValue = "SpeechPractice.gptTranscribe";
+            jsonPayload = $"[\"{audioUrl}\",\"{textToRecognize}\"]";
+
+            if (LoaderConfig.Instance.currentHostName == HostName.prod)
+                this.ApiUrl = $"https://{LoaderConfig.Instance.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/";
+            else
+                this.ApiUrl = $"https://dev.openknowledge.hk/RainbowOne/index.php/PHPGateway/proxy/2.8/";
         }
 
         form.AddField("api", fieldValue);
         form.AddField("json", jsonPayload);
 
-        this.ApiUrl = $"https://{LoaderConfig.Instance.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/";
-        
         UnityWebRequest request = UnityWebRequest.Post(this.ApiUrl, form);
         request.SetRequestHeader("Authorization", $"Bearer {this.JwtToken}");
 
@@ -880,73 +891,119 @@ public class RecordAudio : RecorderManager
         {
             string responseText = request.downloadHandler.text;
             LogController.Instance.debug($"responseText: {responseText}");
-            try
-            {
-                // Parse the root JSON structure
-                var recognitionResponse = JsonUtility.FromJson<RecognitionResponse>(responseText);
-
-                // Extract the result object
-                if (recognitionResponse != null && recognitionResponse.result != null)
+                try
                 {
-                    this.recognitionResult = recognitionResponse.result;
-                    NBest[] Best = recognitionResult.NBest;
-                    StringBuilder result = new StringBuilder();
-                    string transcript = "";
-                    string displayText = "";
-                    string correctAnswer = recognitionResponse.result.DisplayText;
-                    this.hasErrorWord = false;
-                    this.wordDetails = null;
-                    // Log the NBest array
-                    if (Best != null)
+                    if(this.detectMethod == DetectMethod.prompt)
                     {
-                        foreach (var nBest in Best)
+                        var gptTranscribeResponse = JsonUtility.FromJson<GPTTranscribeResponse>(responseText);                       
+                        if(gptTranscribeResponse != null && gptTranscribeResponse.result != null)
                         {
-                            result.AppendLine($"Score: {nBest.PronScore}");
-                            this.wordDetails = nBest.Words;
-                            this.checkSpeech(this.wordDetails, result, this.accurancyText);
+                        StringBuilder result = new StringBuilder();
+                        this.gptTranscribeResult = gptTranscribeResponse.result;
+                        string transcript = this.gptTranscribeResult.text;
+                        result.AppendLine($"DisplayText: {transcript}");
+                        this.UpdateUI(result.ToString());
+                        if (this.answerText != null) this.answerText.text = transcript;
+                        this.switchPage(Stage.PlaybackResult);
 
-                            if (this.accurancyText != null && !this.hasErrorWord) 
-                                this.accurancyText.text = $"{nBest.PronScore}%"; //Rating
+                        if (transcript != QuestionController.Instance.currentQuestion.correctAnswer)
+                            this.ttsFailure = true;
 
-                            if (nBest.AccuracyScore <= this.passAccuracyScore &&
-                                nBest.PronScore <= this.passPronScore)
-                            {
-                                this.ttsFailure = true;
-                            }
-                        }
-                        this.ttsDone = true;
-
-                        if (!this.ttsFailure)
+                        var playerController = this.GetComponent<PlayerController>();
+                        if (playerController != null)
                         {
-                            transcript = correctAnswer;
-                            string correctAns = QuestionController.Instance.currentQuestion.fullSentence;
-                            displayText = Regex.Replace(transcript, @"[^\w\s]", "").ToLower();
-                            result.AppendLine($"DisplayText: {displayText}");
-                            //transcript = Regex.Replace(recognitionResult.DisplayText, @"[^\w\s]", "").ToLower();
-                            this.UpdateUI(result.ToString());
-                            if (this.answerText != null) this.answerText.text = correctAns;
-                            this.switchPage(Stage.PlaybackResult);
-
-                            var playerController = this.GetComponent<PlayerController>();
-                            if (playerController != null)
+                            if (!this.ttsFailure)
                             {
-                                playerController.submitAnswer(
-                                    correctAns, 
-                                    () =>
-                                    {
-                                        this.showCorrectSentence(
-                                            QuestionController.Instance.currentQuestion.fullSentence,
-                                            this.wordDetails);
-                                    }
-                                 );
+                                if(this.accurancyTitle != null && this.accurancyText != null) { 
+                                   this.accurancyTitle.text = "Correct";
+                                   this.accurancyText.text = "Answer";
+                                   this.accurancyText.resizeTextMaxSize = 30;
+                                }
+                                transcript = QuestionController.Instance.currentQuestion.fullSentence;
                             }
+                            else
+                            {
+                                transcript = "";
+                            }
+
+                            playerController.submitAnswer(transcript, () =>
+                                  {
+                                      this.showCorrectSentence(
+                                          QuestionController.Instance.currentQuestion.fullSentence,
+                                          null);
+                                  }
+                             );
                         }
+                        
                     }
-                }
-                else
-                {
-                    LogController.Instance.debugError("Failed to parse recognition result.");
-                    this.UpdateUI("Failed to parse recognition result.");
+                    }
+                    else
+                    {
+                        // Parse the root JSON structure
+                        var recognitionResponse = JsonUtility.FromJson<RecognitionResponse>(responseText);
+                        if (recognitionResponse != null && recognitionResponse.result != null)
+                        {
+                            this.recognitionResult = recognitionResponse.result;
+
+                            NBest[] Best = recognitionResult.NBest;
+                            StringBuilder result = new StringBuilder();
+                            string transcript = "";
+                            string displayText = "";
+                            string correctAnswer = recognitionResponse.result.DisplayText;
+                            this.hasErrorWord = false;
+                            this.wordDetails = null;
+                            // Log the NBest array
+                            if (Best != null)
+                            {
+                                foreach (var nBest in Best)
+                                {
+                                    result.AppendLine($"Score: {nBest.PronScore}");
+                                    this.wordDetails = nBest.Words;
+                                    this.checkSpeech(this.wordDetails, result, this.accurancyText);
+
+                                    if (this.accurancyText != null && !this.hasErrorWord)
+                                        this.accurancyText.text = $"{nBest.PronScore}%"; //Rating
+
+                                    if (nBest.AccuracyScore <= this.passAccuracyScore &&
+                                        nBest.PronScore <= this.passPronScore)
+                                    {
+                                        this.ttsFailure = true;
+                                    }
+                                }
+                                this.ttsDone = true;
+
+                                if (!this.ttsFailure)
+                                {
+                                    transcript = correctAnswer;
+                                    string correctAns = QuestionController.Instance.currentQuestion.fullSentence;
+                                    displayText = Regex.Replace(transcript, @"[^\w\s]", "").ToLower();
+                                    result.AppendLine($"DisplayText: {displayText}");
+                                    //transcript = Regex.Replace(recognitionResult.DisplayText, @"[^\w\s]", "").ToLower();
+                                    this.UpdateUI(result.ToString());
+                                    if (this.answerText != null) this.answerText.text = correctAns;
+                                    this.switchPage(Stage.PlaybackResult);
+
+                                    var playerController = this.GetComponent<PlayerController>();
+                                    if (playerController != null)
+                                    {
+                                        playerController.submitAnswer(
+                                            correctAns,
+                                            () =>
+                                            {
+                                                this.showCorrectSentence(
+                                                    QuestionController.Instance.currentQuestion.fullSentence,
+                                                    this.wordDetails);
+                                            }
+                                         );
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            LogController.Instance.debugError("Failed to parse recognition result.");
+                            this.UpdateUI("Failed to parse recognition result.");
+                        }
                 }
             }
             catch (Exception ex)
@@ -1137,17 +1194,6 @@ public class RecordAudio : RecorderManager
 
     public void ShowDirectCorrectAnswer()
     {
-        /*if(this.answerText != null)
-        {
-            if(status) this.answerText.text = QuestionController.Instance.currentQuestion.correctAnswer.ToLower();
-            this.answerText.color = status ? Color.white : this.answerTextOriginalColor;
-            this.answerText.fontMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth, status? 0f : 0.182f);
-        }
-        if (this.answerBox != null && this.answerBoxTexs.Length > 0)
-        {
-            this.answerBox.texture = this.answerBoxTexs[status? 1 : 0];
-        }*/
-
         var questionType = QuestionController.Instance.currentQuestion.questiontype;
 
         switch (questionType)
@@ -1166,7 +1212,7 @@ public class RecordAudio : RecorderManager
 
     public void ResetRecorder()
     {
-        this.originalTrimmedClip = null;
+        this.playBackClip = null;
         this.clip = null;
         GameController.Instance?.setGetScorePopup(false);
         GameController.Instance?.setWrongPopup(false);
@@ -1210,6 +1256,39 @@ public class UploadResponse
     public int server;
     public int code;
 }
+
+[Serializable]
+public class GPTTranscribeResponse
+{
+    public int code;
+    public GPTTranscribeResult result;
+    public string path;
+}
+
+[Serializable]
+public class GPTTranscribeResult
+{
+    public string text;
+    public Usage usage;
+}
+
+[Serializable]
+public class Usage
+{
+    public string type;
+    public int total_tokens;
+    public int input_tokens;
+    public Input_token_details input_token_details;
+    public int output_tokens;
+}
+
+[Serializable]
+public class Input_token_details
+{
+    public int text_tokens;
+    public int audio_tokens;
+}
+
 
 [Serializable]
 public class RecognitionResponse

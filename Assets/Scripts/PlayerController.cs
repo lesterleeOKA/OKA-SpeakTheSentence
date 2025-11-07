@@ -121,7 +121,7 @@ public class PlayerController : UserData
     {
         var currentQuestion = QuestionController.Instance?.currentQuestion;
         this.answer = answer;
-        var lowerQIDAns = currentQuestion.fullSentence;
+        var lowerQIDAns =  currentQuestion.fullSentence;
         //var lowerQIDAns = currentQuestion.correctAnswer.ToLower();
 
         if (!this.IsCheckedAnswer)
@@ -137,70 +137,84 @@ public class PlayerController : UserData
             int resultScore = this.scoring.score(this.answer, currentScore, lowerQIDAns, eachQAScore);
             this.Score = resultScore;
             this.IsCorrect = this.scoring.correct;
-            StartCoroutine(this.showAnswerResult(this.scoring.correct,()=>
+
+            int correctId = 0;
+            float score = 0f;
+            float currentQAPercent = 0f;
+
+            if (this.answer == lowerQIDAns)
             {
-                if (this.UserId == 0 && loader != null && loader.apiManager.IsLogined) // For first player
+                if (this.CorrectedAnswerNumber < QuestionManager.Instance.totalItems)
+                    this.CorrectedAnswerNumber += 1;
+
+                correctId = 2;
+                score = eachQAScore;
+                currentQAPercent = 100f;
+            }
+            else
+            {
+                if (this.CorrectedAnswerNumber > 0)
                 {
-                    float currentQAPercent = 0f;
-                    int correctId = 0;
-                    float score = 0f;
-                    float answeredPercentage;
-                    int progress = (int)((float)currentQuestion.answeredQuestion / QuestionManager.Instance.totalItems * 100);
-
-                    if (this.answer == lowerQIDAns)
-                    {
-                        if (this.CorrectedAnswerNumber < QuestionManager.Instance.totalItems)
-                            this.CorrectedAnswerNumber += 1;
-
-                        correctId = 2;
-                        score = eachQAScore; // load from question settings score of each question
-
-                        //LogController.Instance?.debug("Each QA Score!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + eachQAScore + "______answer" + this.answer);
-                        currentQAPercent = 100f;
-                    }
-                    else
-                    {
-                        if (this.CorrectedAnswerNumber > 0)
-                        {
-                            this.CorrectedAnswerNumber -= 1;
-                        }
-                    }
-
-                    if (this.CorrectedAnswerNumber < QuestionManager.Instance.totalItems)
-                    {
-                        answeredPercentage = this.AnsweredPercentage(QuestionManager.Instance.totalItems);
-                    }
-                    else
-                    {
-                        answeredPercentage = 100f;
-                    }
-
-                    this.AnswerTime = currentTime + this.AnswerTime;
-                    loader.SubmitAnswer(
-                               currentTime,
-                               this.Score,
-                               answeredPercentage,
-                               progress,
-                               correctId,
-                               this.AnswerTime,
-                               currentQuestion.qa.qid,
-                               currentQuestion.correctAnswerId,
-                               this.CapitalizeFirstLetter(this.answer),
-                               currentQuestion.correctAnswer,
-                               score,
-                               currentQAPercent,
-                               onCompleted
-                               );
+                    this.CorrectedAnswerNumber -= 1;
                 }
-                else
-                {
+
+                // answeredPercentage calculation for incorrect
+                currentQAPercent = this.CorrectedAnswerNumber < QuestionManager.Instance.totalItems
+                    ? this.AnsweredPercentage(QuestionManager.Instance.totalItems)
+                    : 100f;
+            }
+            int progress = (int)((float)currentQuestion.answeredQuestion / QuestionManager.Instance.totalItems * 100);
+            this.AnswerTime = currentTime + this.AnswerTime;
+
+            StartCoroutine(this.showAnswerResult(this.scoring.correct,
+           () => //Correct callback
+           {
+               if (this.UserId == 0 && loader != null && loader.apiManager.IsLogined)
+               {
+                   loader.SubmitAnswer(
+                       currentTime,
+                       this.Score,
+                       currentQAPercent,
+                       progress,
+                       correctId,
+                       this.AnswerTime,
+                       currentQuestion.qa.qid,
+                       currentQuestion.correctAnswerId,
+                       this.CapitalizeFirstLetter(this.answer),
+                       currentQuestion.correctAnswer,
+                       score,
+                       currentQAPercent,
+                       () => { onCompleted?.Invoke(); }
+                   );
+               }
+               else
+               {
                    onCompleted?.Invoke();
-                }
-            }, ()=>
-            {
-                this.IsCheckedAnswer = false;
-                //onCompleted?.Invoke();
-            }));
+               }
+           },
+           () => //Failure callback
+           {
+               // submit incorrect attempt as well
+               if (this.UserId == 0 && loader != null && loader.apiManager.IsLogined && this.Retry <= 0)
+               {
+                   loader.SubmitAnswer(
+                       currentTime,
+                       this.Score,
+                       currentQAPercent,
+                       progress,
+                       correctId,
+                       this.AnswerTime,
+                       currentQuestion.qa.qid,
+                       currentQuestion.correctAnswerId,
+                       this.CapitalizeFirstLetter(this.answer),
+                       currentQuestion.correctAnswer,
+                       score,
+                       currentQAPercent,
+                       () => { onCompleted?.Invoke(); }
+                   );
+               }
+               this.IsCheckedAnswer = false;
+           }));
         }
     }
 

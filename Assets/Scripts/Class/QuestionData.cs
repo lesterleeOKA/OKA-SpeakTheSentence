@@ -41,6 +41,7 @@ public class QuestionList
     public AudioClip audioClip;
     public string questionHint;
     public string checkSingleWord;
+    public string prompt;
 }
 
 [Serializable]

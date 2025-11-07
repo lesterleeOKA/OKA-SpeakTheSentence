@@ -13,13 +13,14 @@ public class RecorderManager : MonoBehaviour
     public bool ttsFailure = false;
     public bool ttsDone = false;
     public bool hasErrorWord = false;
-    public AudioClip clip, originalTrimmedClip;
+    public AudioClip clip, playBackClip;
     public enum DetectMethod
     {
         None = 0,
         Word = 1,
         FullSentence = 2,
-        Spelling = 3
+        Spelling = 3,
+        prompt = 4
     }
     public string TextToRecognize
     {
@@ -30,6 +31,9 @@ public class RecorderManager : MonoBehaviour
             {
                 case DetectMethod.None:
                     this.textToRecognize = "";
+                    break;
+                case DetectMethod.prompt:
+                    this.textToRecognize = QuestionController.Instance.currentQuestion.qa.prompt;
                     break;
                 case DetectMethod.Word:
                     this.textToRecognize = QuestionController.Instance.currentQuestion.correctAnswer;

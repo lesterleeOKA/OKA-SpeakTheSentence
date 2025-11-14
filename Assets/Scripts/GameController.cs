@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 public class GameController : GameBaseController
 {
     public static GameController Instance = null;
@@ -86,12 +82,12 @@ public class GameController : GameBaseController
         {
             var resultPageCg = this.endGamePage.messageBg.GetComponent<CanvasGroup>();
             string playerScore = this.playerController.Score.ToString();
+            bool hasExitedGameRecord = false;
 
             SetUI.SetInteract(resultPageCg, false);
             string scoresJson = "[" + string.Join(",", playerScore) + "]";
             StartCoroutine(
                 loader.apiManager.postScoreToStarAPI(scoresJson, (stars) => {
-                    LogController.Instance.debug("Score to Star API call completed!");
 
                     if (this.playerController != null)
                     {
@@ -104,17 +100,9 @@ public class GameController : GameBaseController
                             {
                                 StartCoroutine(loader.apiManager.AddCurrency(stars[0], () =>
                                 {
-                                    SetUI.SetInteract(resultPageCg, true);
+                                    LogController.Instance.debug("Score to Star API call completed!");
                                 }));
                             }
-                            else
-                            {
-                                SetUI.SetInteract(resultPageCg, true);
-                            }
-                        }
-                        else
-                        {
-                            SetUI.SetInteract(resultPageCg, true);
                         }
 
                         int star = (stars != null && stars.Length == 1) ? stars[0] : 0;
@@ -123,6 +111,14 @@ public class GameController : GameBaseController
                             if (this.endGamePage.scoreEndings[0].starNumber > 0)
                             {
                                 showSuccess = true;
+                            }
+                            if (!hasExitedGameRecord)
+                            {
+                                hasExitedGameRecord = true;
+                                StartCoroutine(LoaderConfig.Instance.apiManager.ExitGameRecord(() =>
+                                {
+                                    SetUI.SetInteract(resultPageCg, true);
+                                }));
                             }
                         });
                     }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class RecorderManager : MonoBehaviour
 {
@@ -39,7 +38,10 @@ public class RecorderManager : MonoBehaviour
                     this.textToRecognize = QuestionController.Instance.currentQuestion.correctAnswer;
                     break;
                 case DetectMethod.FullSentence:
-                    this.textToRecognize = QuestionController.Instance.currentQuestion.fullSentence;
+                    if(!string.IsNullOrEmpty(QuestionController.Instance.currentQuestion.wrongSentence) && QuestionController.Instance.currentQuestion.wrongSentence != "null")
+                        this.textToRecognize = QuestionController.Instance.currentQuestion.wrongSentence;
+                    else
+                        this.textToRecognize = QuestionController.Instance.currentQuestion.fullSentence;
                     break;
                 case DetectMethod.Spelling:
                     var word = QuestionController.Instance.currentQuestion.correctAnswer;
@@ -51,7 +53,7 @@ public class RecorderManager : MonoBehaviour
     }
 
 
-    protected void checkSpeech(WordDetail[] wordDetails = null, StringBuilder result = null, Text accurancyText = null)
+    protected void checkSpeech(WordDetail[] wordDetails = null, StringBuilder result = null)
     {
         if (wordDetails != null)
         {
@@ -70,37 +72,63 @@ public class RecorderManager : MonoBehaviour
                         correctAnswerWords.Select(w => Regex.Replace(w, @"[^\w]", "").ToLower())
                     );
 
+                    bool useWrongSentenceCheckCase = !string.IsNullOrEmpty(QuestionController.Instance.currentQuestion.wrongSentence) &&
+                        QuestionController.Instance.currentQuestion.wrongSentence != "null" &&
+                        !string.IsNullOrEmpty(QuestionController.Instance.currentQuestion.qa.wrongWord);
+
                     foreach (var word in wordDetails)
                     {
                         string cleanWord = Regex.Replace(word.Word, @"[^\w]", "").ToLower();
 
-                        if (word.ErrorType == "Omission")
+                        if(useWrongSentenceCheckCase)
                         {
-                            this.ttsFailure = true;
-                            if (accurancyText != null)
-                                accurancyText.text = $"Word missing, please retry";
-                            this.hasErrorWord = true;
-                        }
-                        else
-                        {
-                            if (correctAnswerWordSet.Contains(cleanWord))
+                            if(word.Word.Equals(QuestionController.Instance.currentQuestion.qa.wrongWord, StringComparison.OrdinalIgnoreCase))
                             {
-                                if (word.ErrorType == "Mispronunciation")
+                                if(word.ErrorType != "Omission")
                                 {
                                     this.ttsFailure = true;
-                                    if (accurancyText != null)
-                                        accurancyText.text = $"Mispronunciation detected, please retry";
-                                    hasErrorWord = true;
+                                    this.hasErrorWord = true;
                                 }
-                                else if (word.AccuracyScore < 85 && (QuestionController.Instance.currentQuestion.questiontype == QuestionType.SentenceCorrect || correctAnswerWordsCount == 1))
+                            }
+                            else
+                            {
+                                if (word.ErrorType == "Omission")
                                 {
                                     this.ttsFailure = true;
-                                    if (accurancyText != null)
-                                        accurancyText.text = $"Mispronunciation detected, please retry";
-                                    hasErrorWord = true;
+                                    this.hasErrorWord = true;
                                 }
                             }
                         }
+                        else
+                        {
+                            if (word.ErrorType == "Omission")
+                            {
+                                this.ttsFailure = true;
+                                this.hasErrorWord = true;
+                            }
+                            else
+                            {
+                                if (correctAnswerWordSet.Contains(cleanWord))
+                                {
+                                    if (word.ErrorType == "Mispronunciation")
+                                    {
+                                        if (word.AccuracyScore < 20) this.ttsFailure = true;
+                                        hasErrorWord = true;
+                                    }
+                                    else
+                                    {
+                                        if (QuestionController.Instance.currentQuestion.questiontype == QuestionType.SentenceCorrect)
+                                        {
+                                            if (word.AccuracyScore < 85 && correctAnswerWordsCount == 1)
+                                            {
+                                                this.ttsFailure = true;
+                                                hasErrorWord = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }                   
                     }
                     break;
                 case DetectMethod.Spelling:

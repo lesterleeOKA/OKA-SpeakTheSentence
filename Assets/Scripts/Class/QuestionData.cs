@@ -29,6 +29,7 @@ public class QuestionList
     public string[] answers;
     public string correctAnswer;
     public string fullSentence;
+    public string wrongSentence;
     public string wrongWord;
     public int star;
     public score score;
@@ -88,6 +89,7 @@ public class CurrentQuestion
     public QuestionType questiontype = QuestionType.None;
     public QuestionList qa = null;
     public string fullSentence = "";
+    public string wrongSentence = "";
     public string displayQuestion = "";
     public string displayHint = "";
     public int correctAnswerId;
@@ -296,6 +298,7 @@ public class CurrentQuestion
                 SetUI.SetGroup(this.questionBgs, 3, 0f);
                 this.questionTexts = this.questionBgs[3].GetComponentsInChildren<TextMeshProUGUI>();
                 this.fullSentence = qa.fullSentence;
+                this.wrongSentence = qa.wrongSentence;
                 for (int i = 0; i < this.questionTexts.Length; i++)
                 {
                     this.questionTexts[i].text = "";

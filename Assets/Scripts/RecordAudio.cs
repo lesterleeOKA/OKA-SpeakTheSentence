@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -678,7 +679,8 @@ public class RecordAudio : RecorderManager
         this.ApiUrl = $"https://{LoaderConfig.Instance.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/";
         LogController.Instance.debug($"SendAudioToAzureApi: {this.ApiUrl}");
         UnityWebRequest request = UnityWebRequest.Post(this.ApiUrl, form);
-        request.SetRequestHeader("Authorization", $"Bearer {JwtToken}");
+        string jwtToken = string.IsNullOrEmpty(LoaderConfig.Instance.apiManager.jwt) ? this.JwtToken : LoaderConfig.Instance.apiManager.jwt;
+        request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
 
         yield return request.SendWebRequest();
 
@@ -950,22 +952,22 @@ public class RecordAudio : RecorderManager
                             string transcript = "";
                             string displayText = "";
                             string correctAnswer = recognitionResponse.result.DisplayText;
-                            this.hasErrorWord = false;
+                            float averageScore = 0f;
                             this.wordDetails = null;
                             // Log the NBest array
                             if (Best != null)
                             {
                                 foreach (var nBest in Best)
                                 {
+                                    averageScore = (nBest.AccuracyScore + nBest.PronScore + nBest.FluencyScore + nBest.CompletenessScore) / 4f;
                                     result.AppendLine($"Score: {nBest.PronScore}");
                                     this.wordDetails = nBest.Words;
-                                    this.checkSpeech(this.wordDetails, result, this.accurancyText);
+                                    this.checkSpeech(this.wordDetails, result);
 
-                                    if (this.accurancyText != null && !this.hasErrorWord)
-                                        this.accurancyText.text = $"{nBest.PronScore}%"; //Rating
+                                    if (this.accurancyText != null)
+                                        this.accurancyText.text = $"{averageScore}%"; //Rating
 
-                                    if (nBest.AccuracyScore <= this.passAccuracyScore &&
-                                        nBest.PronScore <= this.passPronScore)
+                                    if (averageScore <= ((this.passAccuracyScore + this.passPronScore) / 2f))
                                     {
                                         this.ttsFailure = true;
                                     }
@@ -1037,12 +1039,96 @@ public class RecordAudio : RecorderManager
         TextMeshProUGUI questionTextpro = currentQuestion.QuestionTexts[0];
 
         int textCount = currentQuestion.QuestionTexts.Length;
-        string originalQuestion = currentQuestion.qa.question;
-
-        displayText = displayText.TrimStart();
+        displayText = (displayText ?? "").TrimStart();
 
         // Split the sentence into words (preserve punctuation if needed)
         string[] sentenceWords = displayText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+        // --- build normalized list of underlined segments from currentQuestion.displayQuestion (in order) ---
+        var underlinedSegments = new List<string>();
+        try
+        {
+            string displayQuestionMarkup = currentQuestion.displayQuestion ?? "";
+            var matches = Regex.Matches(displayQuestionMarkup, @"<u\b[^>]*>(.*?)<\/u>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            foreach (Match m in matches)
+            {
+                string inner = m.Groups[1].Value ?? "";
+                // Remove nested tags like <color=...>...</color>
+                string withoutTags = Regex.Replace(inner, "<.*?>", "");
+                // Remove placeholder underscores or invisible color padding
+                withoutTags = withoutTags.Replace("_", "");
+                // Normalize: remove non-word chars and lowercase
+                string normalized = Regex.Replace(withoutTags, @"[^\w]", "").ToLowerInvariant();
+                if (!string.IsNullOrEmpty(normalized))
+                    underlinedSegments.Add(normalized);
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.Instance.debugError("Error parsing displayQuestion underlines: " + ex.Message);
+        }
+
+        // If no underlined segments found, fallback to previous behavior: highlight only by correctAnswer membership
+        var correctAnswerWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        try
+        {
+            string correctAnswer = currentQuestion.correctAnswer ?? "";
+            var parts = correctAnswer.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var p in parts)
+            {
+                string normalized = Regex.Replace(p, @"[^\w]", "").ToLowerInvariant();
+                if (!string.IsNullOrEmpty(normalized))
+                    correctAnswerWords.Add(normalized);
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.Instance.debugError("Error building correct answer words: " + ex.Message);
+        }
+
+        // Helper: normalize a single word
+        string NormalizeWord(string w) => Regex.Replace(w ?? "", @"[^\w]", "").ToLowerInvariant();
+
+        // Mark which word indices correspond to underlined segments (sequence-aware)
+        bool[] highlightFlags = new bool[sentenceWords.Length];
+        if (underlinedSegments.Count > 0 && sentenceWords.Length > 0)
+        {
+            int searchStart = 0;
+            for (int s = 0; s < underlinedSegments.Count; s++)
+            {
+                string seg = underlinedSegments[s];
+                bool matchedSegment = false;
+
+                for (int start = searchStart; start < sentenceWords.Length; start++)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    for (int end = start; end < sentenceWords.Length; end++)
+                    {
+                        sb.Append(NormalizeWord(sentenceWords[end]));
+                        var combined = sb.ToString();
+
+                        if (combined.Length < seg.Length)
+                            continue;
+
+                        if (combined.Length > seg.Length)
+                            break; // overshot, try next start
+
+                        if (combined == seg)
+                        {
+                            // mark indices [start..end] as highlighted
+                            for (int k = start; k <= end; k++)
+                                highlightFlags[k] = true;
+                            searchStart = end + 1;
+                            matchedSegment = true;
+                            break;
+                        }
+                    }
+                    if (matchedSegment) break;
+                }
+
+                // if not matched, continue trying next segments (we avoid matching earlier words again)
+            }
+        }
 
         for (int i = 0; i < textCount; i++)
         {
@@ -1052,8 +1138,9 @@ public class RecordAudio : RecorderManager
                 bool markerText = textpro.gameObject.name == "MarkerText";
                 var result = new StringBuilder();
 
-                foreach (string word in sentenceWords)
+                for (int idx = 0; idx < sentenceWords.Length; idx++)
                 {
+                    string word = sentenceWords[idx];
                     WordDetail wordDetail = null;
                     string errorType = null;
                     bool isError = false;
@@ -1073,7 +1160,6 @@ public class RecordAudio : RecorderManager
 
                     if (isError)
                     {
-
                         LogController.Instance.debug("result: " + errorType);
                         switch (errorType)
                         {
@@ -1100,18 +1186,30 @@ public class RecordAudio : RecorderManager
                     }
                     else
                     {
-                        if(word.Equals(currentQuestion.correctAnswer) && markerText)
+                        // Only highlight when this exact word occurrence is matched to an underlined segment.
+                        if (markerText && highlightFlags[idx])
                         {
                             result.Append($"<mark=#A6E32A padding='0,12,5,10'>{word}</mark> ");
                         }
                         else
                         {
-                            result.Append($"{word} ");
+                            // Fallback: if no underlined segments detected at all, use correctAnswer membership to highlight
+                            if (underlinedSegments.Count == 0)
+                            {
+                                string cleanWordForCheck = NormalizeWord(word);
+                                if (markerText && correctAnswerWords.Contains(cleanWordForCheck))
+                                    result.Append($"<mark=#A6E32A padding='0,12,5,10'>{word}</mark> ");
+                                else
+                                    result.Append($"{word} ");
+                            }
+                            else
+                            {
+                                result.Append($"{word} ");
+                            }
                         }
                     }
                 }
 
-                //Debug.Log("result: " + result.ToString().TrimEnd());
                 textpro.text = result.ToString().TrimEnd();
             }
         }
@@ -1218,6 +1316,7 @@ public class RecordAudio : RecorderManager
         GameController.Instance?.setWrongPopup(false);
         this.ttsDone = false;
         this.ttsFailure = false;
+        this.hasErrorWord = false;
         SetUI.Set(this.playBackStatusText, false);
         SetUI.Set(this.processButtonCg, false);
         AudioController.Instance?.fadingBGM(true, 1f);

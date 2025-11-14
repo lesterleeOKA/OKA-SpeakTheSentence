@@ -596,7 +596,9 @@
       "answers": null,
       "correctAnswer": "Can",
       "fullSentence": "Can a bird fly?",
-      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'.",
+      "wrongSentence": "What can a bird fly?",
+      "wrongWord": "What"
     },
     {
       "qid": "p1u12-f3",
@@ -605,7 +607,9 @@
       "answers": null,
       "correctAnswer": "Can",
       "fullSentence": "Can the baby swim?",
-      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'.",
+      "wrongSentence": "What can the baby swim?",
+      "wrongWord": "What"
     },
     {
       "qid": "p1u12-f4",
@@ -623,7 +627,9 @@
       "answers": null,
       "correctAnswer": "Can",
       "fullSentence": "Can you draw?",
-      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'.",
+      "wrongSentence": "What can you draw?",
+      "wrongWord": "What"
     },
     {
       "qid": "p1u12-f6",
@@ -641,7 +647,9 @@
       "answers": null,
       "correctAnswer": "can",
       "fullSentence": "Can a rabbit jump? Yes, it can.",
-      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'.",
+      "wrongSentence": "What can a rabbit jump? Yes, it can.",
+      "wrongWord": "What"
     },
     {
       "qid": "p1u12-f8",
@@ -659,7 +667,9 @@
       "answers": null,
       "correctAnswer": "Can",
       "fullSentence": "Can Mr Lee dance?",
-      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'.",
+      "wrongSentence": "What can Mr Lee dance?",
+      "wrongWord": "What"
     },
     {
       "qid": "p1u12-f10",
@@ -668,7 +678,9 @@
       "answers": null,
       "correctAnswer": "Can, cannot",
       "fullSentence": "Can Joe catch the ball? No, he cannot.",
-      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'."
+      "questionHint": "Complete the sentences with 'what can', 'can' or 'cannot'.",
+      "wrongSentence": "What can Joe catch the ball? No, he cannot.",
+      "wrongWord": "What"
     },
     {
       "qid": "p2u1-f1",

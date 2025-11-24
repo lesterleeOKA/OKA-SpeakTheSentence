@@ -22,7 +22,7 @@ public class QuestionController : MonoBehaviour
         if (LoaderConfig.Instance == null || QuestionManager.Instance == null)
             return;
 
-        /*try
+        try
         {
             var questionDataList = QuestionManager.Instance.questionData;
             LogController.Instance?.debug("Loaded questions:" + questionDataList.questions.Count);
@@ -47,27 +47,7 @@ public class QuestionController : MonoBehaviour
         catch (Exception e)
         {
             LogController.Instance?.debugError(e.Message);
-        }*/
-
-        var questionDataList = QuestionManager.Instance.questionData;
-        LogController.Instance?.debug("Loaded questions:" + questionDataList.questions.Count);
-        if (questionDataList == null || questionDataList.questions == null || questionDataList.questions.Count == 0)
-        {
-            return;
         }
-
-        string correctAnswer = this.currentQuestion.correctAnswer;
-        int questionCount = questionDataList.questions.Count;
-        bool isLogined = LoaderConfig.Instance.apiManager.IsLogined;
-        QuestionList qa = questionDataList.questions[this.currentQuestion.numberQuestion];
-        this.currentQuestion.setNewQuestion(qa, questionCount, isLogined, () =>
-        {
-            if (isLogined)
-            {
-                GameController.Instance.endGame();
-                return;
-            }
-        });
     }
 
     public void PlayCurrentQuestionAudio()

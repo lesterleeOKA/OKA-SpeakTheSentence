@@ -171,6 +171,14 @@ public class CurrentQuestion
         this.UpdateUnderlineIconPosition(targetText);
     }
 
+    private int CountWords(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return 0;
+        // Match sequences of letters/numbers/apostrophes as words (works with Unicode letters)
+        var matches = Regex.Matches(text.Trim(), @"\b[\p{L}\p{N}']+\b");
+        return matches.Count;
+    }
+
     private void UpdateUnderlineIconPosition(TextMeshProUGUI targetText)
     {
         targetText.ForceMeshUpdate();
@@ -179,6 +187,10 @@ public class CurrentQuestion
         Vector3 underlineStart = Vector3.zero;
         Vector3 underlineEnd = Vector3.zero;
         bool foundUnderline = false;
+
+        int wordCount = this.CountWords(targetText.text);
+
+        Debug.Log($"[UpdateUnderlineIconPosition] Word Count: {wordCount}");
 
         for (int i = 0; i < textInfo.characterCount; i++)
         {
@@ -199,9 +211,13 @@ public class CurrentQuestion
         {
             Vector3 underlineCenter = (underlineStart + underlineEnd) / 2;
             Vector3 offset = new Vector3(0, 40f, 0);
+            if(wordCount > 15)
+            {
+                this.underlineIconScale = 0.6f;
+                offset = new Vector3(0, 15f, 0);
+            }
             Vector3 worldPos = targetText.transform.TransformPoint(underlineCenter + offset);
             Vector3 localPos = underlineWordRecordIcon.transform.parent.InverseTransformPoint(worldPos);
-
             underlineWordRecordIcon.transform.localPosition = localPos;
             underlineWordRecordIcon.transform.localScale = Vector3.one * this.underlineIconScale;
         }
@@ -535,6 +551,7 @@ public class CurrentQuestion
         }
         else
         {
+            questionCg.GetComponent<VerticalLayoutGroup>().padding.top = 0;
             this.audioPlayBtn?.gameObject.SetActive(false);
             this.questionImage?.gameObject.SetActive(false);
         }

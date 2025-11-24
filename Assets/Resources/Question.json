@@ -2792,7 +2792,1170 @@
       "answers": null,
       "correctAnswer": "enjoy the show quietly",
       "questionHint": "Listen and speak the phrases."
+    },
+    {
+      "qid": "p5u1-g1",
+      "answers": null,
+      "question": "The hospital is _________ (600m) from here. You can borrow my bike.",
+      "fullSentence": "The hospital is six hundred metres from here. You can borrow my bike.",
+      "questionHint": "Finish the sentences with the correct answers.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "six hundred metres"
+    },
+    {
+      "qid": "p5u1-g2",
+      "answers": null,
+      "question": "It takes _________ (20min) to go to the airport by taxi.",
+      "fullSentence": "It takes twenty minutes to go to the airport by taxi.",
+      "questionHint": "Finish the sentences with the correct answers.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "twenty minutes"
+    },
+    {
+      "qid": "p5u1-g3",
+      "answers": null,
+      "question": "It's about _________ (5km) from the trailhead to the mountain top.",
+      "fullSentence": "It's about five kilometres from the trailhead to the mountain top.",
+      "questionHint": "Finish the sentences with the correct answers.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "five kilometres"
+    },
+    {
+      "qid": "p5u1-g4",
+      "answers": null,
+      "question": "It's about _________ (3km) from Tai Wai to Sha Tin. You should take a MTR.",
+      "fullSentence": "It's about three kilometres from Tai Wai to Sha Tin. You should take a MTR.",
+      "questionHint": "Finish the sentences with the correct answers.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "three kilometres"
+    },
+    {
+      "qid": "p5u1-g5",
+      "answers": null,
+      "question": "It takes _________ (1.5h) to go there by bus. We are going to be late.",
+      "fullSentence": "It takes one and a half hours to go there by bus. We are going to be late.",
+      "questionHint": "Finish the sentences with the correct answers.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "one and a half hours"
+    },
+    {
+      "qid": "p5u1-g6",
+      "answers": null,
+      "question": "The coffee shop is around the corner. It takes _________.",
+      "fullSentence": "The coffee shop is around the corner. It takes five minutes.",
+      "questionHint": "Finish the sentences with the correct answers.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "five minutes"
+    },
+    {
+      "qid": "p5u1-g7",
+      "answers": null,
+      "question": "It is about _________ (200m) to walk from the cinema to the bakery.",
+      "fullSentence": "It is about two hundred metres to walk from the cinema to the bakery.",
+      "questionHint": "Finish the sentences with the correct answers.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "two hundred metres"
+    },
+    {
+      "qid": "p5u1-g8",
+      "answers": null,
+      "question": "It takes _________ (3.5h) to fly to Seoul. I am going to take a nap.",
+      "fullSentence": "It takes three hours thirty minutes to fly to Seoul. I am going to take a nap.",
+      "questionHint": "Finish the sentences with the correct answers.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "three hours thirty minutes"
+    },
+    {
+      "qid": "p5u1-g9",
+      "answers": null,
+      "question": "The library is about _________ (400m) from my home. I usually walk there.",
+      "fullSentence": "The library is about four hundred metres from my home. I usually walk there.",
+      "questionHint": "Finish the sentences with the correct answers.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "four hundred metres"
+    },
+    {
+      "qid": "p5u1-g10",
+      "answers": null,
+      "question": "It takes about _________ (1h) to go from Central to Cheung Chau.",
+      "fullSentence": "It takes about one hour to go from Central to Cheung Chau.",
+      "questionHint": "Finish the sentences with the correct answers.",
+      "questionType": "FillInBlank",
+      "correctAnswer": "one hour"
+    },
+    {
+      "qid": "p5u2-f1",
+      "questionType": "FillInBlank",
+      "question": "When ______ the school ________ (hold) the annual science fair this year?",
+      "answers": null,
+      "correctAnswer": "will hold",
+      "fullSentence": "When will the school hold the annual science fair this year?",
+      "questionHint": "Complete the sentences with the correct tenses."
+    },
+    {
+      "qid": "p5u2-f2",
+      "questionType": "FillInBlank",
+      "question": "Mr. Tony Chan _________ (speak) at the career day event every year.",
+      "answers": null,
+      "correctAnswer": "speaks",
+      "fullSentence": "Mr. Tony Chan speaks at the career day event every year.",
+      "questionHint": "Complete the sentences with the correct tenses."
+    },
+    {
+      "qid": "p5u2-f3",
+      "questionType": "FillInBlank",
+      "question": "We ___________ (have) a day trip to Tai O to watch the Chinese White Dolphins.",
+      "answers": null,
+      "correctAnswer": "had",
+      "fullSentence": "We had a day trip to Tai O to watch the Chinese White Dolphins.",
+      "questionHint": "Complete the sentences with the correct tenses."
+    },
+    {
+      "qid": "p5u2-f4",
+      "questionType": "FillInBlank",
+      "question": "My family and I _________ (spend) three days in Macau. I'm excited.",
+      "answers": null,
+      "correctAnswer": "will spend",
+      "fullSentence": "My family and I will spend three days in Macau. I'm excited.",
+      "questionHint": "Complete the sentences with the correct tenses."
+    },
+    {
+      "qid": "p5u2-f5",
+      "questionType": "FillInBlank",
+      "question": "What time ________ Tom and Joe ________ (meet) at the M+ Museum tomorrow?",
+      "answers": null,
+      "correctAnswer": "will meet",
+      "fullSentence": "What time will Tom and Joe meet at the M+ Museum tomorrow?",
+      "questionHint": "Complete the sentences with the correct tenses."
+    },
+    {
+      "qid": "p5u2-f6",
+      "questionType": "FillInBlank",
+      "question": "After five long years, Uncle Ben ___________ (return) to Hong Kong from Canada soon.",
+      "answers": null,
+      "correctAnswer": "will return",
+      "fullSentence": "After five long years, Uncle Ben will return to Hong Kong from Canada soon.",
+      "questionHint": "Complete the sentences with the correct tenses."
+    },
+    {
+      "qid": "p5u2-f7",
+      "questionType": "FillInBlank",
+      "question": "How _______ your sister ________ (celebrate) her 18th birthday? Was there a party?",
+      "answers": null,
+      "correctAnswer": "did, celebrate",
+      "fullSentence": "How did your sister celebrate her 18th birthday? Was there a party?",
+      "questionHint": "Complete the sentences with the correct tenses."
+    },
+    {
+      "qid": "p5u2-f8",
+      "questionType": "FillInBlank",
+      "question": "How long ________ Amy's graduation ceremony _______ (last) for?",
+      "answers": null,
+      "correctAnswer": "will last",
+      "fullSentence": "How long will Amy's graduation ceremony last for?",
+      "questionHint": "Complete the sentences with the correct tenses."
+    },
+    {
+      "qid": "p5u2-f9",
+      "questionType": "FillInBlank",
+      "question": "Mark _______ (go) to the Geo Park tomorrow to see the incredible rock columns.",
+      "answers": null,
+      "correctAnswer": "will go",
+      "fullSentence": "Mark will go to the Geo Park tomorrow to see the incredible rock columns.",
+      "questionHint": "Complete the sentences with the correct tenses."
+    },
+    {
+      "qid": "p5u2-f10",
+      "questionType": "FillInBlank",
+      "question": "______ you ______ (take) pictures with the characters at Disneyland? I always do!",
+      "answers": null,
+      "correctAnswer": "Do, take",
+      "fullSentence": "Do you take pictures with the characters at Disneyland? I always do!",
+      "questionHint": "Complete the sentences with the correct tenses."
+    },
+    {
+      "qid": "p5u3-e1",
+      "questionType": "FillInBlank",
+      "question": "I always keep a clean ____________ in my pocket in case I need to blow my nose.",
+      "answers": null,
+      "correctAnswer": "handkerchief",
+      "fullSentence": "I always keep a clean handkerchief in my pocket in case I need to blow my nose.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u3-e2",
+      "questionType": "FillInBlank",
+      "question": "The _______ examined my teeth and said I need to floss more regularly.",
+      "answers": null,
+      "correctAnswer": "dentist",
+      "fullSentence": "The dentist examined my teeth and said I need to floss more regularly.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u3-e3",
+      "questionType": "FillInBlank",
+      "question": "I had to stop and tie my ________ before I could continue walking.",
+      "answers": null,
+      "correctAnswer": "shoelaces",
+      "fullSentence": "I had to stop and tie my shoelaces before I could continue walking.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u3-e4",
+      "questionType": "FillInBlank",
+      "question": "All the students in my class have to wear the same school _________.",
+      "answers": null,
+      "correctAnswer": "uniform",
+      "fullSentence": "All the students in my class have to wear the same school uniform.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u3-e5",
+      "questionType": "FillInBlank",
+      "question": "My mom told me to trim my ____________ because they were getting too long.",
+      "answers": null,
+      "correctAnswer": "fingernails",
+      "fullSentence": "My mom told me to trim my fingernails because they were getting too long.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u3-e6",
+      "questionType": "FillInBlank",
+      "question": "Her maid is helping her _______ the freshly washed clothes outside to dry in the sun.",
+      "answers": null,
+      "correctAnswer": "hang",
+      "fullSentence": "Her maid is helping her hang the freshly washed clothes outside to dry in the sun.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u3-e7",
+      "questionType": "FillInBlank",
+      "question": "One of my ________ is to set the table for dinner every night before my family eats.",
+      "answers": null,
+      "correctAnswer": "chores",
+      "fullSentence": "One of my chores is to set the table for dinner every night before my family eats.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u3-e8",
+      "questionType": "FillInBlank",
+      "question": "You should carefully read the care label on the clothes before doing the ________ .",
+      "answers": null,
+      "correctAnswer": "laundry",
+      "fullSentence": "You should carefully read the care label on the clothes before doing the laundry.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u3-e9",
+      "questionType": "FillInBlank",
+      "question": "Jack has learned how to ____ ______ quickly as he always stays in bed until the last minute.",
+      "answers": null,
+      "correctAnswer": "get dressed",
+      "fullSentence": "Jack has learned how to get dressed quickly as he always stays in bed until the last minute.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u3-e10",
+      "questionType": "FillInBlank",
+      "question": "Could you please help me __________ the cuffs of my new shirt? They are a bit tricky.",
+      "answers": null,
+      "correctAnswer": "button",
+      "fullSentence": "Could you please help me button the cuffs of my new shirt? They are a bit tricky.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u3-f1",
+      "questionType": "FillInBlank",
+      "question": "We made tonight's dinner _______________.",
+      "answers": null,
+      "correctAnswer": "by ourselves",
+      "fullSentence": "We made tonight's dinner by ourselves.",
+      "questionHint": "Complete the sentences with 'by' and the correct reflexive pronouns."
+    },
+    {
+      "qid": "p5u3-f2",
+      "questionType": "FillInBlank",
+      "question": "My little sister can button the shirt by _______________ now.",
+      "answers": null,
+      "correctAnswer": "by herself",
+      "fullSentence": "My little sister can button the shirt by herself now.",
+      "questionHint": "Complete the sentences with 'by' and the correct reflexive pronouns."
+    },
+    {
+      "qid": "p5u3-f3",
+      "questionType": "FillInBlank",
+      "question": "I baked these cookies  _______________. Are they good?",
+      "answers": null,
+      "correctAnswer": "by myself",
+      "fullSentence": "I baked these cookies by myself. Are they good?",
+      "questionHint": "Complete the sentences with 'by' and the correct reflexive pronouns."
+    },
+    {
+      "qid": "p5u3-f4",
+      "questionType": "FillInBlank",
+      "question": "They designed the T-shirts  _______________ for the charity sale.",
+      "answers": null,
+      "correctAnswer": "by themselves",
+      "fullSentence": "They designed the T-shirts by themselves for the charity sale.",
+      "questionHint": "Complete the sentences with 'by' and the correct reflexive pronouns."
+    },
+    {
+      "qid": "p5u3-f5",
+      "questionType": "FillInBlank",
+      "question": "He followed the steps carefully and built the model plane _______________.",
+      "answers": null,
+      "correctAnswer": "by himself",
+      "fullSentence": "He followed the steps carefully and built the model plane by himself.",
+      "questionHint": "Complete the sentences with 'by' and the correct reflexive pronouns."
+    },
+    {
+      "qid": "p5u3-f6",
+      "questionType": "FillInBlank",
+      "question": "Lily can take the MTR to Wan Chai ______________.",
+      "answers": null,
+      "correctAnswer": "by herself",
+      "fullSentence": "Lily can take the MTR to Wan Chai by herself.",
+      "questionHint": "Complete the sentences with 'by' and the correct reflexive pronouns."
+    },
+    {
+      "qid": "p5u3-f7",
+      "questionType": "FillInBlank",
+      "question": "Chris, can you solve this 1000 pieces puzzle _______________?",
+      "answers": null,
+      "correctAnswer": "by yourself",
+      "fullSentence": "Chris, can you solve this 1000 pieces puzzle by yourself?",
+      "questionHint": "Complete the sentences with 'by' and the correct reflexive pronouns."
+    },
+    {
+      "qid": "p5u3-f8",
+      "questionType": "FillInBlank",
+      "question": "The door opened _______________ because of the strong wind.",
+      "answers": null,
+      "correctAnswer": "by itself",
+      "fullSentence": "The door opened by itself because of the strong wind.",
+      "questionHint": "Complete the sentences with 'by' and the correct reflexive pronouns."
+    },
+    {
+      "qid": "p5u3-f9",
+      "questionType": "FillInBlank",
+      "question": "My cat always licks its fur. It clean its body _______________.",
+      "answers": null,
+      "correctAnswer": "by itself",
+      "fullSentence": "My cat always licks its fur. It cleans its body by itself.",
+      "questionHint": "Complete the sentences with 'by' and the correct reflexive pronouns."
+    },
+    {
+      "qid": "p5u3-f10",
+      "questionType": "FillInBlank",
+      "question": "John and Ken, please put the clothes back into the drawers _______________.",
+      "answers": null,
+      "correctAnswer": "by yourselves",
+      "fullSentence": "John and Ken, please put the clothes back into the drawers by yourselves.",
+      "questionHint": "Complete the sentences with 'by' and the correct reflexive pronouns."
+    },
+    {
+      "qid": "p5u4-g1",
+      "questionType": "FillInBlank",
+      "question": "___________________________ I woke up at 5 a.m. today because I wanted to see the sunrise.",
+      "answers": null,
+      "correctAnswer": "Why did you wake up at 5 a.m. today?",
+      "fullSentence": "Why did you wake up at 5 a.m. today? I woke up at 5 a.m. today because I wanted to see the sunrise.",
+      "questionHint": "Complete the sentences with 'why', 'because' and the words provided."
+    },
+    {
+      "qid": "p5u4-g2",
+      "questionType": "FillInBlank",
+      "question": "Terry runs in the park every morning ________________________________. (want to be faster in races)",
+      "answers": null,
+      "correctAnswer": "because he wants to be faster in races.",
+      "fullSentence": "Terry runs in the park every morning because he wants to be faster in races.",
+      "questionHint": "Complete the sentences with 'why', 'because' and the words provided."
+    },
+    {
+      "qid": "p5u4-g3",
+      "questionType": "FillInBlank",
+      "question": "Owen and Ivan are studying Spanish ________________________________ nexy year. (move to Spain)",
+      "answers": null,
+      "correctAnswer": "because they will move to Spain next year.",
+      "fullSentence": "Owen and Ivan are studying Spanish because they will move to Spain next year.",
+      "questionHint": "Complete the sentences with 'why', 'because' and the words provided."
+    },
+    {
+      "qid": "p5u4-g4",
+      "questionType": "FillInBlank",
+      "question": "___________________________ Ally is packing her old clothes because she wants to donate them to the charity.",
+      "answers": null,
+      "correctAnswer": "Why is Ally packing her old clothes?",
+      "fullSentence": "Why is Ally packing her old clothes? Ally is packing her old clothes because she wants to donate them to the charity.",
+      "questionHint": "Complete the sentences with 'why', 'because' and the words provided."
+    },
+    {
+      "qid": "p5u4-g5",
+      "questionType": "FillInBlank",
+      "question": "____________________________ My mom doesn't like drinking coffee because it is bitter.",
+      "answers": null,
+      "correctAnswer": "Why doesn't your mom like drinking coffee?",
+      "fullSentence": "Why doesn't your mom like drinking coffee? My mom doesn't like drinking coffee because it is bitter.",
+      "questionHint": "Complete the sentences with 'why', 'because' and the words provided."
+    },
+    {
+      "qid": "p5u4-g6",
+      "questionType": "FillInBlank",
+      "question": "Victor's grandparents live in the countryside ________________________________. (not like living in big city)",
+      "answers": null,
+      "correctAnswer": "because they don't like living in big city.",
+      "fullSentence": "Victor's grandparents live in the countryside because they don't like living in big city.",
+      "questionHint": "Complete the sentences with 'why', 'because' and the words provided."
+    },
+    {
+      "qid": "p5u4-g7",
+      "questionType": "FillInBlank",
+      "question": "___________________________ I always film everything when we hang out because I want to create vlogs like a YouTuber.",
+      "answers": null,
+      "correctAnswer": "Why do you always film everything when we hang out?",
+      "fullSentence": "Why do you always film everything when we hang out? I always film everything when we hang out because I want to create vlogs like a YouTuber.",
+      "questionHint": "Complete the sentences with 'why', 'because' and the words provided."
+    },
+    {
+      "qid": "p5u4-g8",
+      "questionType": "FillInBlank",
+      "question": "June is busy on the phone ________________________________. (arrange details for tomorrow's birthday dinner)",
+      "answers": null,
+      "correctAnswer": "because she is arranging details for tomorrow's birthday dinner.",
+      "fullSentence": "June is busy on the phone because she is arranging details for tomorrow's birthday dinner.",
+      "questionHint": "Complete the sentences with 'why', 'because' and the words provided."
+    },
+    {
+      "qid": "p5u4-g9",
+      "questionType": "FillInBlank",
+      "question": "They are stuck in the tunnel ________________________________ for hours. (a car crash block the route)",
+      "answers": null,
+      "correctAnswer": "because a car crash has blocked the route for hours.",
+      "fullSentence": "They are stuck in the tunnel because a car crash has blocked the route for hours.",
+      "questionHint": "Complete the sentences with 'why', 'because' and the words provided."
+    },
+    {
+      "qid": "p5u4-g10",
+      "questionType": "FillInBlank",
+      "question": "________________________________ I am writing an email to the MTR because they helped me when I was sick.",
+      "answers": null,
+      "correctAnswer": "Why are you writing an email to the MTR?",
+      "fullSentence": "Why are you writing an email to the MTR? I am writing an email to the MTR because they helped me when I was sick.",
+      "questionHint": "Complete the sentences with 'why', 'because' and the words provided."
+    },
+    {
+      "qid": "p5u5-f1",
+      "questionType": "FillInBlank",
+      "question": "I ______________ （not visit) a local farm in Hong Kong before.",
+      "answers": null,
+      "correctAnswer": "have not visited",
+      "fullSentence": "I have not visited a local farm in Hong Kong before.",
+      "questionHint": "Complete the sentences in the present perfect tense."
+    },
+    {
+      "qid": "p5u5-f2",
+      "questionType": "FillInBlank",
+      "question": "The cows ______________ (give) birth to many little babies recently.",
+      "answers": null,
+      "correctAnswer": "have given",
+      "fullSentence": "The cows have given birth to many little babies recently.",
+      "questionHint": "Complete the sentences in the present perfect tense."
+    },
+    {
+      "qid": "p5u5-f3",
+      "questionType": "FillInBlank",
+      "question": "Recently, Jane ______________ (move) to a new house near my neighbourhood.",
+      "answers": null,
+      "correctAnswer": "has moved",
+      "fullSentence": "Recently, Jane has moved to a new house near my neighbourhood.",
+      "questionHint": "Complete the sentences in the present perfect tense."
+    },
+    {
+      "qid": "p5u5-f4",
+      "questionType": "FillInBlank",
+      "question": "We ______________ (taste) some oranges picked by our aunt from Australia before.",
+      "answers": null,
+      "correctAnswer": "have tasted",
+      "fullSentence": "We have tasted some oranges picked by our aunt from Australia before.",
+      "questionHint": "Complete the sentences in the present perfect tense."
+    },
+    {
+      "qid": "p5u5-f5",
+      "questionType": "FillInBlank",
+      "question": "My nanny ______________ (create) a new banana pancake recipe recently.",
+      "answers": null,
+      "correctAnswer": "has created",
+      "fullSentence": "My nanny has created a new banana pancake recipe recently.",
+      "questionHint": "Complete the sentences in the present perfect tense."
+    },
+    {
+      "qid": "p5u5-f6",
+      "questionType": "FillInBlank",
+      "question": "Uncle Dan ______________ (feed) the pigs their breakfast before going out.",
+      "answers": null,
+      "correctAnswer": "has fed",
+      "fullSentence": "Uncle Dan has fed the pigs their breakfast before going out.",
+      "questionHint": "Complete the sentences in the present perfect tense."
+    },
+    {
+      "qid": "p5u5-f7",
+      "questionType": "FillInBlank",
+      "question": "The park nearby has a rope course, but Joe ______________ (play) on it before.",
+      "answers": null,
+      "correctAnswer": "has not played",
+      "fullSentence": "The park nearby has a rope course, but Joe has not played on it before.",
+      "questionHint": "Complete the sentences in the present perfect tense."
+    },
+    {
+      "qid": "p5u5-f8",
+      "questionType": "FillInBlank",
+      "question": "______________  you ______________ (hear) about a Pumpkin Patch before?",
+      "answers": null,
+      "correctAnswer": "Have heard",
+      "fullSentence": "Have you heard about a Pumpkin Patch before?",
+      "questionHint": "Complete the sentences in the present perfect tense."
+    },
+    {
+      "qid": "p5u5-f9",
+      "questionType": "FillInBlank",
+      "question": "The farmer ______________ (plant) new seeds in the vegetable garden recently.",
+      "answers": null,
+      "correctAnswer": "has planted",
+      "fullSentence": "The farmer has planted new seeds in the vegetable garden recently.",
+      "questionHint": "Complete the sentences in the present perfect tense."
+    },
+    {
+      "qid": "p5u5-f10",
+      "questionType": "FillInBlank",
+      "question": "My dad ______________ (be) on a business trip in Europe recently. He will be back soon!",
+      "answers": null,
+      "correctAnswer": "has been",
+      "fullSentence": "My dad has been on a business trip in Europe recently. He will be back soon!",
+      "questionHint": "Complete the sentences in the present perfect tense."
+    },
+    {
+      "qid": "p5u5-g1",
+      "questionType": "FillInBlank",
+      "question": "______________  you ________________  (try) making handmade soap?",
+      "answers": null,
+      "correctAnswer": "Have, ever tried",
+      "fullSentence": "Have you ever tried making handmade soap?",
+      "questionHint": "Complete the sentences with 'ever', 'never' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u5-g2",
+      "questionType": "FillInBlank",
+      "question": "______________  your sister  ________________  (milk) any cows before?",
+      "answers": null,
+      "correctAnswer": "Has, ever milked",
+      "fullSentence": "Has your sister ever milked any cows before?",
+      "questionHint": "Complete the sentences with 'ever', 'never' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u5-g3",
+      "questionType": "FillInBlank",
+      "question": "Yes, my cousins __________________ (watch) the circus performance at the AIA Carnival.",
+      "answers": null,
+      "correctAnswer": "have watched",
+      "fullSentence": "Yes, my cousins have watched the circus performance at the AIA Carnival.",
+      "questionHint": "Complete the sentences with 'ever', 'never' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u5-g4",
+      "questionType": "FillInBlank",
+      "question": "No, Annie __________________ (heard) about animal migration in Africa before.",
+      "answers": null,
+      "correctAnswer": "has never heard",
+      "fullSentence": "No, Annie has never heard about animal migration in Africa before.",
+      "questionHint": "Complete the sentences with 'ever', 'never' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u5-g5",
+      "questionType": "FillInBlank",
+      "question": "______________ Jerry ________________ (shoot) an arrow into the bullseye?",
+      "answers": null,
+      "correctAnswer": "Has, ever shot",
+      "fullSentence": "Has Jerry ever shot an arrow into the bullseye?",
+      "questionHint": "Complete the sentences with 'ever', 'never' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u5-g6",
+      "questionType": "FillInBlank",
+      "question": "______________  they ________________  (ride) a horse in Mongolia?",
+      "answers": null,
+      "correctAnswer": "Have, ridden",
+      "fullSentence": "Have they ridden a horse in Mongolia?",
+      "questionHint": "Complete the sentences with 'ever', 'never' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u5-g7",
+      "questionType": "FillInBlank",
+      "question": "I want to see the Northern Lights in real life, but I __________________ (travel) by plane.",
+      "answers": null,
+      "correctAnswer": "have never travelled",
+      "fullSentence": "I want to see the Northern Lights in real life, but I have never travelled by plane.",
+      "questionHint": "Complete the sentences with 'ever', 'never' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u5-g8",
+      "questionType": "FillInBlank",
+      "question": "Lily __________________ (row) over the lake before. She used to be on a rowing team.",
+      "answers": null,
+      "correctAnswer": "has rowed",
+      "fullSentence": "Lily has rowed over the lake before. She used to be on a rowing team.",
+      "questionHint": "Complete the sentences with 'ever', 'never' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u5-g9",
+      "questionType": "FillInBlank",
+      "question": "My brother ________________ (run) in a marathon. He said he'd love to someday.",
+      "answers": null,
+      "correctAnswer": "has never run",
+      "fullSentence": "My brother has never run in a marathon. He said he'd love to someday.",
+      "questionHint": "Complete the sentences with 'ever', 'never' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u5-g10",
+      "questionType": "FillInBlank",
+      "question": "______________  you ________________  (visit) your grandparents in Canada before?",
+      "answers": null,
+      "correctAnswer": "Have, ever visited",
+      "fullSentence": "Have you ever visited your grandparents in Canada before?",
+      "questionHint": "Complete the sentences with 'ever', 'never' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u6-e1",
+      "questionType": "FillInBlank",
+      "question": "You should hang your __________ to dry under sunlight.",
+      "answers": null,
+      "correctAnswer": "washing",
+      "fullSentence": "You should hang your washing to dry under sunlight.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u6-e2",
+      "questionType": "FillInBlank",
+      "question": "We are looking for ________ to put in our new houses.",
+      "answers": null,
+      "correctAnswer": "furniture",
+      "fullSentence": "We are looking for furniture to put in our new houses.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u6-e3",
+      "questionType": "FillInBlank",
+      "question": "We need to ______ the floor with floor cleaner to kill bacteria.",
+      "answers": null,
+      "correctAnswer": "mop",
+      "fullSentence": "We need to mop the floor with floor cleaner to kill bacteria.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u6-e4",
+      "questionType": "FillInBlank",
+      "question": "You should _______ your school uniform to look neat and clean.",
+      "answers": null,
+      "correctAnswer": "iron",
+      "fullSentence": "You should iron your school uniform to look neat and clean.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u6-e5",
+      "questionType": "FillInBlank",
+      "question": "You should have your ______ on time to avoid stomachache.",
+      "answers": null,
+      "correctAnswer": "meals",
+      "fullSentence": "You should have your meals on time to avoid stomachache.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u6-e6",
+      "questionType": "FillInBlank",
+      "question": "You can buy a ______ to decorate the room and protect the floors.",
+      "answers": null,
+      "correctAnswer": "rug",
+      "fullSentence": "You can buy a rug to decorate the room and protect the floors.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u6-e7",
+      "questionType": "FillInBlank",
+      "question": "It's often cheaper to buy household items from a _______ store.",
+      "answers": null,
+      "correctAnswer": "grocery",
+      "fullSentence": "It's often cheaper to buy household items from a grocery store.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u6-e8",
+      "questionType": "FillInBlank",
+      "question": "You can order ________ food when you don't want to cook.",
+      "answers": null,
+      "correctAnswer": "takeaway",
+      "fullSentence": "You can order takeaway food when you don't want to cook.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u6-e9",
+      "questionType": "FillInBlank",
+      "question": "It's faster and easier to ________ the floors than to sweep them.",
+      "answers": null,
+      "correctAnswer": "vacuum",
+      "fullSentence": "It's faster and easier to vacuum the floors than to sweep them.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u6-e10",
+      "questionType": "FillInBlank",
+      "question": "You should _____ your Legos _____ so they don’t trip people over.",
+      "answers": null,
+      "correctAnswer": "put away",
+      "fullSentence": "You should put your Legos away so they don’t trip people over.",
+      "questionHint": "Fill in the blanks and say complete sentences."
+    },
+    {
+      "qid": "p5u6-h1",
+      "questionType": "FillInBlank",
+      "question": "I ___________________ (read) the entire series of my favourite books. I feel bored.",
+      "answers": null,
+      "correctAnswer": "have already read",
+      "fullSentence": "I have already read the entire series of my favourite books. I feel bored.",
+      "questionHint": "Complete the sentences with 'yet', 'just' or 'already' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u6-h2",
+      "questionType": "FillInBlank",
+      "question": "We ___________________ (adopt) a new kitten from the shelter, and we call her Mimi.",
+      "answers": null,
+      "correctAnswer": "have just adopted",
+      "fullSentence": "We have just adopted a new kitten from the shelter, and we call her Mimi.",
+      "questionHint": "Complete the sentences with 'yet', 'just' or 'already' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u6-h3",
+      "questionType": "FillInBlank",
+      "question": "Emma and Alan  ___________________ (buy) any decoration for their brother's birthday _________.",
+      "answers": null,
+      "correctAnswer": "haven't bought, yet.",
+      "fullSentence": "Emma and Alan haven't bought any decoration for their brother's birthday yet.",
+      "questionHint": "Complete the sentences with 'yet', 'just' or 'already' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u6-h4",
+      "questionType": "FillInBlank",
+      "question": "The new aquarium ___________________ (opened) and everyone is looking forward to go.",
+      "answers": null,
+      "correctAnswer": "has already opened",
+      "fullSentence": "The new aquarium has already opened and everyone is looking forward to go.",
+      "questionHint": "Complete the sentences with 'yet', 'just' or 'already' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u6-h5",
+      "questionType": "FillInBlank",
+      "question": "Dad is coming home late because he _______________ (finish) his work _______.",
+      "answers": null,
+      "correctAnswer": "hasn't finished, yet",
+      "fullSentence": "Dad is coming home late because he hasn't finished his work yet.",
+      "questionHint": "Complete the sentences with 'yet', 'just' or 'already' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u6-h6",
+      "questionType": "FillInBlank",
+      "question": "My twin brothers  _______________ (learn) how to tie their shoes. They're still a little slow.",
+      "answers": null,
+      "correctAnswer": "have just learned",
+      "fullSentence": "My twin brothers have just learned how to tie their shoes. They're still a little slow.",
+      "questionHint": "Complete the sentences with 'yet', 'just' or 'already' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u6-h7",
+      "questionType": "FillInBlank",
+      "question": "____________ you _______________ (put) the dirty dishes in the sink ______?",
+      "answers": null,
+      "correctAnswer": "Have put, yet",
+      "fullSentence": "Have you put the dirty dishes in the sink yet?",
+      "questionHint": "Complete the sentences with 'yet', 'just' or 'already' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u6-h8",
+      "questionType": "FillInBlank",
+      "question": "Mom ___________________ (search) the whole house but still can't find the key.",
+      "answers": null,
+      "correctAnswer": "has already searched",
+      "fullSentence": "Mom has already searched the whole house but still can't find the key.",
+      "questionHint": "Complete the sentences with 'yet', 'just' or 'already' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u6-h9",
+      "questionType": "FillInBlank",
+      "question": "_____________ Lily ______________ (prepare) the speech for her graduation ______?",
+      "answers": null,
+      "correctAnswer": "Has prepared, yet",
+      "fullSentence": "Has Lily prepared the speech for her graduation yet?",
+      "questionHint": "Complete the sentences with 'yet', 'just' or 'already' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u6-h10",
+      "questionType": "FillInBlank",
+      "question": "Grandpa and grandma ___________________ (go) to the market a few minutes ago.",
+      "answers": null,
+      "correctAnswer": "have just gone",
+      "fullSentence": "Grandpa and grandma have just gone to the market a few minutes ago.",
+      "questionHint": "Complete the sentences with 'yet', 'just' or 'already' and the correct form of the verbs."
+    },
+    {
+      "qid": "p5u8-a1",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "diamond ring",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a2",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "gold bracelet",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a3",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "pearl necklace",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a4",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "silver earrings",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a5",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "T-shirt",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a6",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "floral dress",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a7",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "bow tie",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a8",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "spotted tie",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a9",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "striped jumper",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a10",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "blouse",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a11",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "leather shoes",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a12",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "hairband",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a13",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "bald",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a14",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "curly hair",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a15",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "straight hair",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a16",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "eyebrows",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a17",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "wrinkles",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a18",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "beard",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a19",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "moustache",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-a20",
+      "questionType": "Audio",
+      "question": "",
+      "answers": null,
+      "correctAnswer": "scar",
+      "questionHint": "Listen to the audio and speak the words out."
+    },
+    {
+      "qid": "p5u8-f1",
+      "questionType": "FillInBlank",
+      "question": "I ______ (give) my friend a Batman backpack as a gift this year.",
+      "answers": null,
+      "correctAnswer": "will give",
+      "fullSentence": "I will give my friend a Batman backpack as a gift this year.",
+      "questionHint": "Fill in the blanks with the correct verb tense."
+    },
+    {
+      "qid": "p5u8-f2",
+      "questionType": "FillInBlank",
+      "question": "My mom bought me a cute blouse from Korea, but I _______ (try) it on yet.",
+      "answers": null,
+      "correctAnswer": "haven't tried",
+      "fullSentence": "My mom bought me a cute blouse from Korea, but I haven't tried it on yet.",
+      "questionHint": "Fill in the blanks with the correct verb tense."
+    },
+    {
+      "qid": "p5u8-f3",
+      "questionType": "FillInBlank",
+      "question": "They ______ (fold) their 'clothes mountain' now to keep the closest neat.",
+      "answers": null,
+      "correctAnswer": "are folding",
+      "fullSentence": "They are folding their 'clothes mountain' now to keep the closet neat.",
+      "questionHint": "Fill in the blanks with the correct verb tense."
+    },
+    {
+      "qid": "p5u8-f4",
+      "questionType": "FillInBlank",
+      "question": "_______ you _____ (bring) the new sneakers for your trip next week?",
+      "answers": null,
+      "correctAnswer": "Will bring",
+      "fullSentence": "Will you bring the new sneakers for your trip next week?",
+      "questionHint": "Fill in the blanks with the correct verb tense."
+    },
+    {
+      "qid": "p5u8-f5",
+      "questionType": "FillInBlank",
+      "question": "Lily _________ (wear) the friendship bracelet since the first day we met.",
+      "answers": null,
+      "correctAnswer": "has worn",
+      "fullSentence": "Lily has worn the friendship bracelet since the first day we met.",
+      "questionHint": "Fill in the blanks with the correct verb tense."
+    },
+    {
+      "qid": "p5u8-f6",
+      "questionType": "FillInBlank",
+      "question": "After he came home, he ______ (hang) his belt on the door.",
+      "answers": null,
+      "correctAnswer": "hung",
+      "fullSentence": "After he came home, he hung his belt on the door.",
+      "questionHint": "Fill in the blanks with the correct verb tense."
+    },
+    {
+      "qid": "p5u8-f7",
+      "questionType": "FillInBlank",
+      "question": "When I was little, I ______ (have) a pair of shiny shoes that lit up when I walked.",
+      "answers": null,
+      "correctAnswer": "had",
+      "fullSentence": "When I was little, I had a pair of shiny shoes that lit up when I walked.",
+      "questionHint": "Fill in the blanks with the correct verb tense."
+    },
+    {
+      "qid": "p5u8-f8",
+      "questionType": "FillInBlank",
+      "question": "You should ______ (pack) some extra T-shirts because it's really hot lately.",
+      "answers": null,
+      "correctAnswer": "pack",
+      "fullSentence": "You should pack some extra T-shirts because it's really hot lately.",
+      "questionHint": "Fill in the blanks with the correct verb tense."
+    },
+    {
+      "qid": "p5u8-f9",
+      "questionType": "FillInBlank",
+      "question": "She _______ (love) her bright red dress because it makes her smile.",
+      "answers": null,
+      "correctAnswer": "loves",
+      "fullSentence": "She loves her bright red dress because it makes her smile.",
+      "questionHint": "Fill in the blanks with the correct verb tense."
+    },
+    {
+      "qid": "p5u8-f10",
+      "questionType": "FillInBlank",
+      "question": "He ___________ (wash) his pants twice but they still smell bad.",
+      "answers": null,
+      "correctAnswer": "has washed",
+      "fullSentence": "He has washed his pants twice but they still smell bad.",
+      "questionHint": "Fill in the blanks with the correct verb tense."
+    },
+    {
+      "qid": "p5u8-g1",
+      "questionType": "sentenceCorrect",
+      "question": "My friends decided to wear matching t-shirts. He has a yellow one, and me is red.",
+      "answers": null,
+      "correctAnswer": "mine",
+      "fullSentence": "My friends decided to wear matching t-shirts. He has a yellow one, and mine is red.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "me"
+    },
+    {
+      "qid": "p5u8-g2",
+      "questionType": "sentenceCorrect",
+      "question": "He favourite piece of clothing is a old jacket that he found at a second-hand store.",
+      "answers": null,
+      "correctAnswer": "His",
+      "fullSentence": "His favourite piece of clothing is an old jacket that he found at a second-hand store.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "He"
+    },
+    {
+      "qid": "p5u8-g3",
+      "questionType": "sentenceCorrect",
+      "question": "The diamond ring is a family treasure. They has passed down for generations.",
+      "answers": null,
+      "correctAnswer": "It",
+      "fullSentence": "The diamond ring is a family treasure. It has been passed down for generations.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "They"
+    },
+    {
+      "qid": "p5u8-g4",
+      "questionType": "sentenceCorrect",
+      "question": "The gold bracelet that you see on the table is my. I received it as a gift from my grandmother.",
+      "answers": null,
+      "correctAnswer": "mine",
+      "fullSentence": "The gold bracelet that you see on the table is mine. I received it as a gift from my grandmother.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "my"
+    },
+    {
+      "qid": "p5u8-g5",
+      "questionType": "sentenceCorrect",
+      "question": "The striped jumper in the closet doesn't fit me anymore, so I gave it to my sister. It's her now.",
+      "answers": null,
+      "correctAnswer": "hers",
+      "fullSentence": "The striped jumper in the closet doesn't fit me anymore, so I gave it to my sister. It's hers now.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "her"
+    },
+    {
+      "qid": "p5u8-g6",
+      "questionType": "sentenceCorrect",
+      "question": "Is this belt your or my brother's? I think I've seen him wearing something similar before.",
+      "answers": null,
+      "correctAnswer": "yours",
+      "fullSentence": "Is this belt yours or my brother's? I think I've seen him wearing something similar before.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "your"
+    },
+    {
+      "qid": "p5u8-g7",
+      "questionType": "sentenceCorrect",
+      "question": "Ava got these cool gloves for her brothers. They're them!",
+      "answers": null,
+      "correctAnswer": "theirs",
+      "fullSentence": "Ava got these cool gloves for her brothers. They're theirs!",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "them"
+    },
+    {
+      "qid": "p5u8-g8",
+      "questionType": "sentenceCorrect",
+      "question": "The team members encourage theirselves to give their best effort at the competition to achieve their goals.",
+      "answers": null,
+      "correctAnswer": "themselves",
+      "fullSentence": "The team members encourage themselves to give their best effort at the competition to achieve their goals.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "theirselves"
+    },
+    {
+      "qid": "p5u8-g9",
+      "questionType": "sentenceCorrect",
+      "question": "The baseball caps on the shelf are us. We wear them to the games.",
+      "answers": null,
+      "correctAnswer": "ours",
+      "fullSentence": "The baseball caps on the shelf are ours. We wear them to the games.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "us"
+    },
+    {
+      "qid": "p5u8-g10",
+      "questionType": "sentenceCorrect",
+      "question": "I saw Sarah making a scarf last year. I think the one on the chair is his.",
+      "answers": null,
+      "correctAnswer": "hers",
+      "fullSentence": "I saw Sarah making a scarf last year. I think the one on the chair is hers.",
+      "questionHint": "There is a mistake in each sentence. Speak the correct sentences.",
+      "wrongWord": "his"
     }
+
+
+
   ]
 
 }

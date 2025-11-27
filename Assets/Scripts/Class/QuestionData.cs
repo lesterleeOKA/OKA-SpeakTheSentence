@@ -1,10 +1,12 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 [Serializable]
 public class QuestionDataWrapper
@@ -31,6 +33,7 @@ public class QuestionList
     public string fullSentence;
     public string wrongSentence;
     public string wrongWord;
+    public string insertWord;
     public int star;
     public score score;
     public int correctAnswerIndex;
@@ -74,6 +77,7 @@ public enum QuestionType
     Audio = 3,
     FillInBlank = 4,
     SentenceCorrect = 5,
+    InsertWord = 6
 }
 
 [Serializable]
@@ -190,7 +194,7 @@ public class CurrentQuestion
 
         int wordCount = this.CountWords(targetText.text);
 
-        Debug.Log($"[UpdateUnderlineIconPosition] Word Count: {wordCount}");
+        LogController.Instance.debug($"[UpdateUnderlineIconPosition] Word Count: {wordCount}");
 
         for (int i = 0; i < textInfo.characterCount; i++)
         {
@@ -211,10 +215,10 @@ public class CurrentQuestion
         {
             Vector3 underlineCenter = (underlineStart + underlineEnd) / 2;
             Vector3 offset = new Vector3(0, 40f, 0);
-            if(wordCount > 15)
+            if(wordCount > 20)
             {
                 this.underlineIconScale = 0.6f;
-                offset = new Vector3(0, 15f, 0);
+                //offset = new Vector3(0, 15f, 0);
             }
             Vector3 worldPos = targetText.transform.TransformPoint(underlineCenter + offset);
             Vector3 localPos = underlineWordRecordIcon.transform.parent.InverseTransformPoint(worldPos);
@@ -301,13 +305,94 @@ public class CurrentQuestion
                 break;
             case "Text":
             case "text":
-                SetUI.SetGroup(this.questionBgs, 2, 0f);
-                this.questiontype = QuestionType.Text;
-                this.questionText = this.questionBgs[2].GetComponentInChildren<TextMeshProUGUI>();
-                if (this.questionText != null) this.setQuestionText(qa.question);
+                SetUI.SetGroup(this.questionBgs, 3, 0f);
+                this.questionTexts = this.questionBgs[3].GetComponentsInChildren<TextMeshProUGUI>();
+                this.fullSentence = qa.fullSentence;
+                this.wrongSentence = qa.wrongSentence;
+
+                for (int i = 0; i < this.questionTexts.Length; i++)
+                {
+                    this.questionTexts[i].text = "";
+                    if (this.questionTexts[i].gameObject.name == "MarkerText")
+                    {
+                        this.questionText = questionTexts[i];
+                    }
+
+                    // Get the full sentence
+                    string fullSentence = qa.fullSentence;
+                    // Get the correct answer
+                    string correctAnswer = qa.correctAnswer; // Assuming qa.correctAnswer contains "years old."
+                    if (this.useSeparatedWordsWithUnderline)
+                    {
+                        // Split the correct answer into individual parts
+                         string[] correctAnswerParts = correctAnswer.Split(',');
+                         foreach (var part in correctAnswerParts)
+                         {
+                             if (fullSentence.Contains(part))
+                             {
+                                 fullSentence = fullSentence.Replace(part, $"<u><color=#00000000>{part}</color></u>");
+                             }
+                         }
+                    }
+                    else
+                    {
+                        string[] correctAnswerArray = correctAnswer.Split(',')
+                                   .Select(s => s.Trim())
+                                   .ToArray();
+
+                        if (string.IsNullOrWhiteSpace(correctAnswer))
+                        {
+                            fullSentence = Regex.Replace(
+                                qa.question,
+                                "_+",
+                                match => $"<u><color=#00000000>{match.Value}</color></u>"
+                            );
+                        }
+                        else
+                        {
+                            foreach (var part in correctAnswerArray)
+                            {
+                                string[] words = part.Split(' ');
+
+                                if (words.Length > 1)
+                                {
+                                    foreach (var word in words)
+                                    {
+                                        string pattern = $@"\b{Regex.Escape(word)}\b";
+                                        fullSentence = Regex.Replace(
+                                            fullSentence,
+                                            pattern,
+                                            $"<u><color=#00000000>{word}</color></u>"
+                                        );
+                                    }
+                                }
+                                else
+                                {
+                                    string pattern = $@"\b{Regex.Escape(part)}\b";
+                                    fullSentence = Regex.Replace(
+                                        fullSentence,
+                                        pattern,
+                                        $"<u><color=#00000000>{part}</color></u>"
+                                    );
+                                }
+
+                            }
+                        }
+                    }
+
+                    this.displayQuestion = fullSentence;
+                    this.setQuestionText(this.displayQuestion);
+                    this.questionText.ForceMeshUpdate();
+                    RectTransform rt = this.questionText.GetComponent<RectTransform>();
+                    rt.sizeDelta = new Vector2(rt.sizeDelta.x, this.questionText.preferredHeight);
+                    //this.displayQuestion = fullSentence;
+                    this.displayHint = qa.questionHint;
+                }
+                this.questiontype = QuestionType.FillInBlank;
                 this.correctAnswer = qa.correctAnswer;
                 this.answersChoics = qa.answers;
                 this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;
+                this.controlMediaElements(this.questionBgs[3]);
                 break;
             case "FillInBlank":
             case "fillInBlank":
@@ -393,9 +478,34 @@ public class CurrentQuestion
                 this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;
                 this.controlMediaElements(this.questionBgs[3]);
                 break;
+            case "InsertWord":
+            case "insertWord":
+                SetUI.SetGroup(this.questionBgs, 3, 0f);
+                this.questiontype = QuestionType.InsertWord;
+                this.questionTexts = this.questionBgs[3].GetComponentsInChildren<TextMeshProUGUI>();
+                for (int i = 0; i < this.questionTexts.Length; i++)
+                {
+                    this.questionTexts[i].text = "";
+                    if (this.questionTexts[i].gameObject.name == "MarkerText")
+                    {
+                        this.questionText = questionTexts[i];
+                    }
+                   
+                    this.displayQuestion = qa.question;
+                    if(string.IsNullOrEmpty(qa.fullSentence))
+                        this.fullSentence = qa.correctAnswer;
+
+                    this.setQuestionText(this.displayQuestion);
+                    this.displayHint = qa.questionHint;
+                }
+                this.correctAnswer = qa.correctAnswer;
+                this.answersChoics = qa.answers;
+                this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;
+                this.controlMediaElements(this.questionBgs[3]);
+                break;
             case "SentenceCorrect":
             case "sentenceCorrect":
-                 SetUI.SetGroup(this.questionBgs, 3, 0f);
+                SetUI.SetGroup(this.questionBgs, 3, 0f);
                 this.questionTexts = this.questionBgs[3].GetComponentsInChildren<TextMeshProUGUI>();
                 this.fullSentence = qa.fullSentence;
                 for (int i = 0; i < this.questionTexts.Length; i++)
@@ -554,6 +664,25 @@ public class CurrentQuestion
             questionCg.GetComponent<VerticalLayoutGroup>().padding.top = 0;
             this.audioPlayBtn?.gameObject.SetActive(false);
             this.questionImage?.gameObject.SetActive(false);
+        }
+    }
+
+    public void showDirectAnswer()
+    {
+        if (this.questionText != null)
+        {
+            string answer = "";
+            switch (this.questiontype)
+            {
+                case QuestionType.SentenceCorrect:
+                case QuestionType.FillInBlank:
+                    answer = this.displayQuestion;
+                    break;
+                case QuestionType.InsertWord:
+                    answer = this.fullSentence;
+                    break;
+            }
+            this.questionText.text = answer;
         }
     }
 

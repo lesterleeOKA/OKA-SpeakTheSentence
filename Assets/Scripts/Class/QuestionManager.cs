@@ -182,6 +182,8 @@ public class QuestionManager : MonoBehaviour
             {
                 case "Text":
                 case "text":
+                case "InsertWord":
+                case "insertWord":
                 case "SentenceCorrect":
                 case "sentenceCorrect":
                     this.loadedItems++;

@@ -1044,28 +1044,82 @@ public class RecordAudio : RecorderManager
         // Split the sentence into words (preserve punctuation if needed)
         string[] sentenceWords = displayText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-        // --- build normalized list of underlined segments from currentQuestion.displayQuestion (in order) ---
-        var underlinedSegments = new List<string>();
+        // Detect InsertWord question and extract the inserted word (e.g. "(unless)")
+        string insertedWord = null;
         try
         {
-            string displayQuestionMarkup = currentQuestion.displayQuestion ?? "";
-            var matches = Regex.Matches(displayQuestionMarkup, @"<u\b[^>]*>(.*?)<\/u>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            foreach (Match m in matches)
+            if (currentQuestion.qa != null &&
+                !string.IsNullOrEmpty(currentQuestion.qa.questionType) &&
+                currentQuestion.qa.questionType.Equals("InsertWord", StringComparison.OrdinalIgnoreCase))
             {
-                string inner = m.Groups[1].Value ?? "";
-                // Remove nested tags like <color=...>...</color>
-                string withoutTags = Regex.Replace(inner, "<.*?>", "");
-                // Remove placeholder underscores or invisible color padding
-                withoutTags = withoutTags.Replace("_", "");
-                // Normalize: remove non-word chars and lowercase
-                string normalized = Regex.Replace(withoutTags, @"[^\w]", "").ToLowerInvariant();
-                if (!string.IsNullOrEmpty(normalized))
-                    underlinedSegments.Add(normalized);
+                // try explicit field first if present in JSON->QuestionList (not guaranteed)
+                // fallback to parentheses extraction from the question text
+                if (!string.IsNullOrEmpty(currentQuestion.qa.checkSingleWord))
+                {
+                    // no-op: checkSingleWord used elsewhere; kept for compatibility
+                }
+
+                var q = currentQuestion.qa.question ?? "";
+                var m = Regex.Match(q, @"\(([^)]+)\)");
+                if (m.Success)
+                {
+                    insertedWord = m.Groups[1].Value.Trim();
+                }
+                else
+                {
+                    // Fallback: try to infer by comparing fullSentence and question (remove punctuation)
+                    try
+                    {
+                        var full = Regex.Replace(currentQuestion.qa.fullSentence ?? "", @"[^\w\s]", "").ToLowerInvariant();
+                        var wrong = Regex.Replace(q ?? "", @"[^\w\s]", "").ToLowerInvariant();
+                        var fullWords = full.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var wrongWords = wrong.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        for (int i = 0; i < fullWords.Length; i++)
+                        {
+                            if (i >= wrongWords.Length || fullWords[i] != wrongWords[i])
+                            {
+                                insertedWord = fullWords[i];
+                                break;
+                            }
+                        }
+                    }
+                    catch { insertedWord = null; }
+                }
+                if (!string.IsNullOrEmpty(insertedWord))
+                    insertedWord = Regex.Replace(insertedWord, @"[^\w]", "");
             }
         }
         catch (Exception ex)
         {
-            LogController.Instance.debugError("Error parsing displayQuestion underlines: " + ex.Message);
+            LogController.Instance?.debugError("InsertWord detection failed: " + ex.Message);
+            insertedWord = null;
+        }
+
+        // --- build normalized list of underlined segments from currentQuestion.displayQuestion (in order) ---
+        var underlinedSegments = new List<string>();
+        if (string.IsNullOrEmpty(insertedWord)) // skip parsing underlines for InsertWord (we use insertedWord)
+        {
+            try
+            {
+                string displayQuestionMarkup = currentQuestion.displayQuestion ?? "";
+                var matches = Regex.Matches(displayQuestionMarkup, @"<u\b[^>]*>(.*?)<\/u>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                foreach (Match m in matches)
+                {
+                    string inner = m.Groups[1].Value ?? "";
+                    // Remove nested tags like <color=...>...</color>
+                    string withoutTags = Regex.Replace(inner, "<.*?>", "");
+                    // Remove placeholder underscores or invisible color padding
+                    withoutTags = withoutTags.Replace("_", "");
+                    // Normalize: remove non-word chars and lowercase
+                    string normalized = Regex.Replace(withoutTags, @"[^\w]", "").ToLowerInvariant();
+                    if (!string.IsNullOrEmpty(normalized))
+                        underlinedSegments.Add(normalized);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogController.Instance.debugError("Error parsing displayQuestion underlines: " + ex.Message);
+            }
         }
 
         // If no underlined segments found, fallback to previous behavior: highlight only by correctAnswer membership
@@ -1091,7 +1145,52 @@ public class RecordAudio : RecorderManager
 
         // Mark which word indices correspond to underlined segments (sequence-aware)
         bool[] highlightFlags = new bool[sentenceWords.Length];
-        if (underlinedSegments.Count > 0 && sentenceWords.Length > 0)
+
+        // --- NEW: For SentenceCorrect questions prefer token-diff mapping between wrong and full sentence ---
+        bool usedDiffIndex = false;
+        try
+        {
+            if (currentQuestion.qa != null &&
+                !string.IsNullOrEmpty(currentQuestion.qa.question) &&
+                currentQuestion.qa.questionType != null &&
+                currentQuestion.qa.questionType.Equals("SentenceCorrect", StringComparison.OrdinalIgnoreCase))
+            {
+                var wrongMatches = Regex.Matches(currentQuestion.qa.question ?? "", @"\S+");
+                var fullMatches = Regex.Matches(displayText ?? "", @"\S+");
+
+                int diffIndex = -1;
+                int minLen = Math.Min(wrongMatches.Count, fullMatches.Count);
+
+                for (int t = 0; t < minLen; t++)
+                {
+                    string wToken = Regex.Replace(wrongMatches[t].Value, @"[^\w]", "").ToLower();
+                    string fToken = Regex.Replace(fullMatches[t].Value, @"[^\w]", "").ToLower();
+                    if (!string.Equals(wToken, fToken, StringComparison.Ordinal))
+                    {
+                        diffIndex = t;
+                        break;
+                    }
+                }
+
+                if (diffIndex == -1 && wrongMatches.Count != fullMatches.Count)
+                {
+                    diffIndex = minLen;
+                }
+
+                if (diffIndex >= 0 && diffIndex < sentenceWords.Length)
+                {
+                    highlightFlags[diffIndex] = true;
+                    usedDiffIndex = true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.Instance.debugError("SentenceCorrect diff mapping failed: " + ex.Message);
+            usedDiffIndex = false;
+        }
+
+        if (string.IsNullOrEmpty(insertedWord) && underlinedSegments.Count > 0 && sentenceWords.Length > 0 && !usedDiffIndex)
         {
             int searchStart = 0;
             for (int s = 0; s < underlinedSegments.Count; s++)
@@ -1125,8 +1224,17 @@ public class RecordAudio : RecorderManager
                     }
                     if (matchedSegment) break;
                 }
+            }
+        }
 
-                // if not matched, continue trying next segments (we avoid matching earlier words again)
+        // If we have an insertedWord explicitly, mark occurrences to highlight only that word
+        if (!string.IsNullOrEmpty(insertedWord))
+        {
+            string normalizedInserted = NormalizeWord(insertedWord);
+            for (int idx = 0; idx < sentenceWords.Length; idx++)
+            {
+                if (NormalizeWord(sentenceWords[idx]) == normalizedInserted)
+                    highlightFlags[idx] = true;
             }
         }
 
@@ -1186,7 +1294,7 @@ public class RecordAudio : RecorderManager
                     }
                     else
                     {
-                        // Only highlight when this exact word occurrence is matched to an underlined segment.
+                        // Only highlight when this exact word occurrence is matched to an underlined segment or insertedWord.
                         if (markerText && highlightFlags[idx])
                         {
                             result.Append($"<mark=#A6E32A padding='0,12,5,10'>{word}</mark> ");
@@ -1194,7 +1302,7 @@ public class RecordAudio : RecorderManager
                         else
                         {
                             // Fallback: if no underlined segments detected at all, use correctAnswer membership to highlight
-                            if (underlinedSegments.Count == 0)
+                            if (underlinedSegments.Count == 0 && string.IsNullOrEmpty(insertedWord))
                             {
                                 string cleanWordForCheck = NormalizeWord(word);
                                 if (markerText && correctAnswerWords.Contains(cleanWordForCheck))
@@ -1299,6 +1407,12 @@ public class RecordAudio : RecorderManager
             case QuestionType.Audio:
                 this.showCorrectSentence(QuestionController.Instance.currentQuestion.correctAnswer, this.wordDetails);
                 break;
+            case QuestionType.InsertWord:
+                this.showCorrectSentence(
+                    QuestionController.Instance.currentQuestion.qa.insertWord, 
+                    this.wordDetails);
+                break;
+            case QuestionType.SentenceCorrect:
             case QuestionType.FillInBlank:
                 this.showCorrectSentence(QuestionController.Instance.currentQuestion.fullSentence, this.wordDetails);
                 break;

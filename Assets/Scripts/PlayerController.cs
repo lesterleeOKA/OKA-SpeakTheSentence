@@ -284,6 +284,8 @@ public class PlayerController : UserData
         this.scoring.correct = false;
         this.playerReset();
     }
+    
+    
 
     public void playerReset()
     {             

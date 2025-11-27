@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Windows;
@@ -85,6 +86,8 @@ public class CurrentQuestion
 {
     public Sprite underlineWordRecordIconSprite;
     public GameObject underlineWordRecordIcon;
+    public List<GameObject> underlineWordRecordIcons = new List<GameObject>();
+    private List<float> underlineWordRecordIconBaseWidths = new List<float>();
     [Range(0f, 1f)]
     public float underlineIconScale = 0.85f;
     public bool useSeparatedWordsWithUnderline = false;
@@ -161,18 +164,72 @@ public class CurrentQuestion
 
     private void CreateUnderlineIcon(TextMeshProUGUI targetText)
     {
-        if (this.underlineWordRecordIcon == null)
-        {
-            this.underlineWordRecordIcon = new GameObject("UnderlineIcon", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-            this.underlineWordRecordIcon.transform.SetParent(targetText.transform, false);
+        if (targetText == null) return;
 
-            var image = this.underlineWordRecordIcon.GetComponent<Image>();
+        // Ensure text mesh is up-to-date so character info is valid.
+        targetText.ForceMeshUpdate();
+        TMP_TextInfo textInfo = targetText.textInfo;
+
+        // detect contiguous underlined character spans
+        var spans = new List<(int start, int end)>();
+        bool inSpan = false;
+        int spanStart = 0;
+        int spanEnd = 0;
+        for (int i = 0; i < textInfo.characterCount; i++)
+        {
+            TMP_CharacterInfo ci = textInfo.characterInfo[i];
+            bool isUnderlined = ci.isVisible && (ci.style & FontStyles.Underline) == FontStyles.Underline;
+            if (isUnderlined)
+            {
+                if (!inSpan)
+                {
+                    inSpan = true;
+                    spanStart = i;
+                }
+                spanEnd = i;
+            }
+            else
+            {
+                if (inSpan)
+                {
+                    spans.Add((spanStart, spanEnd));
+                    inSpan = false;
+                }
+            }
+        }
+        if (inSpan)
+        {
+            spans.Add((spanStart, spanEnd));
+            inSpan = false;
+        }
+        AspectRatioFitter ap = null;
+        // create additional icons if necessary
+        for (int i = underlineWordRecordIcons.Count; i < spans.Count; i++)
+        {
+            var go = new GameObject("UnderlineIcon", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            go.transform.SetParent(targetText.transform, false);
+            var image = go.GetComponent<Image>();
             image.sprite = this.underlineWordRecordIconSprite;
+            ap = image.AddComponent<AspectRatioFitter>();
+            ap.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
+            ap.aspectRatio = image.sprite.rect.width / image.sprite.rect.height;
             image.SetNativeSize();
             image.transform.localScale = Vector3.one;
+            underlineWordRecordIcons.Add(go);
         }
-        this.underlineWordRecordIcon?.SetActive(true);
-        this.UpdateUnderlineIconPosition(targetText);
+
+        // hide extra icons if there are fewer spans than icons
+        for (int i = spans.Count; i < underlineWordRecordIcons.Count; i++)
+        {
+            var extra = underlineWordRecordIcons[i];
+            if (extra != null) extra.SetActive(false);
+        }
+
+        // keep backward compatibility: point single legacy reference at first icon (if any)
+        this.underlineWordRecordIcon = underlineWordRecordIcons.Count > 0 ? underlineWordRecordIcons[0] : null;
+
+        // position icons now
+        UpdateUnderlineIconPosition(targetText);
     }
 
     private int CountWords(string text)
@@ -185,49 +242,127 @@ public class CurrentQuestion
 
     private void UpdateUnderlineIconPosition(TextMeshProUGUI targetText)
     {
+        if (targetText == null) return;
         targetText.ForceMeshUpdate();
         TMP_TextInfo textInfo = targetText.textInfo;
 
-        Vector3 underlineStart = Vector3.zero;
-        Vector3 underlineEnd = Vector3.zero;
-        bool foundUnderline = false;
-
-        int wordCount = this.CountWords(targetText.text);
-
-        LogController.Instance.debug($"[UpdateUnderlineIconPosition] Word Count: {wordCount}");
-
+        // detect contiguous underlined character spans
+        var spans = new List<(int start, int end)>();
+        bool inSpan = false;
+        int spanStart = 0;
+        int spanEnd = 0;
         for (int i = 0; i < textInfo.characterCount; i++)
         {
-            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
-
-            if (charInfo.isVisible && charInfo.style == FontStyles.Underline)
+            TMP_CharacterInfo ci = textInfo.characterInfo[i];
+            bool isUnderlined = ci.isVisible && (ci.style & FontStyles.Underline) == FontStyles.Underline;
+            if (isUnderlined)
             {
-                if (!foundUnderline)
+                if (!inSpan)
                 {
-                    underlineStart = charInfo.bottomLeft;
-                    foundUnderline = true;
+                    inSpan = true;
+                    spanStart = i;
                 }
-                underlineEnd = charInfo.bottomRight;
+                spanEnd = i;
             }
-        }
-
-        if (foundUnderline)
-        {
-            Vector3 underlineCenter = (underlineStart + underlineEnd) / 2;
-            Vector3 offset = new Vector3(0, 40f, 0);
-            if(wordCount > 20)
+            else
             {
-                this.underlineIconScale = 0.6f;
-                //offset = new Vector3(0, 15f, 0);
+                if (inSpan)
+                {
+                    spans.Add((spanStart, spanEnd));
+                    inSpan = false;
+                }
             }
-            Vector3 worldPos = targetText.transform.TransformPoint(underlineCenter + offset);
-            Vector3 localPos = underlineWordRecordIcon.transform.parent.InverseTransformPoint(worldPos);
-            underlineWordRecordIcon.transform.localPosition = localPos;
-            underlineWordRecordIcon.transform.localScale = Vector3.one * this.underlineIconScale;
+        }
+        if (inSpan)
+        {
+            spans.Add((spanStart, spanEnd));
+            inSpan = false;
         }
 
-    }
+        int wordCount = this.CountWords(targetText.text);
+        Vector3 offset = new Vector3(0, 40f, 0);
+        if (wordCount > 20)
+        {
+            this.underlineIconScale = 0.6f;
+        }
 
+        // iterate spans and size/position each icon to match underline length
+        const float paddingFactor = 1.05f; // small padding so icon slightly exceeds underline
+        for (int i = 0; i < spans.Count; i++)
+        {
+            if (i >= underlineWordRecordIcons.Count) break;
+            var icon = underlineWordRecordIcons[i];
+            if (icon == null) continue;
+
+            int startIdx = spans[i].start;
+            int endIdx = spans[i].end;
+            if (startIdx < 0 || endIdx >= textInfo.characterCount)
+            {
+                icon.SetActive(false);
+                continue;
+            }
+
+            TMP_CharacterInfo startChar = textInfo.characterInfo[startIdx];
+            TMP_CharacterInfo endChar = textInfo.characterInfo[endIdx];
+
+            if (!startChar.isVisible || !endChar.isVisible)
+            {
+                icon.SetActive(false);
+                continue;
+            }
+
+            // local text-space positions -> convert to world
+            Vector3 localStart = startChar.bottomLeft;
+            Vector3 localEnd = endChar.bottomRight;
+            Vector3 worldStart = targetText.transform.TransformPoint(localStart);
+            Vector3 worldEnd = targetText.transform.TransformPoint(localEnd);
+
+            // horizontal world-space width of underline
+            float worldWidth = Mathf.Abs(worldEnd.x - worldStart.x);
+
+            // convert world width into parent's local units (RectTransform space)
+            Transform parent = icon.transform.parent;
+            float parentScaleX = parent != null ? parent.lossyScale.x : 1f;
+            parentScaleX = Mathf.Max(parentScaleX, 0.0001f);
+            float desiredLocalWidth = worldWidth / parentScaleX;
+
+            // compute desired height from sprite aspect ratio and global underlineIconScale
+            var iconRect = icon.GetComponent<RectTransform>();
+            var image = icon.GetComponent<Image>();
+            float desiredLocalHeight = iconRect.sizeDelta.y * this.underlineIconScale;
+            if (image != null && image.sprite != null)
+            {
+                Rect spriteRect = image.sprite.rect;
+                if (spriteRect.width > 0f)
+                {
+                    float spriteAspect = spriteRect.height / spriteRect.width;
+                    desiredLocalHeight = desiredLocalWidth * spriteAspect * this.underlineIconScale;
+                }
+            }
+
+            // apply padding and clamp to sane ranges
+            desiredLocalWidth = Mathf.Clamp(desiredLocalWidth * paddingFactor, 6f, 2000f);
+            desiredLocalHeight = Mathf.Clamp(desiredLocalHeight, 6f, 2000f);
+
+            // set sizeDelta so icon scales proportionally instead of non-uniform localScale
+            iconRect.sizeDelta = new Vector2(desiredLocalWidth, desiredLocalHeight);
+
+            // position icon above underline center
+            Vector3 underlineCenter = (localStart + localEnd) / 2;
+            Vector3 worldPos = targetText.transform.TransformPoint(underlineCenter + offset);
+            Vector3 localPos = icon.transform.parent.InverseTransformPoint(worldPos);
+
+            iconRect.localPosition = localPos;
+            icon.SetActive(true);
+        }
+
+        // hide leftover icons
+        for (int j = spans.Count; j < underlineWordRecordIcons.Count; j++)
+        {
+            var extra = underlineWordRecordIcons[j];
+            if (extra != null) extra.SetActive(false);
+        }
+    }
 
     public void setNewQuestion(QuestionList qa = null, int totalQuestion = 0, bool isLogined = false, Action onQuestionCompleted = null)
     {
@@ -412,7 +547,6 @@ public class CurrentQuestion
                     string fullSentence = qa.fullSentence;
                     // Get the correct answer
                     string correctAnswer = qa.correctAnswer; // Assuming qa.correctAnswer contains "years old."
-                    string extendedUnderline = "";
 
                     if (this.useSeparatedWordsWithUnderline)
                     {
@@ -428,48 +562,60 @@ public class CurrentQuestion
                     }
                     else
                     {
-                        int wordCount = correctAnswer.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
-                        string combinedAnswer = string.Concat(correctAnswer.Split(' '));
-                        extendedUnderline = combinedAnswer;
-                        if (wordCount == 1)
-                        {
-                            int extraChars = 2;
-                            string pad = new string('_', extraChars);
-                            extendedUnderline += $"<color=#00000000>{pad}</color>";
-                        }
 
-                        if (fullSentence.Contains(correctAnswer))
+
+                        string[] correctAnswerArray = correctAnswer.Split(',')
+                                                           .Select(s => s.Trim())
+                                                           .ToArray();
+
+                        if (string.IsNullOrWhiteSpace(correctAnswer))
                         {
-                            fullSentence = fullSentence.Replace(
-                                correctAnswer,
-                                $"<u><color=#00000000>{extendedUnderline}</color></u>"
+                            fullSentence = Regex.Replace(
+                                qa.question,
+                                "_+",
+                                match => $"<u><color=#00000000>{match.Value}</color></u>"
                             );
                         }
+                        else
+                        {
+                            foreach (var part in correctAnswerArray)
+                            {
+                                string[] words = part.Split(' ');
 
-                        this.CreateUnderlineIcon(this.questionText);
+                                if (words.Length > 1)
+                                {
+                                    foreach (var word in words)
+                                    {
+                                        string pattern = $@"\b{Regex.Escape(word)}\b";
+                                        fullSentence = Regex.Replace(
+                                            fullSentence,
+                                            pattern,
+                                            $"<u><color=#00000000>{word}</color></u>"
+                                        );
+                                    }
+                                }
+                                else
+                                {
+                                    string pattern = $@"\b{Regex.Escape(part)}\b";
+                                    fullSentence = Regex.Replace(
+                                        fullSentence,
+                                        pattern,
+                                        $"<u><color=#00000000>{part}</color></u>"
+                                    );
+                                }
+
+                            }
+                            this.CreateUnderlineIcon(this.questionText);
+                        }
+
                     }
                     // Set the text with the formatted string
                     //this.questionText.text = fullSentence;
-
-                    string underline = $"<u><color=#00000000>{extendedUnderline}</color></u>";
-                    this.displayQuestion = Regex.Replace(
-                        qa.question,
-                        @"(?<=[\?\!\.])\s*_+",
-                        match => "\n" + underline
-                    );
-
-                    // Fallback: replace any remaining underscores normally
-                    this.displayQuestion = Regex.Replace(
-                        this.displayQuestion,
-                        @"_+",
-                        underline
-                    );
-
+                    this.displayQuestion = fullSentence;
                     this.setQuestionText(this.displayQuestion);
                     this.questionText.ForceMeshUpdate();
                     RectTransform rt = this.questionText.GetComponent<RectTransform>();
                     rt.sizeDelta = new Vector2(rt.sizeDelta.x, this.questionText.preferredHeight);
-                    //this.displayQuestion = fullSentence;
                     this.displayHint = qa.questionHint;
                 }
                 this.questiontype = QuestionType.FillInBlank;

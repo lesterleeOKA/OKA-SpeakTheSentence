@@ -790,6 +790,7 @@ public class RecordAudio : RecorderManager
             {
                 LogController.Instance.debug("File uploaded successfully.");
                 var uploadResponse = JsonUtility.FromJson<UploadResponse>(request.downloadHandler.text);
+                LogController.Instance.debug("Upload Response: " + request.downloadHandler.text);
                 if (!string.IsNullOrEmpty(uploadResponse.url))
                 {
                     string audioUrl = "";
@@ -811,7 +812,7 @@ public class RecordAudio : RecorderManager
                 }
                 else
                 {
-                    LogController.Instance.debugError("Failed to extract audio URL from upload response.");
+                    LogController.Instance.debugError("Failed to extract audio URL from upload response." + uploadResponse);
                     this.UpdateUI("Failed to extract audio URL from upload response.");
                     onError?.Invoke("Failed to extract audio URL from upload response.");
                     yield break;

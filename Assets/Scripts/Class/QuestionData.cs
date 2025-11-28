@@ -214,7 +214,7 @@ public class CurrentQuestion
             ap.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
             ap.aspectRatio = image.sprite.rect.width / image.sprite.rect.height;
             image.SetNativeSize();
-            image.transform.localScale = Vector3.one;
+            image.transform.localScale = new Vector3(this.underlineIconScale, this.underlineIconScale, this.underlineIconScale);
             underlineWordRecordIcons.Add(go);
         }
 
@@ -280,7 +280,6 @@ public class CurrentQuestion
         }
 
         int wordCount = this.CountWords(targetText.text);
-        Vector3 offset = new Vector3(0, 40f, 0);
         if (wordCount > 20)
         {
             this.underlineIconScale = 0.6f;
@@ -341,18 +340,18 @@ public class CurrentQuestion
             }
 
             // apply padding and clamp to sane ranges
-            desiredLocalWidth = Mathf.Clamp(desiredLocalWidth * paddingFactor, 6f, 2000f);
-            desiredLocalHeight = Mathf.Clamp(desiredLocalHeight, 6f, 2000f);
+            desiredLocalWidth = Mathf.Clamp(desiredLocalWidth * paddingFactor, 6f, 200f);
+            desiredLocalHeight = Mathf.Clamp(desiredLocalHeight, 6f, 100f);
 
             // set sizeDelta so icon scales proportionally instead of non-uniform localScale
             iconRect.sizeDelta = new Vector2(desiredLocalWidth, desiredLocalHeight);
 
             // position icon above underline center
             Vector3 underlineCenter = (localStart + localEnd) / 2;
-            Vector3 worldPos = targetText.transform.TransformPoint(underlineCenter + offset);
+            Vector3 worldPos = targetText.transform.TransformPoint(underlineCenter);
             Vector3 localPos = icon.transform.parent.InverseTransformPoint(worldPos);
-
-            iconRect.localPosition = localPos;
+            float yPos = localPos.y + 40f;
+            iconRect.localPosition = new Vector3(localPos.x, (yPos), localPos.z);
             icon.SetActive(true);
         }
 
@@ -519,7 +518,8 @@ public class CurrentQuestion
                     this.setQuestionText(this.displayQuestion);
                     this.questionText.ForceMeshUpdate();
                     RectTransform rt = this.questionText.GetComponent<RectTransform>();
-                    rt.sizeDelta = new Vector2(rt.sizeDelta.x, this.questionText.preferredHeight);
+                    float finalHeight = Mathf.Min(this.questionText.preferredHeight, 500f);
+                    rt.sizeDelta = new Vector2(rt.sizeDelta.x, finalHeight);
                     //this.displayQuestion = fullSentence;
                     this.displayHint = qa.questionHint;
                 }
@@ -544,7 +544,7 @@ public class CurrentQuestion
                     }
 
                     // Get the full sentence
-                    string fullSentence = qa.fullSentence;
+                    string fullSentence = qa.question;
                     // Get the correct answer
                     string correctAnswer = qa.correctAnswer; // Assuming qa.correctAnswer contains "years old."
 
@@ -586,36 +586,33 @@ public class CurrentQuestion
                                 {
                                     foreach (var word in words)
                                     {
-                                        string pattern = $@"\b{Regex.Escape(word)}\b";
                                         fullSentence = Regex.Replace(
-                                            fullSentence,
-                                            pattern,
-                                            $"<u><color=#00000000>{word}</color></u>"
+                                            qa.question,
+                                            "_+",
+                                            match => $"<u><color=#00000000>{match.Value}</color></u>"
                                         );
                                     }
                                 }
                                 else
                                 {
-                                    string pattern = $@"\b{Regex.Escape(part)}\b";
                                     fullSentence = Regex.Replace(
-                                        fullSentence,
-                                        pattern,
-                                        $"<u><color=#00000000>{part}</color></u>"
+                                        qa.question,
+                                        "_+",
+                                        match => $"<u><color=#00000000>{match.Value}</color></u>"
                                     );
                                 }
-
+                                this.CreateUnderlineIcon(this.questionText);
                             }
-                            this.CreateUnderlineIcon(this.questionText);
                         }
 
                     }
                     // Set the text with the formatted string
-                    //this.questionText.text = fullSentence;
                     this.displayQuestion = fullSentence;
                     this.setQuestionText(this.displayQuestion);
                     this.questionText.ForceMeshUpdate();
                     RectTransform rt = this.questionText.GetComponent<RectTransform>();
-                    rt.sizeDelta = new Vector2(rt.sizeDelta.x, this.questionText.preferredHeight);
+                    float finalHeight = Mathf.Min(this.questionText.preferredHeight, 500f);
+                    rt.sizeDelta = new Vector2(rt.sizeDelta.x, finalHeight);
                     this.displayHint = qa.questionHint;
                 }
                 this.questiontype = QuestionType.FillInBlank;

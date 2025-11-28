@@ -339,9 +339,10 @@ public class CurrentQuestion
                 }
             }
 
+            float maxSize = 200f;
             // apply padding and clamp to sane ranges
-            desiredLocalWidth = Mathf.Clamp(desiredLocalWidth * paddingFactor, 6f, 200f);
-            desiredLocalHeight = Mathf.Clamp(desiredLocalHeight, 6f, 100f);
+            desiredLocalWidth = Mathf.Clamp(desiredLocalWidth * paddingFactor, maxSize / 2, maxSize);
+            desiredLocalHeight = Mathf.Clamp(desiredLocalHeight, maxSize / 4 , maxSize / 2);
 
             // set sizeDelta so icon scales proportionally instead of non-uniform localScale
             iconRect.sizeDelta = new Vector2(desiredLocalWidth, desiredLocalHeight);
@@ -439,97 +440,6 @@ public class CurrentQuestion
                 break;
             case "Text":
             case "text":
-                SetUI.SetGroup(this.questionBgs, 3, 0f);
-                this.questionTexts = this.questionBgs[3].GetComponentsInChildren<TextMeshProUGUI>();
-                this.fullSentence = qa.fullSentence;
-                this.wrongSentence = qa.wrongSentence;
-
-                for (int i = 0; i < this.questionTexts.Length; i++)
-                {
-                    this.questionTexts[i].text = "";
-                    if (this.questionTexts[i].gameObject.name == "MarkerText")
-                    {
-                        this.questionText = questionTexts[i];
-                    }
-
-                    // Get the full sentence
-                    string fullSentence = qa.fullSentence;
-                    // Get the correct answer
-                    string correctAnswer = qa.correctAnswer; // Assuming qa.correctAnswer contains "years old."
-                    if (this.useSeparatedWordsWithUnderline)
-                    {
-                        // Split the correct answer into individual parts
-                         string[] correctAnswerParts = correctAnswer.Split(',');
-                         foreach (var part in correctAnswerParts)
-                         {
-                             if (fullSentence.Contains(part))
-                             {
-                                 fullSentence = fullSentence.Replace(part, $"<u><color=#00000000>{part}</color></u>");
-                             }
-                         }
-                    }
-                    else
-                    {
-                        string[] correctAnswerArray = correctAnswer.Split(',')
-                                   .Select(s => s.Trim())
-                                   .ToArray();
-
-                        if (string.IsNullOrWhiteSpace(correctAnswer))
-                        {
-                            fullSentence = Regex.Replace(
-                                qa.question,
-                                "_+",
-                                match => $"<u><color=#00000000>{match.Value}</color></u>"
-                            );
-                        }
-                        else
-                        {
-                            foreach (var part in correctAnswerArray)
-                            {
-                                string[] words = part.Split(' ');
-
-                                if (words.Length > 1)
-                                {
-                                    foreach (var word in words)
-                                    {
-                                        string pattern = $@"\b{Regex.Escape(word)}\b";
-                                        fullSentence = Regex.Replace(
-                                            fullSentence,
-                                            pattern,
-                                            $"<u><color=#00000000>{word}</color></u>"
-                                        );
-                                    }
-                                }
-                                else
-                                {
-                                    string pattern = $@"\b{Regex.Escape(part)}\b";
-                                    fullSentence = Regex.Replace(
-                                        fullSentence,
-                                        pattern,
-                                        $"<u><color=#00000000>{part}</color></u>"
-                                    );
-                                }
-
-                                this.CreateUnderlineIcon(this.questionText);
-                            }
-                        }
-                    }
-
-                    this.displayQuestion = fullSentence;
-                    this.setQuestionText(this.displayQuestion);
-                    this.questionText.ForceMeshUpdate();
-                    RectTransform rt = this.questionText.GetComponent<RectTransform>();
-                    float finalHeight = Mathf.Min(this.questionText.preferredHeight, 500f);
-                    rt.sizeDelta = new Vector2(rt.sizeDelta.x, finalHeight);
-                    //this.displayQuestion = fullSentence;
-                    this.displayHint = qa.questionHint;
-                }
-                this.questiontype = QuestionType.FillInBlank;
-                this.correctAnswer = qa.correctAnswer;
-                this.answersChoics = qa.answers;
-                this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;
-                this.controlMediaElements(this.questionBgs[3]);
-                break;
             case "FillInBlank":
             case "fillInBlank":
                 SetUI.SetGroup(this.questionBgs, 3, 0f);
@@ -576,6 +486,7 @@ public class CurrentQuestion
                                 "_+",
                                 match => $"<u><color=#00000000>{match.Value}</color></u>"
                             );
+                            this.CreateUnderlineIcon(this.questionText);
                         }
                         else
                         {

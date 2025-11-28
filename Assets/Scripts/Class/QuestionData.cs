@@ -510,6 +510,7 @@ public class CurrentQuestion
                                     );
                                 }
 
+                                this.CreateUnderlineIcon(this.questionText);
                             }
                         }
                     }

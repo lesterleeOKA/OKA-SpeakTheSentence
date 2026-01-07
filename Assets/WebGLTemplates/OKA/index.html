@@ -36,14 +36,20 @@
             Please rotate your device to landscape.
         </div>
     </div>-->
-      <div id="rotation-overlay" class="overlay">
-          <div class="iconContainer">
-              <div class="phone">
-                  <i class="fa fa-repeat"></i>
-              </div>
-              <p>Rotate your device!</p>
-          </div>
-      </div>
+    <div id="rotation-overlay" class="overlay">
+        <div class="topBar" id="topBar"></div>
+        <div class="iconContainer">
+            <div class="princeBox">
+                <img src="https://oka.blob.core.windows.net/media/roWebAssets/game-starwish/starwish_prince_pad.png"
+                     alt="Starwish Rotate">
+            </div>
+            <span>ROTATE YOUR DEVICE</span>
+            <div class="phone">
+                <i class="fa fa-repeat"></i>
+            </div>
+            <p>FOR BETTER EXPERIENCE</p>
+        </div>
+    </div>
       <script src="./recorder.wav.min.js"></script>
       <script>
 		async function accessAudio(unityInstance) {
@@ -66,17 +72,49 @@
           }
 
           function restartAnimation(element, className) {
-              element.classList.remove(className);
-              // Force reflow
-              void element.offsetWidth;
-              element.classList.add(className);
-          }
+            element.classList.remove(className);
+            // Force reflow
+            void element.offsetWidth;
+            element.classList.add(className);
+        }
+
+        function populateTopBar() {
+            const topBar = document.getElementById('topBar');
+            if (!topBar) return;
+
+            const groups = [1, 2, 3]; // same repetition count as original ngFor
+            const imgs = [
+                { src: 'https://oka.blob.core.windows.net/media/roWebAssets/game-starwish/starwish_book.png', alt: 'Starwish Book' },
+                { src: 'https://oka.blob.core.windows.net/media/roWebAssets/game-starwish/starwish_key.png', alt: 'Starwish Key' },
+                { src: 'https://oka.blob.core.windows.net/media/roWebAssets/game-starwish/starwish_star.png', alt: 'Starwish Star' }
+            ];
+
+            // optional: clear existing children
+            topBar.innerHTML = '';
+
+            groups.forEach(() => {
+                imgs.forEach(info => {
+                    const img = document.createElement('img');
+                    img.src = info.src;
+                    img.alt = info.alt;
+                    topBar.appendChild(img);
+                });
+            });
+
+            // append the extra book image present in original markup
+            const extra = document.createElement('img');
+            extra.src = 'https://oka.blob.core.windows.net/media/roWebAssets/game-starwish/starwish_book.png';
+            extra.alt = 'Starwish Book';
+            topBar.appendChild(extra);
+        }
 
         function checkOrientation() {
             const overlay = document.getElementById('rotation-overlay');
             const phone = overlay.querySelector('.phone');
             const icon = overlay.querySelector('.phone i');
+            const topText = overlay.querySelector('.iconContainer span');
             const text = overlay.querySelector('.iconContainer p');
+            const princeBox = overlay.querySelector('.princeBox');
 
             if (window.matchMedia("(orientation: portrait)").matches) {
                 overlay.style.display = 'flex';
@@ -85,6 +123,8 @@
                 restartAnimation(phone, 'phone-animate');
                 restartAnimation(icon, 'icon-animate');
                 restartAnimation(text, 'text-animate');
+                restartAnimation(topText, 'text-animate');
+                this.restartAnimation(princeBox, 'text-animate')
             } else {
                 overlay.style.display = 'none';
 
@@ -92,6 +132,8 @@
                 phone.classList.remove('phone-animate');
                 icon.classList.remove('icon-animate');
                 text.classList.remove('text-animate');
+                topText.classList.remove('text-animate');
+                princeBox.classList.remove('text-animate');
             }
         }
         // Listen for orientation changes
@@ -99,6 +141,7 @@
         window.addEventListener('resize', checkOrientation);
 
         window.addEventListener("load", function () {
+		    populateTopBar();
             checkOrientation();
             if ("serviceWorker" in navigator) {
               navigator.serviceWorker.register("ServiceWorker.js");

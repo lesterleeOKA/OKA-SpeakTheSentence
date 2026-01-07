@@ -146,33 +146,92 @@ h1 {
 
 .overlay {
     display: none;
-    position: absolute;
-    top: 0;
-    background-color: #FAEAD8;
-    width: 100%;
-    height: 100%;
+    position: fixed; /* use viewport as reference */
+    inset: 0; /* shorthand for top:0; right:0; bottom:0; left:0; */
+    background: rgba(37,18,3,0.70); /* same color with alpha ~ 0.7 */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 9999; /* ensure on top */
+    touch-action: none; /* prevent default gestures (pan/zoom) */
+    pointer-events: none; /* ensure overlay receives input */
 }
 
-.iconContainer {
-    width: 200px;
-    height: 200px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -100px;
-    margin-top: -100px;
-}
-.iconContainer p {
-    display: inline-block;
+.topBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    overflow-x: hidden;
+    height: 8vh;
+    min-height: 40px;
+    max-height: 80px;
     width: 100%;
-    text-align: center;
-    margin: 0;
-    font-size: 20px;
-    opacity: 0;
-    color: #DB9850;
-    font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
-    font-weight: bold;
+    position: absolute;
+    top: 70px;
+    padding: 0 20px;
+    gap: 10px;
 }
+
+    .topBar img {
+        width: 8vw;
+        min-width: 20px;
+        max-width: 100px;
+        height: auto;
+        aspect-ratio: 1/1;
+        object-fit: contain;
+        transition: all 0.3s ease;
+        border-radius: 5px;
+        opacity: 35%;
+    }
+
+.iconContainer {
+    width: 314px;
+    height: 342px;
+    position: absolute;
+    left: 40%;
+    top: 35%;
+}
+
+.princeBox {
+    opacity: 0;
+    position: relative;
+    height: 0;
+    overflow: visible;
+    left: -75%;
+    top: 25%;
+}
+    .princeBox img {
+        width: 55%;
+    }
+    .iconContainer span {
+        display: flex;
+        width: 100%;
+        text-align: center;
+        font-size: 30px;
+        opacity: 0;
+        color: #F6C400;
+        font-family: 'Gumbo';
+        font-weight: 400;
+        text-wrap: nowrap;
+        justify-content: center;
+        text-transform: uppercase;
+        margin-bottom: 30%;
+    }
+    .iconContainer p {
+        display: flex;
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        font-size: 30px;
+        opacity: 0;
+        color: #F6C400;
+        font-family: 'Gumbo';
+        font-weight: 400;
+        text-wrap: nowrap;
+        justify-content: center;
+        text-transform: uppercase;
+        margin-top: 30%;
+    }
 
 .phone {
     position: relative;
@@ -180,19 +239,20 @@ h1 {
     margin-left: -50px;
     width: 0;
     height: 0;
-    border: 0 solid #533E18;
-    background: #FAEAD8;
-    border-radius: 10px;
+    border: 0 solid #FDE9D6;
+    background: transparent;
+    border-radius: 15px;
     box-sizing: border-box;
+    scale: 2;
 }
-.phone i {
-    text-align: center;
-    width: 100%;
-    line-height: 120px;
-    font-size: 50px;
-    color: #DB9850;
-    opacity: 0;
-}
+    .phone i {
+        text-align: center;
+        width: 100%;
+        line-height: 120px;
+        font-size: 50px;
+        color: #F6C400;
+        opacity: 0;
+    }
 
 /* Animation classes for JS logic */
 .phone-animate {
@@ -213,14 +273,22 @@ h1 {
 @keyframes sizeIncrease {
     0%   { width: 0; height:10px; }
     50%  { width: 100px; height: 10px; }
-    100% { width: 100px; height:160px; }
+    100% { width: 100px; height:155px; }
 }
 @keyframes borderIncrease {
     100% { border-width:20px 10px; }
 }
 @keyframes fadeIn {
-    100% { color: #DB9850; opacity: 1; }
+    100% { opacity: 1; }
 }
 @keyframes rotateRight {
     100% { transform: rotate(90deg); }
+}
+
+@font-face {
+    font-family: 'Gumbo';
+    src: local('Gumbo'), local('Gumbo-Regular'), url('Gumbo-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }

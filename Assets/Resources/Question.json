@@ -864,6 +864,186 @@
       "questionHint": "Complete the questions with 'who' and present continuous tense."
     },
     {
+      "qid": "p2u3-g1",
+      "questionType": "FillInBlank",
+      "question": "We can watch the talent show ______ the hall.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "We can watch the talent show in the hall.",
+      "questionHint": "Finish the sentences using \"in\"."
+    },
+    {
+      "qid": "p2u3-g2",
+      "questionType": "FillInBlank",
+      "question": "We can have buy snacks ______ the tuck shop.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "We can have buy snacks in the tuck shop.",
+      "questionHint": "Finish the sentences using \"in\"."
+    },
+    {
+      "qid": "p2u3-g3",
+      "questionType": "FillInBlank",
+      "question": "My dog is playing with a ball ______ the garden.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "My dog is playing with a ball in the garden.",
+      "questionHint": "Finish the sentences using \"in\"."
+    },
+    {
+      "qid": "p2u3-g4",
+      "questionType": "FillInBlank",
+      "question": "We can take pictures of the lions ______ the zoo.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "We can take pictures of the lions in the zoo.",
+      "questionHint": "Finish the sentences using \"in\"."
+    },
+    {
+      "qid": "p2u3-g5",
+      "questionType": "FillInBlank",
+      "question": "We can make our own cups ______ the art room.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "We can make our own cups in the art room.",
+      "questionHint": "Finish the sentences using \"in\"."
+    },
+    {
+      "qid": "p2u3-g6",
+      "questionType": "FillInBlank",
+      "question": "Mom and Aunt May are having tea ______ the café.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "Mom and Aunt May are having tea in the café.",
+      "questionHint": "Finish the sentences using \"in\"."
+    },
+    {
+      "qid": "p2u3-g7",
+      "questionType": "FillInBlank",
+      "question": "We can have our lunch ______ the playground today.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "We can have our lunch in the playground today.",
+      "questionHint": "Finish the sentences using \"in\"."
+    },
+    {
+      "qid": "p2u3-g8",
+      "questionType": "FillInBlank",
+      "question": "Dan is having a swimming lesson ______ the swimming pool.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "Dan is having a swimming lesson in the swimming pool.",
+      "questionHint": "Finish the sentences using \"in\"."
+    },
+    {
+      "qid": "p2u3-g9",
+      "questionType": "FillInBlank",
+      "question": "We can read old newspapers ______ the library.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "We can read old newspapers in the library.",
+      "questionHint": "Finish the sentences using \"in\"."
+    },
+    {
+      "qid": "p2u3-g10",
+      "questionType": "FillInBlank",
+      "question": "We can plant some beautiful flowers ______ the garden.",
+      "answers": null,
+      "correctAnswer": "in",
+      "fullSentence": "We can plant some beautiful flowers in the garden.",
+      "questionHint": "Finish the sentences using \"in\"."
+    },
+    {
+      "qid": "p2u5-g1",
+      "questionType": "FillInBlank",
+      "question": "We go to the Lamma Island ________ ferry.",
+      "answers": null,
+      "correctAnswer": "by",
+      "fullSentence": "We go to the Lamma Island by ferry.",
+      "questionHint": "Complete the sentences using \"by\"."
+    },
+    {
+      "qid": "p2u5-g2",
+      "questionType": "FillInBlank",
+      "question": "You can come to the shopping mall ________ bus.",
+      "answers": null,
+      "correctAnswer": "by",
+      "fullSentence": "You can come to the shopping mall by bus.",
+      "questionHint": "Complete the sentences using \"by\"."
+    },
+    {
+      "qid": "p2u5-g3",
+      "questionType": "FillInBlank",
+      "question": "Mr Tam goes to work ________ shuttle bus.",
+      "answers": null,
+      "correctAnswer": "by",
+      "fullSentence": "Mr Tam goes to work by shuttle bus.",
+      "questionHint": "Complete the sentences using \"by\"."
+    },
+    {
+      "qid": "p2u5-g4",
+      "questionType": "FillInBlank",
+      "question": "They can go to Wong Tai Sin temple ________ MTR.",
+      "answers": null,
+      "correctAnswer": "by",
+      "fullSentence": "They can go to Wong Tai Sin temple by MTR.",
+      "questionHint": "Complete the sentences using \"by\"."
+    },
+    {
+      "qid": "p2u5-g5",
+      "questionType": "FillInBlank",
+      "question": "Gigi is going to the hospital ________ minibus.",
+      "answers": null,
+      "correctAnswer": "by",
+      "fullSentence": "Gigi is going to the hospital by minibus.",
+      "questionHint": "Complete the sentences using \"by\"."
+    },
+    {
+      "qid": "p2u5-g6",
+      "questionType": "FillInBlank",
+      "question": "Mrs. Chan goes to the church ________ tram.",
+      "answers": null,
+      "correctAnswer": "by",
+      "fullSentence": "Mrs. Chan goes to the church by tram.",
+      "questionHint": "Complete the sentences using \"by\"."
+    },
+    {
+      "qid": "p2u5-g7",
+      "questionType": "FillInBlank",
+      "question": "Nick visits his grandma ________ train.",
+      "answers": null,
+      "correctAnswer": "by",
+      "fullSentence": "Nick visits his grandma by train.",
+      "questionHint": "Complete the sentences using \"by\"."
+    },
+    {
+      "qid": "p2u5-g8",
+      "questionType": "FillInBlank",
+      "question": "There is no bus now. You can go home ________ taxi.",
+      "answers": null,
+      "correctAnswer": "by",
+      "fullSentence": "There is no bus now. You can go home by taxi.",
+      "questionHint": "Complete the sentences using \"by\"."
+    },
+    {
+      "qid": "p2u5-g9",
+      "questionType": "FillInBlank",
+      "question": "I live near my school. I go to school ________ bicycle.",
+      "answers": null,
+      "correctAnswer": "by",
+      "fullSentence": "I live near my school. I go to school by bicycle.",
+      "questionHint": "Complete the sentences using \"by\"."
+    },
+    {
+      "qid": "p2u5-g10",
+      "questionType": "FillInBlank",
+      "question": "Anne lives in Canada. She comes here ________ plane.",
+      "answers": null,
+      "correctAnswer": "by",
+      "fullSentence": "Anne lives in Canada. She comes here by plane.",
+      "questionHint": "Complete the sentences using \"by\"."
+    },
+    {
       "qid": "p2u7-f1",
       "questionType": "FillInBlank",
       "question": "The rain ______ (stop) and a rainbow comes!",

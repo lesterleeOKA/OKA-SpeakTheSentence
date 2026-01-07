@@ -741,7 +741,7 @@ public class CurrentQuestion
         }
     }
 
-    void setQuestionText(string displayQuestion = "")
+    public void setQuestionText(string displayQuestion = "")
     {
         for (int i = 0; i < this.questionTexts.Length; i++)
         {

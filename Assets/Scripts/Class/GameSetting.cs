@@ -116,6 +116,7 @@ public class GameSetting : MonoBehaviour
             case "api.openknowledge.hk":
             case "www.starwishparty.com":
             case "starwishparty.com":
+            case "app.starwishparty.com":
                 this.currentHostName = HostName.prod;
                 LogController.Instance?.UpdateVersion("prod");
                 break;
@@ -299,6 +300,7 @@ public class GameSetting : MonoBehaviour
 
     public void InitialGameSetup()
     {
+        if (this.apiManager.IsLogined && !this.apiManager.IsLoginedRainbowOne) this.Lang = 0;
         this.gameSetup.setBackground();
         this.gameSetup.setInstruction(this.apiManager.settings.instructionContent);
     }

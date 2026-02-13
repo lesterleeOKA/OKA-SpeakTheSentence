@@ -26,9 +26,9 @@ public class HelpTool : MonoBehaviour
         this.audioEffect ??= this.GetComponent<AudioSource>();
 
         var apiManager = LoaderConfig.Instance.apiManager;
-        bool isLogined = apiManager.IsLogined;
+        bool isLoginedStarwishPartySite = APIConstant.isLoginedStarwishPartySite(LoaderConfig.Instance);
 
-        if (isLogined)
+        if (isLoginedStarwishPartySite)
         {
             SetUI.Set(this.popNumBg.GetComponent<CanvasGroup>(), true);
 
@@ -131,11 +131,13 @@ public class HelpTool : MonoBehaviour
             }
             this.setBtn(false);
 
-            if (LoaderConfig.Instance != null &&
+            var loader = LoaderConfig.Instance;
+            if (loader != null &&
                 this.currentInventory != null &&
-                this.currentInventory.amount > 0)
+                this.currentInventory.amount > 0 &&
+                APIConstant.isLoginedStarwishPartySite(loader))
             {
-                StartCoroutine(LoaderConfig.Instance.apiManager.useHelpTool(
+                StartCoroutine(loader.apiManager.useHelpTool(
                     this.currentInventory.help_tool_id)
                     );
             }

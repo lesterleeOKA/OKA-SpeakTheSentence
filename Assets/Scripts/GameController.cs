@@ -81,6 +81,8 @@ public class GameController : GameBaseController
         if (isLogined)
         {
             var resultPageCg = this.endGamePage.messageBg.GetComponent<CanvasGroup>();
+            bool isLoginedStarwishParty = APIConstant.isLoginedStarwishPartySite(loader);
+
             string playerScore = this.playerController.Score.ToString();
             bool hasExitedGameRecord = false;
 
@@ -91,10 +93,7 @@ public class GameController : GameBaseController
 
                     if (this.playerController != null)
                     {
-                        if (loader.CurrentHostName.Contains("dev.starwishparty.com") ||
-                            loader.CurrentHostName.Contains("uat.starwishparty.com") ||
-                            loader.CurrentHostName.Contains("pre.starwishparty.com") ||
-                            loader.CurrentHostName.Contains("www.starwishparty.com"))
+                        if (isLoginedStarwishParty)
                         {
                             if (stars[0] > 0)
                             {

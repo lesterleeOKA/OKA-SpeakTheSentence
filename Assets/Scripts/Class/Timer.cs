@@ -25,7 +25,7 @@ public class Timer : MonoBehaviour
 
     private void Update()
     {
-        if(this.timer == null)
+        if (this.timer == null || (GameController.Instance != null && !GameController.Instance.playing))
             return;
 
         if (StartGame.Instance.startedGame && this.timer != null && !this.endGame)

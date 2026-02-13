@@ -1,6 +1,7 @@
 using SimpleJSON;
 using System;
 using System.Collections;
+using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -10,6 +11,8 @@ using UnityEngine.UI;
 [Serializable]
 public class APIManager
 {
+    [Tooltip("Starwish party supported domains")]
+    public string[] starwishPartyDomains;
     [Tooltip("Account Jwt token, upload data jwt")]
     public string jwt;
     [Tooltip("Created App/Book current id")]
@@ -176,13 +179,19 @@ public class APIManager
 
                         this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
                         this.accountJson = jsonNode["account"].ToString(); // Account json data;
+
                         string accountIdString = jsonNode["account"]["id"];
-                        int accountId = int.Parse(accountIdString);
-                        this.accountId = accountId;
-                        //LogController.Instance?.debug("accountJson: " + this.accountJson);
+                        if (!string.IsNullOrEmpty(accountIdString))
+                        {
+                            int accountId = int.Parse(accountIdString);
+                            this.accountId = accountId;
+                        }
                         string accountUidString = jsonNode["account"]["uid"];
-                        int accountUid = int.Parse(accountUidString);
-                        this.accountUid = accountUid;
+                        if (!string.IsNullOrEmpty(accountUidString))
+                        {
+                            int accountUid = int.Parse(accountUidString);
+                            this.accountUid = accountUid;
+                        }
 
                         if (jsonNode["photo"] != null) this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
                         if (jsonNode["setting"] != null) this.gameSettingJson = jsonNode["setting"].ToString();
@@ -265,10 +274,7 @@ public class APIManager
                         //E.g
                         //Debug.Log(jsonNode["account"]["display_name"].ToString());
                         var loader = LoaderConfig.Instance;
-                        if (loader.CurrentHostName.Contains("dev.starwishparty.com") ||
-                            loader.CurrentHostName.Contains("uat.starwishparty.com") ||
-                            loader.CurrentHostName.Contains("pre.starwishparty.com") ||
-                            loader.CurrentHostName.Contains("www.starwishparty.com"))
+                        if (APIConstant.isLoginedStarwishPartySite(loader))
                         {
                             yield return this.GetStarwishAccountData(() =>
                             {
@@ -957,7 +963,7 @@ public static class APIConstant
 
     public static string GameAddCurrencyAPI(LoaderConfig loader)
     {
-        return $"{loader.CurrentHostName}/OKAGames/public/index.php/api/accounts/add-currency";
+        return $"{StarwishpartySiteDomain(loader)}/OKAGames/public/index.php/api/accounts/add-currency";
     }
 
     public static string GameAppQuestionDataAPI(LoaderConfig loader, string _dataKey = "", string _jwt = "")
@@ -968,37 +974,49 @@ public static class APIConstant
 
     public static string GetStarwishPartyAccountAPI(LoaderConfig loader)
     {
-        return $"{loader.CurrentHostName}/OKAGames/public/index.php/api/accounts/{loader.apiManager.accountUid}";
+        return $"{StarwishpartySiteDomain(loader)}/OKAGames/public/index.php/api/accounts/{loader.apiManager.accountUid}";
     }
 
     public static string GetHelpToolInventoryAPI(LoaderConfig loader)
     {
-        if (loader.CurrentHostName.Contains("dev.starwishparty.com") ||
-            loader.CurrentHostName.Contains("uat.starwishparty.com") ||
-            loader.CurrentHostName.Contains("pre.starwishparty.com") ||
-            loader.CurrentHostName.Contains("www.starwishparty.com"))
-        {
-            return $"{loader.CurrentHostName}/OKAGames/public/index.php/api/help-tools/user/inventory";
-        }
-        else
-        {
-            return "";
-        }
+        return $"{StarwishpartySiteDomain(loader)}/OKAGames/public/index.php/api/help-tools/user/inventory";
     }
 
     public static string UpdateUseOfHelpToolAPI(LoaderConfig loader)
     {
-        if (loader.CurrentHostName.Contains("dev.starwishparty.com") ||
-            loader.CurrentHostName.Contains("uat.starwishparty.com") ||
-            loader.CurrentHostName.Contains("pre.starwishparty.com") ||
-            loader.CurrentHostName.Contains("www.starwishparty.com"))
+        return $"{StarwishpartySiteDomain(loader)}/OKAGames/public/index.php/api/help-tools/use";
+    }
+
+    static string StarwishpartySiteDomain(LoaderConfig loader)
+    {
+        string domain = "";
+        if (isLoginedStarwishPartySite(loader))
         {
-            return $"{loader.CurrentHostName}/OKAGames/public/index.php/api/help-tools/use";
+            //test prod
+            if (loader.CurrentHostName.Contains("www.starwishparty.com") ||
+                loader.CurrentHostName.Contains("pro.starwishparty.com") ||
+                loader.CurrentHostName.Contains("rainbowone.app") ||
+                loader.CurrentHostName.Contains("app.starwishparty.com"))
+                domain = "pro.starwishparty.com";
+            else
+                domain = loader.CurrentHostName;
         }
-        else
-        {
-            return "";
-        }
+
+        return domain;
+    }
+
+    public static bool isLoginedStarwishPartySite(LoaderConfig loader)
+    {
+        bool isLogined = loader.apiManager.IsLogined;
+        if (!isLogined) return false;
+        /*bool isLoginedStarwishParty = 
+                          loader.CurrentHostName.Contains("dev.starwishparty.com") ||
+                          loader.CurrentHostName.Contains("uat.starwishparty.com") ||
+                          loader.CurrentHostName.Contains("pre.starwishparty.com") ||
+                          loader.CurrentHostName.Contains("www.starwishparty.com") ||
+                          loader.CurrentHostName.Contains("rainbowone.app") ||
+                          loader.CurrentHostName.Contains("www.rainbowone.app");*/
+        return loader.apiManager.starwishPartyDomains.Any(domain => loader.CurrentHostName.Contains(domain, StringComparison.OrdinalIgnoreCase));
     }
 
     public static string blobServerRelativePath
